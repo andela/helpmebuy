@@ -1,0 +1,88 @@
+package com.andela.helpmebuy.models;
+
+import org.joda.time.DateTime;
+
+/**
+ * Represents a travel information.
+ */
+public class Travel {
+
+    /**
+     * The ID of the travel.
+     */
+    private String id;
+
+    /**
+     * The date of departure.
+     */
+    private DateTime departureDate;
+
+    /**
+     * The departure address.
+     */
+    private Address departureAddress;
+
+    /**
+     * The date of arrival.
+     */
+    private DateTime arrivalDate;
+
+    /**
+     * The arrival address.
+     */
+    private Address arrivalAddress;
+
+    /**
+     * Creates a new travel.
+     */
+    public Travel(){
+    }
+
+    /**
+     * Creates a new travel with the specified ID.
+     * @param id the ID of the travel.
+     */
+    public Travel(String id){
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public DateTime getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(DateTime departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public Address getDepartureAddress() {
+        return departureAddress;
+    }
+
+    public void setDepartureAddress(Address departureAddress) {
+        this.departureAddress = departureAddress;
+    }
+
+    public DateTime getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(DateTime arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+    public Address getArrivalAddress() {
+        return arrivalAddress;
+    }
+
+    public void setArrivalAddress(Address arrivalAddress) {
+        this.arrivalAddress = arrivalAddress;
+    }
+}
