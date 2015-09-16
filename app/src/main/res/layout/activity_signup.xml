@@ -33,7 +33,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
             android:ems="10"
-            android:hint="Fullname"
+            android:hint="@string/fullname"
             android:inputType="textPersonName"
             android:textColor="#ffffff"
             android:textColorHint="#7fffffff" />
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textColor="#ffffff"
             android:textColorHint="#7fffffff" />
@@ -56,7 +56,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="#ffffff"
             android:textColorHint="#7fffffff" />
@@ -68,8 +68,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="40dp"
             android:layout_marginTop="15dp"
-            android:hint="Sign up"
-            android:text="Sign up"
+            android:hint="@string/signup"
+            android:text="@string/signup"
             android:textStyle="bold"
             android:onClick="signUp"/>
 
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="?android:attr/selectableItemBackground"
-            android:text="Already have an account?"
+            android:text="@string/already_have_an_account"
             android:onClick="signIn"/>
     </LinearLayout>
 </RelativeLayout>

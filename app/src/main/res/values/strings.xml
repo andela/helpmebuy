@@ -4,4 +4,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_signup">SignupActivity</string>
+    <string name="fullname">Fullname</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="signup">Signup</string>
+    <string name="already_have_an_account">Already have an account?</string>
 </resources>

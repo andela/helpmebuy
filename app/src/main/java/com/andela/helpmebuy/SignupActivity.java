@@ -19,11 +19,11 @@ public class SignupActivity extends AppCompatActivity {
 
     private Firebase firebase;
 
-    private EditText fullName;
+    private EditText fullNameEditText;
 
-    private EditText email;
+    private EditText emailEditText;
 
-    private EditText password;
+    private EditText passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +34,9 @@ public class SignupActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_signup);
 
-        fullName = (EditText) findViewById(R.id.fullName_text);
-        email = (EditText) findViewById(R.id.email_text);
-        password = (EditText) findViewById(R.id.password_text);
+        fullNameEditText = (EditText) findViewById(R.id.fullName_text);
+        emailEditText = (EditText) findViewById(R.id.email_text);
+        passwordEditText = (EditText) findViewById(R.id.password_text);
     }
 
     @Override
@@ -62,23 +62,35 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void signUp(View view) {
-        firebase.createUser(email.getText().toString(), password.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+        final String fullName = fullNameEditText.getText().toString();
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
 
-            @Override
-            public void onSuccess(Map<String, Object> result) {
-                String id = result.get("uid").toString();
+        if (fullName.equals("")) {
 
-                User user = new User(id);
-                user.setFullName(fullName.getText().toString());
+        } else if (email.equals("")) {
 
-                Log.i("SignupActivity", "Created user ID = " + id);
-            }
+        } else if (password.equals("")) {
 
-            @Override
-            public void onError(FirebaseError firebaseError) {
-                Log.d("SignupActivity", firebaseError.toString());
-            }
-        });
+        } else {
+            firebase.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
+
+                @Override
+                public void onSuccess(Map<String, Object> result) {
+                    String id = result.get("uid").toString();
+
+                    User user = new User(id);
+                    user.setFullName(fullName);
+
+                    Log.i("SignupActivity", "Created user ID = " + id);
+                }
+
+                @Override
+                public void onError(FirebaseError firebaseError) {
+                    Log.d("SignupActivity", firebaseError.toString());
+                }
+            });
+        }
     }
 
 }
