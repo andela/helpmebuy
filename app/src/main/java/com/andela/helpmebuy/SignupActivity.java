@@ -1,12 +1,16 @@
 package com.andela.helpmebuy;
 
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.andela.helpmebuy.models.User;
 import com.firebase.client.Firebase;
@@ -15,15 +19,21 @@ import com.firebase.client.FirebaseError;
 import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
+    public final String TAG = "SignupActivity";
+
     public final String FIREBASE_URL = "https://hmbuy.firebaseio.com";
 
     private Firebase firebase;
+
+    private RelativeLayout parentLayout;
 
     private EditText fullNameEditText;
 
     private EditText emailEditText;
 
     private EditText passwordEditText;
+
+    private Button signupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +44,16 @@ public class SignupActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_signup);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
+
+        parentLayout = (RelativeLayout) findViewById(R.id.background);
         fullNameEditText = (EditText) findViewById(R.id.fullName_text);
         emailEditText = (EditText) findViewById(R.id.email_text);
         passwordEditText = (EditText) findViewById(R.id.password_text);
+        signupButton = (Button) findViewById(R.id.signup_button);
     }
 
     @Override
@@ -62,32 +79,53 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void signUp(View view) {
-        final String fullName = fullNameEditText.getText().toString();
-        String email = emailEditText.getText().toString();
+        final String fullName = fullNameEditText.getText().toString().trim();
+        String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
 
         if (fullName.equals("")) {
+            fullNameEditText.setError(getResources().getString(R.string.fullname_missing));
 
         } else if (email.equals("")) {
+            emailEditText.setError(getResources().getString(R.string.email_missing));
 
         } else if (password.equals("")) {
+            passwordEditText.setError(getResources().getString(R.string.password_missing));
 
         } else {
+            signupButton.setText(R.string.signing_up);
+            signupButton.setEnabled(false);
+
             firebase.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
 
                 @Override
                 public void onSuccess(Map<String, Object> result) {
                     String id = result.get("uid").toString();
 
+                    Log.i(TAG, "Created user ID = " + id);
+
                     User user = new User(id);
                     user.setFullName(fullName);
 
-                    Log.i("SignupActivity", "Created user ID = " + id);
+                    signupButton.setText(R.string.signup);
+                    signupButton.setEnabled(true);
+
+                    Snackbar.make(parentLayout, "Created user ID = " + id, Snackbar.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onError(FirebaseError firebaseError) {
-                    Log.d("SignupActivity", firebaseError.toString());
+                    Log.d(TAG, firebaseError.toString());
+
+                    signupButton.setText(R.string.signup);
+                    signupButton.setEnabled(true);
+
+                    String message = firebaseError.getMessage();
+                    if (message.contains("email")) {
+                        emailEditText.setError(message);
+                    } else {
+                        Snackbar.make(parentLayout, firebaseError.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
                 }
             });
         }
