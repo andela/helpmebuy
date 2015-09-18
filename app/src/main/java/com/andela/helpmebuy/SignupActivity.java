@@ -80,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
 
     public void signUp(View view) {
         final String fullName = fullNameEditText.getText().toString().trim();
-        String email = emailEditText.getText().toString().trim();
+        final String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
 
         if (fullName.equals("")) {
@@ -106,6 +106,9 @@ public class SignupActivity extends AppCompatActivity {
 
                     User user = new User(id);
                     user.setFullName(fullName);
+                    user.setEmail(email);
+
+                    saveUser(user);
 
                     signupButton.setText(R.string.signup);
                     signupButton.setEnabled(true);
@@ -128,7 +131,15 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 }
             });
+
         }
+    }
+
+    public void signIn(View view) {
+
+    }
+    public void saveUser(User user) {
+        firebase.child("users").child(user.getId()).setValue(user);
     }
 
 }

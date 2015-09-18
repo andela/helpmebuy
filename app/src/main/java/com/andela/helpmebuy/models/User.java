@@ -34,10 +34,16 @@ public class User {
     private List<Address> deliveryAddresses;
 
     /**
+     * The list of users that a user is connected to.
+     */
+    private List<User> connections;
+
+    /**
      * Creates a new user.
      */
     public User() {
         deliveryAddresses = new ArrayList<>();
+        connections = new ArrayList<>();
     }
 
     /**
