@@ -2,13 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:textColorHint">#7fffffff</item>
-        <item name="colorControlNormal">#7fffffff</item>
-        <item name="colorControlActivated">#7fffffff</item>
-    </style>
-
-    <style name="TextInputStyle" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">#7fffffff</item>
+        <!-- Customize your theme here. -->
     </style>
 
 </resources>
