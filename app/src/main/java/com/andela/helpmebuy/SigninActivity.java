@@ -1,5 +1,6 @@
 package com.andela.helpmebuy;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.client.AuthData;
@@ -14,12 +16,18 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 public class SigninActivity extends AppCompatActivity {
+
     private final String firebaseUrl = "http://hmbuy.firebaseio.com";
 
     private EditText emailText;
+
     private EditText passwordText;
-    private TextView successText;
+
+    private Button signInButton;
+
     private Firebase firebase;
+
+    private LinearLayout parentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +40,8 @@ public class SigninActivity extends AppCompatActivity {
 
         emailText = (EditText) findViewById(R.id.email_text);
         passwordText = (EditText) findViewById(R.id.password_text);
-        successText = (TextView) findViewById(R.id.success_text);
+        signInButton = (Button) findViewById(R.id.signin_button);
+        parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
     }
 
     @Override
@@ -60,19 +69,41 @@ public class SigninActivity extends AppCompatActivity {
     public void signIn(View view){
         firebase = new Firebase(firebaseUrl);
 
-        final String email = emailText.getText().toString();
+        final String email = emailText.getText().toString().trim();
+
         String password = passwordText.getText().toString();
 
-        firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                successText.setText(email + authData.getUid() + authData.getProvider());
-            }
+        if (email.equals(""))
+            emailText.setError("Please specify email!");
 
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                successText.setText("Failed to login");
-            }
-        });
+        else if (password.equals(""))
+            passwordText.setError("Please type in password");
+
+        else {
+
+            signInButton.setText("Signing In...");
+            signInButton.setEnabled(false);
+
+            firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+
+                @Override
+                public void onAuthenticated(AuthData authData) {
+
+                    Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
+                    signInButton.setText("Sign In...");
+                    signInButton.setEnabled(true);
+
+                }
+
+                @Override
+                public void onAuthenticationError(FirebaseError firebaseError) {
+
+                    Snackbar.make(parentLayout, firebaseError.getMessage(), Snackbar.LENGTH_LONG).show();
+                    signInButton.setText("Sign In...");
+                    signInButton.setEnabled(true);
+
+                }
+            });
+        }
     }
 }
