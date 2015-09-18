@@ -39,8 +39,14 @@ public class User {
     private List<User> connections;
 
     /**
+     * the url for the user profile picture
+     */
+    private String profilePictureUrl;
+
+    /**
      * Creates a new user.
      */
+
     public User() {
         deliveryAddresses = new ArrayList<>();
         connections = new ArrayList<>();
@@ -93,5 +99,21 @@ public class User {
 
     public void setDeliveryAddresses(List<Address> deliveryAddresses) {
         this.deliveryAddresses = deliveryAddresses;
+    }
+
+    public List<User> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(List<User> connections) {
+        this.connections = connections;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 }
