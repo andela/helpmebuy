@@ -14,19 +14,9 @@ public class User {
     private String id;
 
     /**
-     * The name of the user.
+     * The fullname of the user.
      */
-    private String name;
-
-    /**
-     * The firstname of the user.
-     */
-    private String firsName;
-
-    /**
-     * The lastname of the user.
-     */
-    private String lastName;
+    private String fullName;
 
     /**
      * The email addresss of the user.
@@ -44,10 +34,22 @@ public class User {
     private List<Address> deliveryAddresses;
 
     /**
+     * The list of users that a user is connected to.
+     */
+    private List<User> connections;
+
+    /**
+     * the url for the user profile picture
+     */
+    private String profilePictureUrl;
+
+    /**
      * Creates a new user.
      */
+
     public User() {
         deliveryAddresses = new ArrayList<>();
+        connections = new ArrayList<>();
     }
 
     /**
@@ -67,28 +69,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFirsName() {
-        return firsName;
-    }
-
-    public void setFirsName(String firsName) {
-        this.firsName = firsName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -113,5 +99,21 @@ public class User {
 
     public void setDeliveryAddresses(List<Address> deliveryAddresses) {
         this.deliveryAddresses = deliveryAddresses;
+    }
+
+    public List<User> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(List<User> connections) {
+        this.connections = connections;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 }
