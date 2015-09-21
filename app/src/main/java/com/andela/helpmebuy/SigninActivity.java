@@ -48,12 +48,12 @@ public class SigninActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_signin);
 
         Firebase.setAndroidContext(this);
         firebase = new Firebase(firebaseUrl);
-
-        FacebookSdk.sdkInitialize(getApplicationContext());
 
         emailText = (EditText) findViewById(R.id.email_text);
         passwordText = (EditText) findViewById(R.id.password_text);
@@ -152,7 +152,7 @@ public class SigninActivity extends AppCompatActivity {
         }
     }
 
-    public void facebookSignIn() {
+    public void facebookSignIn(View view) {
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
     }
 }
