@@ -12,9 +12,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.andela.helpmebuy.models.User;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -23,6 +27,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import com.facebook.FacebookSdk;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -41,6 +48,8 @@ public class SigninActivity extends AppCompatActivity {
     private LoginButton loginButton;
 
     private CallbackManager callbackManager;
+
+    private AccessToken accessToken;
 
     private LinearLayout parentLayout;
 
@@ -68,6 +77,28 @@ public class SigninActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Snackbar.make(parentLayout, R.string.facebook_success, Snackbar.LENGTH_LONG).show();
+
+                GraphRequest request = GraphRequest.newMeRequest(accessToken,
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                try {
+                                    User user = new User(object.getString("id"));
+                                    user.setFullName(object.getString("name"));
+                                    user.setEmail(object.getString("email"));
+
+                                    firebase.child("users").child(user.getId()).setValue(user);
+
+                                } catch(JSONException e){
+                                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id, name, email");
+                request.setParameters(parameters);
+                request.executeAsync();
             }
 
             @Override
