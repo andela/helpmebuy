@@ -15,6 +15,8 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import com.facebook.FacebookSdk;
+
 public class SigninActivity extends AppCompatActivity {
 
     private final String firebaseUrl = "http://hmbuy.firebaseio.com";
@@ -37,6 +39,8 @@ public class SigninActivity extends AppCompatActivity {
 
         Firebase.setAndroidContext(this);
         firebase = new Firebase(firebaseUrl);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         emailText = (EditText) findViewById(R.id.email_text);
         passwordText = (EditText) findViewById(R.id.password_text);
