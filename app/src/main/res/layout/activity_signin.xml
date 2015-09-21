@@ -23,6 +23,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         app:hintTextAppearance="@style/TextInputStyle">
 
         <EditText
@@ -30,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="60dp"
             android:hint="@string/email"
             android:textColor="#ffffff"
             android:textColorHint="#7fffffff"
@@ -79,6 +79,6 @@
        android:layout_height="wrap_content"
        android:layout_gravity="center"
        android:layout_marginTop="16dp"
-       android:onClick="facebookSignIn"/>
+       android:onClick="signInWithFacebook"/>
 
 </LinearLayout>

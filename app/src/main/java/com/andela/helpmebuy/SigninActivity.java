@@ -187,7 +187,7 @@ public class SigninActivity extends AppCompatActivity {
         }
     }
 
-    public void facebookSignIn(View view) {
+    public void signInWithFacebook(View view) {
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
     }
 }
