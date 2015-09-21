@@ -16,6 +16,8 @@
     <string name="signin">Sign in</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="success_login"></string>
+    <string name="facebook_success">Login Successful!</string>
+    <string name="facebook_cancel">Login Cancelled</string>
     <string name="facebook_app_id">972224049482698</string>
 </resources>
 

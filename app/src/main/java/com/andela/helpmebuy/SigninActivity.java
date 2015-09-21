@@ -1,5 +1,6 @@
 package com.andela.helpmebuy;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,11 +12,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import com.facebook.FacebookSdk;
+
+import java.util.Arrays;
 
 public class SigninActivity extends AppCompatActivity {
 
@@ -28,6 +37,10 @@ public class SigninActivity extends AppCompatActivity {
     private Button signInButton;
 
     private Firebase firebase;
+
+    private LoginButton loginButton;
+
+    private CallbackManager callbackManager;
 
     private LinearLayout parentLayout;
 
@@ -45,7 +58,35 @@ public class SigninActivity extends AppCompatActivity {
         emailText = (EditText) findViewById(R.id.email_text);
         passwordText = (EditText) findViewById(R.id.password_text);
         signInButton = (Button) findViewById(R.id.signin_button);
+        loginButton = (LoginButton) findViewById(R.id.facebook_button);
+        callbackManager = CallbackManager.Factory.create();
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
+
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Snackbar.make(parentLayout,R.string.facebook_success, Snackbar.LENGTH_LONG ).show();
+            }
+
+            @Override
+            public void onCancel() {
+                Snackbar.make(parentLayout,R.string.facebook_cancel, Snackbar.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                Snackbar.make(parentLayout,e.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -109,5 +150,9 @@ public class SigninActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void facebookSignIn() {
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
     }
 }
