@@ -74,14 +74,14 @@ public class SigninActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
 
         if (email.equals(""))
-            emailText.setError("Please specify email!");
+            emailText.setError(getResources().getString(R.string.email_missing));
 
         else if (password.equals(""))
-            passwordText.setError("Please type in password");
+            passwordText.setError(getResources().getString(R.string.password_missing));
 
         else {
 
-            signInButton.setText("Signing In...");
+            signInButton.setText((R.string.signing_in));
             signInButton.setEnabled(false);
 
             firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
@@ -90,7 +90,7 @@ public class SigninActivity extends AppCompatActivity {
                 public void onAuthenticated(AuthData authData) {
 
                     Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
-                    signInButton.setText("Sign In...");
+                    signInButton.setText(R.string.signin);
                     signInButton.setEnabled(true);
 
                 }
@@ -99,7 +99,7 @@ public class SigninActivity extends AppCompatActivity {
                 public void onAuthenticationError(FirebaseError firebaseError) {
 
                     Snackbar.make(parentLayout, firebaseError.getMessage(), Snackbar.LENGTH_LONG).show();
-                    signInButton.setText("Sign In...");
+                    signInButton.setText(R.string.signin);
                     signInButton.setEnabled(true);
 
                 }
