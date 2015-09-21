@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -42,6 +44,8 @@ public class SigninActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
 
+    private AccessTokenTracker accessTokenTracker;
+
     private LinearLayout parentLayout;
 
     @Override
@@ -63,24 +67,32 @@ public class SigninActivity extends AppCompatActivity {
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
 
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
-
+/**
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Snackbar.make(parentLayout,R.string.facebook_success, Snackbar.LENGTH_LONG ).show();
+                Snackbar.make(parentLayout, R.string.facebook_success, Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onCancel() {
-                Snackbar.make(parentLayout,R.string.facebook_cancel, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(parentLayout, R.string.facebook_cancel, Snackbar.LENGTH_LONG).show();
 
             }
 
             @Override
             public void onError(FacebookException e) {
-                Snackbar.make(parentLayout,e.getMessage(), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
+*/
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                onFacebookAccessTokenChange(currentAccessToken);
+            }
+        };
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
     }
 
     @Override
@@ -154,5 +166,26 @@ public class SigninActivity extends AppCompatActivity {
 
     public void facebookSignIn(View view) {
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+    }
+
+    private void onFacebookAccessTokenChange(AccessToken token) {
+        if (token != null) {
+            firebase.authWithOAuthToken("facebook", token.getToken(), new Firebase.AuthResultHandler() {
+                @Override
+                public void onAuthenticated(AuthData authData) {
+                    // The Facebook user is now authenticated with your Firebase app
+                    Snackbar.make(parentLayout, R.string.facebook_success, Snackbar.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onAuthenticationError(FirebaseError firebaseError) {
+                    // there was an error
+                    Snackbar.make(parentLayout,firebaseError.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
+            });
+        } else {
+        /* Logged out of Facebook so do a logout from the Firebase app */
+            firebase.unauth();
+        }
     }
 }
