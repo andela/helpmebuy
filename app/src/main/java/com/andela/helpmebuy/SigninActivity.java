@@ -2,6 +2,7 @@ package com.andela.helpmebuy;
 
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -57,6 +58,12 @@ public class SigninActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_signin);
+
+        ActionBar actionbar = getSupportActionBar();
+
+        if (actionbar != null) {
+            actionbar.hide();
+        }
 
         Firebase.setAndroidContext(this);
         firebase = new Firebase(firebaseUrl);
