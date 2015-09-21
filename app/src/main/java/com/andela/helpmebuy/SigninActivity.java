@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.models.User;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -49,8 +48,6 @@ public class SigninActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
 
-    private AccessToken accessToken;
-
     private LinearLayout parentLayout;
 
     @Override
@@ -78,7 +75,7 @@ public class SigninActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 Snackbar.make(parentLayout, R.string.facebook_success, Snackbar.LENGTH_LONG).show();
 
-                GraphRequest request = GraphRequest.newMeRequest(accessToken,
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
