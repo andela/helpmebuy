@@ -28,6 +28,7 @@ import com.firebase.client.FirebaseError;
 
 import com.facebook.FacebookSdk;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,25 +83,41 @@ public class SigninActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 Snackbar.make(parentLayout, R.string.facebook_success, Snackbar.LENGTH_LONG).show();
 
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                try {
-                                    User user = new User(object.getString("id"));
-                                    user.setFullName(object.getString("name"));
-                                    user.setEmail(object.getString("email"));
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback()
+                {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            User user = new User(object.getString("id"));
+                            user.setFullName(object.getString("name"));
+                            user.setEmail(object.getString("email"));
+
+                            if (!object.isNull("picture")) {
+
+                                JSONObject picture = (JSONObject) object.get("picture");
+
+                                if (picture !=null) {
+
+                                    JSONArray data = (JSONArray) picture.get("data");
+
+                                    if (data.length() != 0) {
+                                        JSONObject profilePic = (JSONObject) data.get(0);
+
+                                        user.setProfilePictureUrl(profilePic.getString("url"));
+                                    }
 
                                     firebase.child("users").child(user.getId()).setValue(user);
-
-                                } catch(JSONException e){
-                                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
                                 }
                             }
-                        });
+
+                        } catch(JSONException e){
+                            Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id, name, email");
+                parameters.putString("fields", "id, name, email, picture");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
