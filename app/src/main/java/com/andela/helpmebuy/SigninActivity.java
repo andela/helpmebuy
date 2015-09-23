@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +36,8 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 public class SigninActivity extends AppCompatActivity {
+
+    private final String TAG = "SigninAcivity";
 
     private final String firebaseUrl = "http://hmbuy.firebaseio.com";
 
@@ -87,7 +90,8 @@ public class SigninActivity extends AppCompatActivity {
                 {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        try {
+                        try{
+
                             User user = new User(object.getString("id"));
                             user.setFullName(object.getString("name"));
                             user.setEmail(object.getString("email"));
@@ -98,12 +102,11 @@ public class SigninActivity extends AppCompatActivity {
 
                                 if (picture !=null) {
 
-                                    JSONArray data = (JSONArray) picture.get("data");
+                                    JSONObject data = (JSONObject) picture.get("data");
 
                                     if (data.length() != 0) {
-                                        JSONObject profilePic = (JSONObject) data.get(0);
 
-                                        user.setProfilePictureUrl(profilePic.getString("url"));
+                                        user.setProfilePictureUrl(data.getString("url"));
                                     }
 
                                     firebase.child("users").child(user.getId()).setValue(user);
