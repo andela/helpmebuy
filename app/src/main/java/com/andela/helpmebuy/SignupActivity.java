@@ -1,5 +1,6 @@
 package com.andela.helpmebuy;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -136,8 +137,10 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void signIn(View view) {
-
+        Intent intent = new Intent(this, SigninActivity.class);
+        startActivity(intent);
     }
+
     public void saveUser(User user) {
         firebase.child("users").child(user.getId()).setValue(user);
     }

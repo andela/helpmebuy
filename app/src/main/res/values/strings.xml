@@ -2,7 +2,8 @@
     <string name="app_name">HelpMeBuy</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_signup">SignupActivity</string>
+    <string name="title_activity_signup">Sign up</string>
+    <string name="title_activity_signin">Sign in</string>
     <string name="fullname">Full name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
