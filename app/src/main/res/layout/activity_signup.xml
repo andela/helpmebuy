@@ -103,7 +103,7 @@
             android:layout_gravity="center"
             android:text="@string/already_have_an_account"
             android:textColor="#ffffff"
-            android:background="#00ffffff"
+            style="?android:attr/borderlessButtonStyle"
             android:onClick="signIn" />
     </LinearLayout>
 </RelativeLayout>
