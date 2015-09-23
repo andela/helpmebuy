@@ -17,13 +17,14 @@
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/helpmebuy2" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextAppearance.AppCompat">
+        app:hintTextAppearance="@style/TextInputStyle"
+        android:layout_marginTop="10dp">
 
         <EditText
             android:id="@+id/email_text"
@@ -34,14 +35,15 @@
             android:hint="@string/email"
             android:textColor="#ffffff"
             android:textColorHint="#7fffffff"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textCursorDrawable="@null"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextAppearance.AppCompat">
+        app:hintTextAppearance="@style/TextInputStyle">
 
         <EditText
             android:id="@+id/password_text"
@@ -51,7 +53,8 @@
             android:hint="@string/password"
             android:textColor="#ffffff"
             android:textColorHint="#7fffffff"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textCursorDrawable="@null"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -62,14 +65,16 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
         android:onClick="signIn"
-        android:text="@string/signin" />
+        android:text="@string/signin"
+        android:textStyle="bold"
+        android:textColor="#004d40"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/forgot_password"
         android:textColor="#ffffff"
-        android:background="?android:attr/selectableItemBackground"/>
+        style="?android:attr/borderlessButtonStyle"/>
 
 
 </LinearLayout>
