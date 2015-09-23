@@ -63,16 +63,9 @@ public class SigninActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_signin);
 
-<<<<<<< HEAD
-        ActionBar actionbar = getSupportActionBar();
-
-        if (actionbar != null) {
-            actionbar.hide();
-=======
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
->>>>>>> fa36297310d2bd3b04b6d46f2450909fed3f1598
         }
 
         Firebase.setAndroidContext(this);

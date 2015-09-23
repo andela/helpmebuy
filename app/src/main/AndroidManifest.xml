@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".SigninActivity"
+            android:name=".SignupActivity"
             android:label="@string/title_activity_signup" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,15 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
-=======
         <activity android:name=".SigninActivity" android:label="@string/title_activity_signin"></activity>
->>>>>>> fa36297310d2bd3b04b6d46f2450909fed3f1598
     </application>
 
 </manifest>

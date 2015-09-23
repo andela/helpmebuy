@@ -23,13 +23,8 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
-        android:layout_marginTop="30dp"
-        app:hintTextAppearance="@style/TextInputStyle">
-=======
         app:hintTextAppearance="@style/TextInputStyle"
         android:layout_marginTop="10dp">
->>>>>>> fa36297310d2bd3b04b6d46f2450909fed3f1598
 
         <EditText
             android:id="@+id/email_text"
@@ -39,13 +34,9 @@
             android:hint="@string/email"
             android:textColor="#ffffff"
             android:textColorHint="#7fffffff"
-<<<<<<< HEAD
-            android:textCursorDrawable="@null"
-            android:inputType="textEmailAddress" />
-=======
             android:inputType="textEmailAddress"
             android:textCursorDrawable="@null"/>
->>>>>>> fa36297310d2bd3b04b6d46f2450909fed3f1598
+
 
     </android.support.design.widget.TextInputLayout>
 
@@ -62,13 +53,9 @@
             android:hint="@string/password"
             android:textColor="#ffffff"
             android:textColorHint="#7fffffff"
-<<<<<<< HEAD
-            android:textCursorDrawable="@null"
-            android:inputType="textPassword" />
-=======
             android:inputType="textPassword"
-            android:textCursorDrawable="@null"/>
->>>>>>> fa36297310d2bd3b04b6d46f2450909fed3f1598
+            android:textCursorDrawable="@null" />
+
 
     </android.support.design.widget.TextInputLayout>
 
