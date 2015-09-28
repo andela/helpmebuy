@@ -17,7 +17,7 @@
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/helpmebuy2" />
 
     <android.support.design.widget.TextInputLayout
@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:onClick="signIn"
         android:text="@string/signin"
         android:textStyle="bold"
@@ -81,8 +81,13 @@
        android:id="@+id/facebook_button"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_gravity="center"
-       android:layout_marginTop="16dp"
+       android:layout_marginTop="5dp"
        android:onClick="signInWithFacebook"/>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleplus_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp" />
 
 </LinearLayout>
