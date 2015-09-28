@@ -13,6 +13,11 @@ public class Travel {
     private String id;
 
     /**
+     * The user who is travelling.
+     */
+    private User user;
+
+    /**
      * The date of departure.
      */
     private DateTime departureDate;
@@ -35,7 +40,7 @@ public class Travel {
     /**
      * Creates a new travel.
      */
-    public Travel(){
+    public Travel() {
     }
 
     /**
@@ -52,6 +57,14 @@ public class Travel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public DateTime getDepartureDate() {
