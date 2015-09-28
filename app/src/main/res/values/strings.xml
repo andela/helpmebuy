@@ -20,5 +20,9 @@
     <string name="facebook_success">Login Successful!</string>
     <string name="facebook_cancel">Login Cancelled</string>
     <string name="facebook_app_id">972224049482698</string>
+    <string name="coming_from">Coming from </string>
+    <string name="on">On </string>
+    <string name="connect">Connect</string>
+    <string name="title_activity_home">HomeActivity</string>
 </resources>
 
