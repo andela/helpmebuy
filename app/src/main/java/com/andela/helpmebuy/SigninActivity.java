@@ -2,6 +2,7 @@ package com.andela.helpmebuy;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -244,16 +245,14 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onClick(View v) {
-        if (!mGoogleApiClient.isConnecting()) {
             // We only process button clicks when GoogleApiClient is not transitioning
             // between connected and not connected.
 
-            if (v.getId() == R.id.googleplus_button) {
+            if (v.getId() == R.id.googleplus_button && !mGoogleApiClient.isConnecting()) {
                 Snackbar.make(parentLayout, R.string.signing_in, Snackbar.LENGTH_LONG).show();
                 mSignInProgress = STATE_SIGN_IN;
                 mGoogleApiClient.connect();
             }
-        }
     }
 
     @Override
@@ -282,8 +281,51 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onConnectionFailed(ConnectionResult result){
+        if (mSignInProgress != STATE_IN_PROGRESS) {
+            // We do not have an intent in progress so we should store the latest
+            // error resolution intent for use when the sign in button is clicked.
+            mSignInIntent = result.getResolution();
+            //mSignInError = result.getErrorCode();
 
+            if (mSignInProgress == STATE_SIGN_IN) {
+                // STATE_SIGN_IN indicates the user already clicked the sign in button
+                // so we should continue processing errors until the user is signed in
+                // or they click cancel.
+                resolveSignInError();
+            }
+        }
     }
+
+    /* Starts an appropriate intent or dialog for user interaction to resolve
+ * the current error preventing the user from being signed in.  This could
+ * be a dialog allowing the user to select an account, an activity allowing
+ * the user to consent to the permissions being requested by your app, a
+ * setting to enable device networking, etc.
+ */
+    private void resolveSignInError() {
+        if (mSignInIntent != null) {
+            // We have an intent which will allow our user to sign in or
+            // resolve an error.  For example if the user needs to
+            // select an account to sign in with, or if they need to consent
+            // to the permissions your app is requesting.
+
+            try {
+                // Send the pending intent that we stored on the most recent
+                // OnConnectionFailed callback.  This will allow the user to
+                // resolve the error currently preventing our connection to
+                // Google Play services.
+                mSignInProgress = STATE_IN_PROGRESS;
+                startIntentSenderForResult(mSignInIntent.getIntentSender(),
+                        RC_SIGN_IN, null, 0, 0, 0);
+            } catch (IntentSender.SendIntentException e) {
+                // The intent was canceled before it was sent.  Attempt to connect to
+                // get an updated ConnectionResult.
+                mSignInProgress = STATE_SIGN_IN;
+                mGoogleApiClient.connect();
+            }
+        }
+    }
+
     @Override
     public void onConnected(Bundle bundle){
         Log.i(TAG, "onConnected");
