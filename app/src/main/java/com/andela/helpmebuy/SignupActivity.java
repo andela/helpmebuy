@@ -13,11 +13,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.andela.helpmebuy.models.Address;
+import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.util.Constants;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import org.joda.time.DateTime;
+
+import java.sql.Timestamp;
 import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {

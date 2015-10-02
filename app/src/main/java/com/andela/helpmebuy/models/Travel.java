@@ -1,6 +1,13 @@
 package com.andela.helpmebuy.models;
 
+import com.andela.helpmebuy.serializers.DateTimeDeserializer;
+import com.andela.helpmebuy.serializers.DateTimeSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import org.joda.time.DateTime;
+
+import java.sql.Timestamp;
 
 /**
  * Represents a travel information.
@@ -20,6 +27,8 @@ public class Travel {
     /**
      * The date of departure.
      */
+    @JsonSerialize(using=DateTimeSerializer.class)
+    @JsonDeserialize(using=DateTimeDeserializer.class)
     private DateTime departureDate;
 
     /**
