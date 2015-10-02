@@ -290,7 +290,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
         Log.d(TAG,"onConnectionFailed:"+result);
 
         //if(!mIsResolving && mShouldResolve){
-        if(mSignInProgress != STATE_IN_PROGRESS && mSignInProgress != STATE_SIGN_IN){
+        if(mSignInProgress == STATE_SIGN_IN){
             if(result.hasResolution()){
                 try{
                     result.startResolutionForResult(this,RC_SIGN_IN);
