@@ -89,6 +89,8 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     private int mSignInError;
 
+    private Button googlePlusLogout;
+
     /* Is there a ConnectionResult resolution in progress? */
     private boolean mIsResolving = false;
 
@@ -121,6 +123,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
         loginButton = (LoginButton) findViewById(R.id.facebook_button);
         googleSignInButton = (SignInButton) findViewById(R.id.googleplus_button);
         googleSignInButton.setOnClickListener(this);
+        googlePlusLogout = (Button) findViewById(R.id.googlePlusSignOut);
         callbackManager = CallbackManager.Factory.create();
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
         mCirclesList = new ArrayList<String>();
@@ -250,18 +253,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     @Override
-    public void onClick(View v) {
-            // We only process button clicks when GoogleApiClient is not transitioning
-            // between connected and not connected.
-
-            if (v.getId() == R.id.googleplus_button && !mGoogleApiClient.isConnecting()) {
-                Snackbar.make(parentLayout, R.string.signing_in, Snackbar.LENGTH_LONG).show();
-                mSignInProgress = STATE_SIGN_IN;
-                mGoogleApiClient.connect();
-            }
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
         switch (requestCode) {
@@ -281,6 +272,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                     // onStart is not called so we need to re-attempt connection here.
                     mGoogleApiClient.connect();
                 }
+
                 break;
         }
     }
@@ -307,14 +299,8 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             else{
                 Snackbar.make(parentLayout, R.string.googleplus_error, Snackbar.LENGTH_LONG).show();
             }
-        }
-        //else {
-            //signOutGooglePlus();
-        //}
-    }
 
-    public void signOutGooglePlus(){
-        Snackbar.make(parentLayout, R.string.googleplus_signout, Snackbar.LENGTH_LONG).show();
+        }
 
     }
 
@@ -436,5 +422,37 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     public void signInWithFacebook(View view) {
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+    }
+
+    @Override
+    public void onClick(View v) {
+        // We only process button clicks when GoogleApiClient is not transitioning
+        // between connected and not connected.
+
+        if (v.getId() == R.id.googleplus_button && !mGoogleApiClient.isConnecting()) {
+            Snackbar.make(parentLayout, R.string.signing_in, Snackbar.LENGTH_LONG).show();
+            mSignInProgress = STATE_SIGN_IN;
+
+            mGoogleApiClient.connect();
+
+            googlePlusLogout.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    public void onClickSignOut(View view) {
+        if(view.getId() == R.id.googlePlusSignOut) {
+            googleSignInButton.setVisibility((View.INVISIBLE));
+            signOutGooglePlus();
+        }
+    }
+
+    public void signOutGooglePlus(){
+        if(mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            Snackbar.make(parentLayout, "Signout successful", Snackbar.LENGTH_LONG).show();
+        }
+        //Snackbar.make(parentLayout, R.string.googleplus_signout, Snackbar.LENGTH_LONG).show();
     }
 }
