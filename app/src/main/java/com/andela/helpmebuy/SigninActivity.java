@@ -308,9 +308,9 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                 Snackbar.make(parentLayout, R.string.googleplus_error, Snackbar.LENGTH_LONG).show();
             }
         }
-        else {
-            signOutGooglePlus();
-        }
+        //else {
+            //signOutGooglePlus();
+        //}
     }
 
     public void signOutGooglePlus(){
