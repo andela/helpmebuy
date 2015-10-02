@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.models.User;
+import com.andela.helpmebuy.util.Constants;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -38,8 +39,6 @@ import java.util.Arrays;
 public class SigninActivity extends AppCompatActivity {
 
     private final String TAG = "SigninAcivity";
-
-    private final String firebaseUrl = "http://hmbuy.firebaseio.com";
 
     private EditText emailText;
 
@@ -69,7 +68,7 @@ public class SigninActivity extends AppCompatActivity {
         }
 
         Firebase.setAndroidContext(this);
-        firebase = new Firebase(firebaseUrl);
+        firebase = new Firebase(Constants.FIREBASE_URL);
 
         emailText = (EditText) findViewById(R.id.email_text);
         passwordText = (EditText) findViewById(R.id.password_text);
@@ -166,7 +165,7 @@ public class SigninActivity extends AppCompatActivity {
     }
 
     public void signIn(View view){
-        firebase = new Firebase(firebaseUrl);
+//        firebase = new Firebase(Constants.FIREBASE_URL);
 
         final String email = emailText.getText().toString().trim();
 
