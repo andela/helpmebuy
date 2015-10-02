@@ -89,6 +89,12 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     private int mSignInError;
 
+    /* Is there a ConnectionResult resolution in progress? */
+    private boolean mIsResolving = false;
+
+    /* Should we automatically resolve ConnectionResults when possible? */
+    private boolean mShouldResolve = false;
+
     private ArrayList<String> mCirclesList;
 
     private ArrayAdapter<String> mCirclesAdapter;
@@ -281,19 +287,35 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onConnectionFailed(ConnectionResult result){
-        if (mSignInProgress != STATE_IN_PROGRESS) {
-            // We do not have an intent in progress so we should store the latest
-            // error resolution intent for use when the sign in button is clicked.
-            mSignInIntent = result.getResolution();
-            //mSignInError = result.getErrorCode();
+        Log.d(TAG,"onConnectionFailed:"+result);
 
-            if (mSignInProgress == STATE_SIGN_IN) {
-                // STATE_SIGN_IN indicates the user already clicked the sign in button
-                // so we should continue processing errors until the user is signed in
-                // or they click cancel.
-                resolveSignInError();
+        //if(!mIsResolving && mShouldResolve){
+        if(mSignInProgress != STATE_IN_PROGRESS && mSignInProgress != STATE_SIGN_IN){
+            if(result.hasResolution()){
+                try{
+                    result.startResolutionForResult(this,RC_SIGN_IN);
+                    //mIsResolving = true;
+                    mSignInProgress = STATE_IN_PROGRESS;
+                }
+                catch (IntentSender.SendIntentException e){
+                    Log.e(TAG,"Connection can not be established",e);
+                   // mIsResolving = false;
+                    mSignInProgress = STATE_DEFAULT;
+                    mGoogleApiClient.connect();
+                }
+            }
+            else{
+                Snackbar.make(parentLayout, R.string.googleplus_error, Snackbar.LENGTH_LONG).show();
             }
         }
+        else {
+            signOutGooglePlus();
+        }
+    }
+
+    public void signOutGooglePlus(){
+        Snackbar.make(parentLayout, R.string.googleplus_signout, Snackbar.LENGTH_LONG).show();
+
     }
 
     /* Starts an appropriate intent or dialog for user interaction to resolve
