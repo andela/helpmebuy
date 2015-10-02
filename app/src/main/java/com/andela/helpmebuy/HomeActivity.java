@@ -46,7 +46,14 @@ public class HomeActivity extends AppCompatActivity {
         obiomaTravel.setDepartureAddress(new Address("London", "UK"));
         obiomaTravel.setDepartureDate(DateTime.now());
 
-        TravellersAdapter adapter = new TravellersAdapter(this, Arrays.asList(graceTravel, obiomaTravel));
+        User faical = new User("3", "Faiçal Tchirou");
+
+        Travel faicalTravel = new Travel("3");
+        faicalTravel.setUser(faical);
+        faicalTravel.setDepartureAddress(new Address("Tokyo", "JAPAN"));
+        faicalTravel.setDepartureDate(DateTime.now());
+
+        TravellersAdapter adapter = new TravellersAdapter(this, Arrays.asList(graceTravel, obiomaTravel, faicalTravel));
 
         travellersView.setAdapter(adapter);
     }

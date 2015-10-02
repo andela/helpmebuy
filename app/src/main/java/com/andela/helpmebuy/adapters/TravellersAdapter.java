@@ -53,9 +53,20 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         Travel travel = travels.get(position);
 
         String profilePictureUrl = travel.getUser().getProfilePictureUrl();
-        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+
+        if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
+            Picasso.with(context)
+                    .load("random")
+                    .placeholder(R.drawable.ic_account_circle_black_48dp)
+                    .error(R.drawable.ic_account_circle_black_48dp)
+                    .into(profilePicture);
+
+            profilePicture.setAlpha(0.54f);
+        } else {
             Picasso.with(context)
                     .load(profilePictureUrl)
+                    .placeholder(R.drawable.ic_account_circle_black_48dp)
+                    .error(R.drawable.ic_account_circle_black_48dp)
                     .transform(new CircleTransformation())
                     .into(profilePicture);
         }
