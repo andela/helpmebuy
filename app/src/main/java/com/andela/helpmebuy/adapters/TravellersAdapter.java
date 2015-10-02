@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.models.Travel;
+import com.andela.helpmebuy.transforms.CircleTransformation;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,14 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         TextView departureDate = (TextView) itemView.findViewById(R.id.traveller_departure_date);
 
         Travel travel = travels.get(position);
+
+        String profilePictureUrl = travel.getUser().getProfilePictureUrl();
+        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+            Picasso.with(context)
+                    .load(profilePictureUrl)
+                    .transform(new CircleTransformation())
+                    .into(profilePicture);
+        }
 
         name.setText(travel.getUser().getFullName());
         departureLocation.setText(travel.getDepartureAddress().getCity() + ", " + travel.getDepartureAddress().getCountry());

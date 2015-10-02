@@ -30,13 +30,19 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         travellersView.setLayoutManager(layoutManager);
 
+        User grace = new User("1", "Grace Bukola");
+        grace.setProfilePictureUrl("https://yt3.ggpht.com/-KdgJnz1HIdQ/AAAAAAAAAAI/AAAAAAAAAAA/4vVN7slJqj4/s900-c-k-no/photo.jpg");
+
         Travel graceTravel = new Travel("1");
-        graceTravel.setUser(new User("1", "Grace Bukola"));
+        graceTravel.setUser(grace);
         graceTravel.setDepartureAddress(new Address("Arizona", "USA"));
         graceTravel.setDepartureDate(DateTime.now());
 
+        User obioma = new User("2", "Obioma Ofoamalu");
+        obioma.setProfilePictureUrl("http://static1.squarespace.com/static/550c8111e4b04f84a0dc5ad1/t/558eca2ee4b0d8437a4cf9db/1435421231469/apple-music.png");
+
         Travel obiomaTravel = new Travel("2");
-        obiomaTravel.setUser(new User("2", "Obioma Ofoamalu"));
+        obiomaTravel.setUser(obioma);
         obiomaTravel.setDepartureAddress(new Address("London", "UK"));
         obiomaTravel.setDepartureDate(DateTime.now());
 
