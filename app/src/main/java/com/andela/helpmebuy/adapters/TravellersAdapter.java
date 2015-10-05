@@ -12,7 +12,13 @@ import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.models.Travel;
+import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
+import com.andela.helpmebuy.util.Constants;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,38 +51,46 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         FrameLayout itemView = viewHolder.itemView;
 
-        ImageView profilePicture = (ImageView) itemView.findViewById(R.id.traveller_profile_picture);
-        TextView name = (TextView) itemView.findViewById(R.id.traveller_name);
-        TextView departureLocation = (TextView) itemView.findViewById(R.id.traveller_departure_location);
-        TextView departureDate = (TextView) itemView.findViewById(R.id.traveller_departure_date);
+        final ImageView profilePicture = (ImageView) itemView.findViewById(R.id.traveller_profile_picture);
+        final TextView name = (TextView) itemView.findViewById(R.id.traveller_name);
+        final TextView departureLocation = (TextView) itemView.findViewById(R.id.traveller_departure_location);
+        final TextView departureDate = (TextView) itemView.findViewById(R.id.traveller_departure_date);
 
-        Travel travel = travels.get(position);
+        final Travel travel = travels.get(position);
 
-        String profilePictureUrl = travel.getUser().getProfilePictureUrl();
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL + "/" + Constants.USERS + "/" + travel.getUserId());
 
-        if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
-            Picasso.with(context)
-                    .load("random")
-                    .placeholder(R.drawable.ic_account_circle_black_48dp)
-                    .error(R.drawable.ic_account_circle_black_48dp)
-                    .into(profilePicture);
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
 
-            profilePicture.setAlpha(0.54f);
-        } else {
-            Picasso.with(context)
-                    .load(profilePictureUrl)
-                    .placeholder(R.drawable.ic_account_circle_black_48dp)
-                    .error(R.drawable.ic_account_circle_black_48dp)
-                    .transform(new CircleTransformation())
-                    .into(profilePicture);
-        }
+                String profilePictureUrl = user.getProfilePictureUrl();
 
-        name.setText(travel.getUser().getFullName());
-        departureLocation.setText(travel.getDepartureAddress().getCity() + ", " + travel.getDepartureAddress().getCountry());
+                Picasso.with(context)
+                        .load(profilePictureUrl)
+                        .placeholder(R.drawable.ic_account_circle_black_48dp)
+                        .error(R.drawable.ic_account_circle_black_48dp)
+                        .transform(new CircleTransformation())
+                        .into(profilePicture);
 
-        if (travel.getDepartureDate() != null) {
-            departureDate.setText(travel.getDepartureDate().toString());
-        }
+                if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
+                    profilePicture.setAlpha(0.54f);
+                }
+
+                name.setText(user.getFullName());
+                departureLocation.setText(travel.getDepartureAddress().getCity() + ", " + travel.getDepartureAddress().getCountry());
+
+                if (travel.getDepartureDate() != null) {
+                    departureDate.setText(travel.getDepartureDate().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     @Override

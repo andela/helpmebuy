@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import org.joda.time.DateTime;
 
-import java.sql.Timestamp;
 
 /**
  * Represents a travel information.
@@ -20,9 +19,9 @@ public class Travel {
     private String id;
 
     /**
-     * The user who is travelling.
+     * The ID of the user who is travelling.
      */
-    private User user;
+    private String userId;
 
     /**
      * The date of departure.
@@ -68,12 +67,12 @@ public class Travel {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public DateTime getDepartureDate() {

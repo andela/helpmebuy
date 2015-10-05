@@ -146,7 +146,14 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void saveUser(User user) {
-        firebase.child("users").child(user.getId()).setValue(user);
+        firebase.child(Constants.USERS).child(user.getId()).setValue(user);
+
+//        Travel travel = new Travel("1");
+//        travel.setUserId(user.getId());
+//        travel.setDepartureDate(DateTime.now());
+//        travel.setDepartureAddress(new Address("Tokyo", "JAPAN"));
+//
+//        firebase.child(Constants.TRAVELS).child("travel-" + user.getId()).setValue(travel);
     }
 
 }
