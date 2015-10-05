@@ -126,6 +126,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
         googlePlusLogout = (Button) findViewById(R.id.googlePlusSignOut);
         callbackManager = CallbackManager.Factory.create();
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
+
         mCirclesList = new ArrayList<String>();
         mCirclesAdapter = new ArrayAdapter<String>(
                 this, R.layout.circle_member, mCirclesList);
@@ -279,6 +280,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onConnectionFailed(ConnectionResult result){
+
         Log.d(TAG,"onConnectionFailed:"+result);
 
         //if(!mIsResolving && mShouldResolve){
