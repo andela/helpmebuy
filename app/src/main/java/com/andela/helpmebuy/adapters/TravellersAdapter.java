@@ -21,6 +21,9 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,8 +84,8 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
                 name.setText(user.getFullName());
                 departureLocation.setText(travel.getDepartureAddress().getCity() + ", " + travel.getDepartureAddress().getCountry());
 
-                if (travel.getDepartureDate() != null) {
-                    departureDate.setText(travel.getDepartureDate().toString());
+                if (travel.getArrivalDate() != null) {
+                    departureDate.setText(travel.getArrivalDate().withZone(DateTimeZone.getDefault()).toString(DateTimeFormat.fullDateTime()));
                 }
             }
 

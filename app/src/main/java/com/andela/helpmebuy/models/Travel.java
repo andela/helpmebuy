@@ -38,6 +38,8 @@ public class Travel {
     /**
      * The date of arrival.
      */
+    @JsonSerialize(using=DateTimeSerializer.class)
+    @JsonDeserialize(using=DateTimeDeserializer.class)
     private DateTime arrivalDate;
 
     /**
