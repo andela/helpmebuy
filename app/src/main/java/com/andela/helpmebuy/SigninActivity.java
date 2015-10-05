@@ -347,9 +347,22 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
         Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
                 .setResultCallback(this);
-
+ 
         // Indicate that the sign in process is complete.
         mSignInProgress = STATE_DEFAULT;
+
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+
+            User user = new User();
+
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+
+            user.setId(currentPerson.getId());
+            user.setFullName(currentPerson.getDisplayName());
+            user.setProfilePictureUrl(currentPerson.getImage().getUrl());
+            user.setEmail(Plus.AccountApi.getAccountName(mGoogleApiClient));
+
+        }
 
     }
 
@@ -455,6 +468,5 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             mGoogleApiClient.disconnect();
             Snackbar.make(parentLayout, "Signout successful", Snackbar.LENGTH_LONG).show();
         }
-        //Snackbar.make(parentLayout, R.string.googleplus_signout, Snackbar.LENGTH_LONG).show();
     }
 }
