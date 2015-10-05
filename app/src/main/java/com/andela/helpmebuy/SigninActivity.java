@@ -235,20 +235,30 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onResult(People.LoadPeopleResult peopleData) {
+
         if (peopleData.getStatus().getStatusCode() == CommonStatusCodes.SUCCESS) {
             mCirclesList.clear();
+
             PersonBuffer personBuffer = peopleData.getPersonBuffer();
+
             try {
+
                 int count = personBuffer.getCount();
+
                 for (int i = 0; i < count; i++) {
+
                     mCirclesList.add(personBuffer.get(i).getDisplayName());
                 }
+
             } finally {
+
                 personBuffer.close();
             }
 
             mCirclesAdapter.notifyDataSetChanged();
+
         } else {
+
             Log.e(TAG, "Error requesting visible circles: " + peopleData.getStatus());
         }
     }
@@ -257,15 +267,21 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
         switch (requestCode) {
+
             case RC_SIGN_IN:
+
                 if (resultCode == RESULT_OK) {
+
                     // If the error resolution was successful we should continue
                     // processing errors.
                     mSignInProgress = STATE_SIGN_IN;
+
                 } else {
+
                     // If the error resolution was not successful or the user canceled,
                     // we should stop processing errors.
                     mSignInProgress = STATE_DEFAULT;
+
                 }
 
                 if (!mGoogleApiClient.isConnecting()) {
@@ -285,20 +301,25 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
         //if(!mIsResolving && mShouldResolve){
         if(mSignInProgress == STATE_SIGN_IN){
+
             if(result.hasResolution()){
+
                 try{
+
                     result.startResolutionForResult(this,RC_SIGN_IN);
+
                     //mIsResolving = true;
                     mSignInProgress = STATE_IN_PROGRESS;
+                } catch (IntentSender.SendIntentException e){
+
+                      Log.e(TAG,"Connection can not be established",e);
+
+                      // mIsResolving = false;
+                      mSignInProgress = STATE_DEFAULT;
+
+                      mGoogleApiClient.connect();
                 }
-                catch (IntentSender.SendIntentException e){
-                    Log.e(TAG,"Connection can not be established",e);
-                   // mIsResolving = false;
-                    mSignInProgress = STATE_DEFAULT;
-                    mGoogleApiClient.connect();
-                }
-            }
-            else{
+            } else{
                 Snackbar.make(parentLayout, R.string.googleplus_error, Snackbar.LENGTH_LONG).show();
             }
 
@@ -325,12 +346,15 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                 // resolve the error currently preventing our connection to
                 // Google Play services.
                 mSignInProgress = STATE_IN_PROGRESS;
+
                 startIntentSenderForResult(mSignInIntent.getIntentSender(),
                         RC_SIGN_IN, null, 0, 0, 0);
+
             } catch (IntentSender.SendIntentException e) {
                 // The intent was canceled before it was sent.  Attempt to connect to
                 // get an updated ConnectionResult.
                 mSignInProgress = STATE_SIGN_IN;
+
                 mGoogleApiClient.connect();
             }
         }
@@ -342,12 +366,13 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
         // Update the user interface to reflect that the user is signed in.
         googleSignInButton.setEnabled(false);
+
         // Retrieve some profile information to personalize our app for the user.
         Person currentUser = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
 
         Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
                 .setResultCallback(this);
- 
+
         // Indicate that the sign in process is complete.
         mSignInProgress = STATE_DEFAULT;
 
@@ -361,6 +386,8 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             user.setFullName(currentPerson.getDisplayName());
             user.setProfilePictureUrl(currentPerson.getImage().getUrl());
             user.setEmail(Plus.AccountApi.getAccountName(mGoogleApiClient));
+
+            saveUser(user);
 
         }
 
@@ -456,17 +483,29 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void onClickSignOut(View view) {
+
         if(view.getId() == R.id.googlePlusSignOut) {
+
             googleSignInButton.setVisibility((View.INVISIBLE));
+
             signOutGooglePlus();
         }
     }
 
     public void signOutGooglePlus(){
+
         if(mGoogleApiClient.isConnected()) {
+
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+
             mGoogleApiClient.disconnect();
+
             Snackbar.make(parentLayout, "Signout successful", Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    public void saveUser(User user) {
+
+        firebase.child("users").child(user.getId()).setValue(user);
     }
 }
