@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.andela.helpmebuy.models.User;
 import com.facebook.CallbackManager;
@@ -41,7 +40,6 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.android.gms.plus.model.people.PersonBuffer;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -89,7 +87,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     private int mSignInError;
 
-    private Button googlePlusLogout;
+    private Button googlePlusSignOut;
 
     /* Is there a ConnectionResult resolution in progress? */
     private boolean mIsResolving = false;
@@ -123,12 +121,12 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
         loginButton = (LoginButton) findViewById(R.id.facebook_button);
         googleSignInButton = (SignInButton) findViewById(R.id.googleplus_button);
         googleSignInButton.setOnClickListener(this);
-        googlePlusLogout = (Button) findViewById(R.id.googlePlusSignOut);
+        googlePlusSignOut = (Button) findViewById(R.id.googlePlusSignOut);
         callbackManager = CallbackManager.Factory.create();
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
 
-        mCirclesList = new ArrayList<String>();
-        mCirclesAdapter = new ArrayAdapter<String>(
+        mCirclesList = new ArrayList<>();
+        mCirclesAdapter = new ArrayAdapter<>(
                 this, R.layout.circle_member, mCirclesList);
 
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
@@ -367,9 +365,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
         // Update the user interface to reflect that the user is signed in.
         googleSignInButton.setEnabled(false);
 
-        // Retrieve some profile information to personalize our app for the user.
-        Person currentUser = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-
         Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
                 .setResultCallback(this);
 
@@ -477,7 +472,9 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
             mGoogleApiClient.connect();
 
-            googlePlusLogout.setVisibility(View.VISIBLE);
+            googlePlusSignOut.setVisibility(View.VISIBLE);
+
+            googleSignInButton.setVisibility((View.GONE));
         }
 
     }
@@ -486,9 +483,13 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
         if(view.getId() == R.id.googlePlusSignOut) {
 
-            googleSignInButton.setVisibility((View.INVISIBLE));
-
             signOutGooglePlus();
+
+            googlePlusSignOut.setVisibility(View.INVISIBLE);
+
+            googleSignInButton.setVisibility((View.VISIBLE));
+
+            googleSignInButton.setEnabled(true);
         }
     }
 

@@ -82,7 +82,6 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_marginTop="5dp"
-
        android:onClick="signInWithFacebook"/>
 
     <com.google.android.gms.common.SignInButton
@@ -95,11 +94,13 @@
 
     <Button
         android:id="@+id/googlePlusSignOut"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="onClickSignOut"
         android:text="Sign Out"
+        android:textColor="#ffffff"
+        android:background="#d34836"
         android:visibility="invisible"
-        android:onClick="onClickSignOut"/>
+        style="?android:attr/borderlessButtonStyle"/>
 
 </LinearLayout>
