@@ -4,6 +4,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_signup">Sign up</string>
     <string name="title_activity_signin">Sign in</string>
+    <string name="drawer_open">Drawer opened</string>
+    <string name="drawer_close">Drawer closed</string>
     <string name="fullname">Full name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -12,11 +14,11 @@
     <string name="fullname_missing">Please enter your full name.</string>
     <string name="email_missing">Please enter your email</string>
     <string name="password_missing">Please enter your password</string>
-    <string name="signing_up">Signing up ...</string>
-    <string name="signing_in">Signing in ...</string>
+    <string name="signing_up">Signing up …</string>
+    <string name="signing_in">Signing in …</string>
     <string name="signin">Sign in</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="success_login"></string>
+    <string name="success_login">Login Successful</string>
     <string name="facebook_success">Login Successful!</string>
     <string name="facebook_cancel">Login Cancelled</string>
     <string name="facebook_app_id">972224049482698</string>
