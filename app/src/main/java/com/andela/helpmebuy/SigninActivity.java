@@ -31,10 +31,12 @@ import com.firebase.client.FirebaseError;
 
 import com.facebook.FacebookSdk;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -46,8 +48,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SigninActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener,ResultCallback<People.LoadPeopleResult> {
+public class SigninActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener {
 
     private final String TAG = "SigninAcivity";
 
@@ -83,21 +85,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     private int mSignInProgress;
 
-    private PendingIntent mSignInIntent;
-
-    private int mSignInError;
-
     private Button googlePlusSignOut;
-
-    /* Is there a ConnectionResult resolution in progress? */
-    private boolean mIsResolving = false;
-
-    /* Should we automatically resolve ConnectionResults when possible? */
-    private boolean mShouldResolve = false;
-
-    private ArrayList<String> mCirclesList;
-
-    private ArrayAdapter<String> mCirclesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,19 +107,19 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
         passwordText = (EditText) findViewById(R.id.password_text);
         signInButton = (Button) findViewById(R.id.signin_button);
         loginButton = (LoginButton) findViewById(R.id.facebook_button);
+
         googleSignInButton = (SignInButton) findViewById(R.id.googleplus_button);
         googleSignInButton.setOnClickListener(this);
         googlePlusSignOut = (Button) findViewById(R.id.googlePlusSignOut);
-        callbackManager = CallbackManager.Factory.create();
-        parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
 
-        mCirclesList = new ArrayList<>();
-        mCirclesAdapter = new ArrayAdapter<>(
-                this, R.layout.circle_member, mCirclesList);
+        callbackManager = CallbackManager.Factory.create();
+
+        parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
 
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Snackbar.make(parentLayout, R.string.facebook_success, Snackbar.LENGTH_LONG).show();
@@ -187,27 +175,13 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             }
         });
 
-        //googleplus
-        if (savedInstanceState != null) {
-            mSignInProgress = savedInstanceState
-                    .getInt(SAVED_PROGRESS, STATE_DEFAULT);
-        }
-
-        mGoogleApiClient = buildGoogleApiClient();
-    }
-
-
-    private GoogleApiClient buildGoogleApiClient() {
-        // When we build the GoogleApiClient we specify where connected and
-        // connection failed callbacks should be returned, which Google APIs our
-        // app uses and which OAuth 2.0 scopes our app requests.
-        GoogleApiClient.Builder builder = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
-                .addApi(Plus.API, Plus.PlusOptions.builder().build())
-                .addScope(Plus.SCOPE_PLUS_LOGIN);
-
-        return builder.build();
+                .addApi(Plus.API)
+                .addScope(new Scope(Scopes.PROFILE))
+                .addScope(new Scope(Scopes.EMAIL))
+                .build();
     }
 
     @Override
@@ -229,36 +203,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SAVED_PROGRESS, mSignInProgress);
-    }
-
-    @Override
-    public void onResult(People.LoadPeopleResult peopleData) {
-
-        if (peopleData.getStatus().getStatusCode() == CommonStatusCodes.SUCCESS) {
-            mCirclesList.clear();
-
-            PersonBuffer personBuffer = peopleData.getPersonBuffer();
-
-            try {
-
-                int count = personBuffer.getCount();
-
-                for (int i = 0; i < count; i++) {
-
-                    mCirclesList.add(personBuffer.get(i).getDisplayName());
-                }
-
-            } finally {
-
-                personBuffer.close();
-            }
-
-            mCirclesAdapter.notifyDataSetChanged();
-
-        } else {
-
-            Log.e(TAG, "Error requesting visible circles: " + peopleData.getStatus());
-        }
     }
 
     @Override
@@ -325,48 +269,16 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     }
 
-    /* Starts an appropriate intent or dialog for user interaction to resolve
- * the current error preventing the user from being signed in.  This could
- * be a dialog allowing the user to select an account, an activity allowing
- * the user to consent to the permissions being requested by your app, a
- * setting to enable device networking, etc.
- */
-    private void resolveSignInError() {
-        if (mSignInIntent != null) {
-            // We have an intent which will allow our user to sign in or
-            // resolve an error.  For example if the user needs to
-            // select an account to sign in with, or if they need to consent
-            // to the permissions your app is requesting.
-
-            try {
-                // Send the pending intent that we stored on the most recent
-                // OnConnectionFailed callback.  This will allow the user to
-                // resolve the error currently preventing our connection to
-                // Google Play services.
-                mSignInProgress = STATE_IN_PROGRESS;
-
-                startIntentSenderForResult(mSignInIntent.getIntentSender(),
-                        RC_SIGN_IN, null, 0, 0, 0);
-
-            } catch (IntentSender.SendIntentException e) {
-                // The intent was canceled before it was sent.  Attempt to connect to
-                // get an updated ConnectionResult.
-                mSignInProgress = STATE_SIGN_IN;
-
-                mGoogleApiClient.connect();
-            }
-        }
-    }
-
     @Override
     public void onConnected(Bundle bundle){
         Log.i(TAG, "onConnected");
 
+        googlePlusSignOut.setVisibility(View.VISIBLE);
+
+        googleSignInButton.setVisibility((View.GONE));
+
         // Update the user interface to reflect that the user is signed in.
         googleSignInButton.setEnabled(false);
-
-        Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
-                .setResultCallback(this);
 
         // Indicate that the sign in process is complete.
         mSignInProgress = STATE_DEFAULT;
@@ -471,10 +383,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             mSignInProgress = STATE_SIGN_IN;
 
             mGoogleApiClient.connect();
-
-            googlePlusSignOut.setVisibility(View.VISIBLE);
-
-            googleSignInButton.setVisibility((View.GONE));
         }
 
     }
