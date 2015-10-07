@@ -95,12 +95,14 @@
     <Button
         android:id="@+id/googlePlusSignOut"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:onClick="onClickSignOut"
         android:text="Sign Out"
+        android:textAppearance="?android:textAppearanceSmall"
         android:textColor="#ffffff"
         android:background="#d34836"
         android:visibility="invisible"
+        android:layout_marginTop="15dp"
         style="?android:attr/borderlessButtonStyle"/>
 
 </LinearLayout>
