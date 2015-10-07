@@ -379,4 +379,8 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
         firebase.child("users").child(user.getId()).setValue(user);
     }
+    public void resetPassword(View view) {
+        Intent intent = new Intent(this, ForgotPassword.class);
+        startActivity(intent);
+    }
 }
