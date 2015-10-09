@@ -3,7 +3,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:longClickable="true"
+    android:background="@drawable/traveller_item_state_list">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -81,17 +83,6 @@
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/traveller_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:src="@drawable/ic_more_vert_black_36dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:alpha="0.54"
-            android:layout_alignTop="@+id/traveller_details"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
 </FrameLayout>

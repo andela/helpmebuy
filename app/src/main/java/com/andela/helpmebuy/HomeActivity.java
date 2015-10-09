@@ -13,9 +13,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.models.Travel;
@@ -75,6 +78,7 @@ public class HomeActivity extends AppCompatActivity {
 
         travellersView = (RecyclerView) findViewById(R.id.travellers_recycler_view);
         travellersView.addItemDecoration(new ItemDivider(this));
+        registerForContextMenu(travellersView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         travellersView.setLayoutManager(layoutManager);
@@ -125,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Travel travel = snapshot.getValue(Travel.class);
                     travels.add(travel);
 
@@ -140,5 +144,27 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
 
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.traveller_item_context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            case R.id.message_action:
+                return true;
+            case R.id.connect_action:
+                return true;
+            case R.id.more_action:
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 }

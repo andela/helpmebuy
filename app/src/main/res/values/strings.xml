@@ -26,5 +26,7 @@
     <string name="on">On </string>
     <string name="connect">Connect</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="message">Message</string>
+    <string name="more">More</string>
 </resources>
 
