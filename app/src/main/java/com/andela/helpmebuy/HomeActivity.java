@@ -20,6 +20,7 @@ import android.view.View;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.util.Constants;
+import com.andela.helpmebuy.util.ItemDivider;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -73,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.home_activity_navigation_view);
 
         travellersView = (RecyclerView) findViewById(R.id.travellers_recycler_view);
+        travellersView.addItemDecoration(new ItemDivider(this));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         travellersView.setLayoutManager(layoutManager);
