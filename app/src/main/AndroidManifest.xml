@@ -37,7 +37,7 @@
             android:name=".ForgotPassword"
             android:label="@string/title_activity_forgot_password"
             android:parentActivityName=".SigninActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andela.helpmebuy.SigninActivity" />

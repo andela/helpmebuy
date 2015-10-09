@@ -1,8 +1,12 @@
 package com.andela.helpmebuy;
 
+import android.annotation.SuppressLint;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -379,8 +383,14 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
         firebase.child("users").child(user.getId()).setValue(user);
     }
+    @SuppressLint("NewApi")
     public void resetPassword(View view) {
         Intent intent = new Intent(this, ForgotPassword.class);
-        startActivity(intent);
+        PendingIntent pendingIntent = null;
+         pendingIntent = TaskStackBuilder.create(this)
+                .addNextIntentWithParentStack(intent)
+                .getPendingIntent(0, pendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setContentIntent(pendingIntent);
     }
 }
