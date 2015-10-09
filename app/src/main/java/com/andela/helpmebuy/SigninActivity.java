@@ -386,11 +386,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     @SuppressLint("NewApi")
     public void resetPassword(View view) {
         Intent intent = new Intent(this, ForgotPassword.class);
-        PendingIntent pendingIntent = null;
-         pendingIntent = TaskStackBuilder.create(this)
-                .addNextIntentWithParentStack(intent)
-                .getPendingIntent(0, pendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentIntent(pendingIntent);
+        startActivity(intent);
     }
 }
