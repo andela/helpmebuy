@@ -6,4 +6,7 @@
     <color name="traveller_name_text_color">#de000000</color>
     <color name="traveller_details_text_color">#8a000000</color>
     <color name="traveller_details_hint_text_color">#61000000</color>
+
+    <color name="user_location_background_color">#deffffff</color>
+    <color name="user_location_pressed_background_color">#ffffff</color>
 </resources>
