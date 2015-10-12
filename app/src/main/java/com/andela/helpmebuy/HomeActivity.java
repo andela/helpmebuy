@@ -129,16 +129,19 @@ public class HomeActivity extends AppCompatActivity {
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Travel> data = new ArrayList<>();
+                int position = 0;
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    position++;
+
                     Travel travel = snapshot.getValue(Travel.class);
-                    data.add(travel);
+
+                    if (!travelExists(travel)) {
+                        travels.add(travel);
+
+                        adapter.notifyItemInserted(position);
+                    }
                 }
-
-                travels = data;
-
-                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -170,5 +173,15 @@ public class HomeActivity extends AppCompatActivity {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private boolean travelExists(Travel travel) {
+        for (Travel t: travels) {
+            if (t.getId().equals(travel.getId())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
