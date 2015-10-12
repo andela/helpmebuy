@@ -3,4 +3,7 @@
     <color name="primary_color">#009688</color>
     <color name="divider_color">#eeeeee</color>
     <color name="traveller_item_pressed_color">#e0e0e0</color>
+    <color name="traveller_name_text_color">#de000000</color>
+    <color name="traveller_details_text_color">#8a000000</color>
+    <color name="traveller_details_hint_text_color">#61000000</color>
 </resources>

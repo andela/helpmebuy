@@ -34,7 +34,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textStyle="bold"/>
+                android:textColor="@color/traveller_name_text_color"
+                android:maxLines="1"
+                android:ellipsize="end"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -45,14 +47,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/coming_from" />
+                    android:text="@string/coming_from"
+                    android:textColor="@color/traveller_details_hint_text_color" />
 
                 <TextView
                     android:id="@+id/traveller_departure_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/traveller_details_text_color"
+                    android:textStyle="italic"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
 
             </LinearLayout>
 
@@ -64,22 +70,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/on" />
+                    android:text="@string/on"
+                    android:textColor="@color/traveller_details_hint_text_color"/>
 
                 <TextView
-                    android:id="@+id/traveller_departure_date"
+                    android:id="@+id/traveller_arrival_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/traveller_details_text_color"
+                    android:textStyle="italic"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
             </LinearLayout>
-
-            <Button
-                android:id="@+id/connect_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/connect"
-                style="?android:attr/borderlessButtonStyle" />
 
         </LinearLayout>
 

@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,7 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         final ImageView profilePicture = (ImageView) itemView.findViewById(R.id.traveller_profile_picture);
         final TextView name = (TextView) itemView.findViewById(R.id.traveller_name);
         final TextView departureLocation = (TextView) itemView.findViewById(R.id.traveller_departure_location);
-        final TextView departureDate = (TextView) itemView.findViewById(R.id.traveller_departure_date);
+        final TextView departureDate = (TextView) itemView.findViewById(R.id.traveller_arrival_date);
 
         final Travel travel = travels.get(position);
 
@@ -78,14 +79,18 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
                         .into(profilePicture);
 
                 if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
-                    profilePicture.setAlpha(0.54f);
+                    profilePicture.setAlpha(0.38f);
                 }
 
                 name.setText(user.getFullName());
-                departureLocation.setText(travel.getDepartureAddress().getCity() + ", " + travel.getDepartureAddress().getCountry());
+
+                String address = travel.getDepartureAddress().getCity() + ", " + travel.getDepartureAddress().getCountry();
+                departureLocation.setText(address);
 
                 if (travel.getArrivalDate() != null) {
-                    departureDate.setText(travel.getArrivalDate().withZone(DateTimeZone.getDefault()).toString(DateTimeFormat.fullDateTime()));
+                    DateTimeFormatter formatter = DateTimeFormat.forPattern("EEE, MMMM e, y h:m a");
+
+                    departureDate.setText(travel.getArrivalDate().withZone(DateTimeZone.getDefault()).toString(formatter));
                 }
             }
 
