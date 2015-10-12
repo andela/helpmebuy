@@ -62,20 +62,23 @@ public class ForgotPassword extends AppCompatActivity {
             emailEditText.setError(getResources().getString(R.string.email_missing));
         } else {
             sendResetEmailButton.setEnabled(false);
+
             final Intent intent = new Intent(this, SigninActivity.class);
 
             firebase.resetPassword(emailEditText.getText().toString(), new Firebase.ResultHandler() {
 
                 @Override
                 public void onSuccess() {
-                    Snackbar.make(parentLayout, "Success", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(parentLayout, R.string.reset_password_successful, Snackbar.LENGTH_LONG).show();
+
                     startActivity(intent);
                     finish();
                 }
 
                 @Override
                 public void onError(FirebaseError firebaseError) {
-                    Snackbar.make(parentLayout, "Failed", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(parentLayout, "Failed: " + firebaseError.toString(), Snackbar.LENGTH_LONG).show();
+
                     sendResetEmailButton.setEnabled(true);
                 }
             });

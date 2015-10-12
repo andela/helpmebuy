@@ -1,6 +1,7 @@
 package com.andela.helpmebuy;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.andela.helpmebuy.models.User;
+import com.andela.helpmebuy.utilities.AlertDialogHelper;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -214,7 +216,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult){
 
-        Log.d(TAG,"onConnectionFailed:"+ connectionResult);
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
 
         if(!mIsResolving && mShouldResolve){
 
@@ -304,20 +306,24 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
         else if (password.equals(""))
             passwordText.setError(getResources().getString(R.string.password_missing));
-
         else {
 
             signInButton.setText((R.string.signing_in));
             signInButton.setEnabled(false);
 
+            final Activity that = this;
+
             firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
 
                 @Override
                 public void onAuthenticated(AuthData authData) {
-
-                    Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
-                    signInButton.setText(R.string.signin);
-                    signInButton.setEnabled(true);
+                    if ((boolean)authData.getProviderData().get("isTemporaryPassword")) {
+                        AlertDialogHelper.createDialog(that);
+                    } else {
+                        Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
+                        signInButton.setText(R.string.signin);
+                        signInButton.setEnabled(true);
+                    }
 
                 }
 

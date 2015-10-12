@@ -16,7 +16,7 @@
     <string name="signing_in">Signing in ...</string>
     <string name="signin">Sign in</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="success_login"></string>
+    <string name="success_login">Signin Successful!</string>
     <string name="googleplus_error">Connection cannot be established</string>
     <string name="googleplus_signout">User signed out</string>
     <string name="facebook_success">Login Successful!</string>
@@ -26,6 +26,12 @@
     <string name="send_reset_email">Send Password Reset</string>
     <string name="password_reset_instructions">Enter the email address you registered
         with and we\'ll send you instructions on how to reset your password.</string>
+    <string name="reset_password_successful">Reset Password Successful! Check your Email.</string>
+    <string name="continue_button">Continue</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="alert_dialog_title">Reset Password</string>
+    <string name="alert_dialog_message">SignIn successful\n**WARNING** The password inputed will expire within the next 24
+    hours.\nClick on continue to change password</string>
 
 </resources>
 
