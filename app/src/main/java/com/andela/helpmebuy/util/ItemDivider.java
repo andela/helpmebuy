@@ -22,7 +22,7 @@ public class ItemDivider extends RecyclerView.ItemDecoration {
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         Paint paint = new Paint();
         paint.setColor(context.getResources().getColor(R.color.divider_color));
-        paint.setStrokeWidth(3.0f);
+        paint.setStrokeWidth(1.0f);
 
         float startX = parent.getLeft();
 
