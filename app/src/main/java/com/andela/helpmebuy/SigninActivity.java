@@ -5,16 +5,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.andela.helpmebuy.models.User;
+import com.andela.helpmebuy.utilities.Constants;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -29,7 +28,6 @@ import com.firebase.client.FirebaseError;
 
 import com.facebook.FacebookSdk;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,9 +35,7 @@ import java.util.Arrays;
 
 public class SigninActivity extends AppCompatActivity {
 
-    private final String TAG = "SigninAcivity";
-
-    private final String firebaseUrl = "http://hmbuy.firebaseio.com";
+    private final String TAG = "SigninActivity";
 
     private EditText emailText;
 
@@ -69,7 +65,7 @@ public class SigninActivity extends AppCompatActivity {
         }
 
         Firebase.setAndroidContext(this);
-        firebase = new Firebase(firebaseUrl);
+        firebase = new Firebase(Constants.FIREBASE_URL);
 
         emailText = (EditText) findViewById(R.id.email_text);
         passwordText = (EditText) findViewById(R.id.password_text);
@@ -166,7 +162,7 @@ public class SigninActivity extends AppCompatActivity {
     }
 
     public void signIn(View view){
-        firebase = new Firebase(firebaseUrl);
+//        firebase = new Firebase(Constants.FIREBASE_URL);
 
         final String email = emailText.getText().toString().trim();
 

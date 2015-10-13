@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.andela.helpmebuy.models.User;
+import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
@@ -21,8 +22,6 @@ import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
     public final String TAG = "SignupActivity";
-
-    public final String FIREBASE_URL = "https://hmbuy.firebaseio.com";
 
     private Firebase firebase;
 
@@ -41,7 +40,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Firebase.setAndroidContext(this);
-        firebase = new Firebase(FIREBASE_URL);
+        firebase = new Firebase(Constants.FIREBASE_URL);
 
         setContentView(R.layout.activity_signup);
 
@@ -142,7 +141,14 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void saveUser(User user) {
-        firebase.child("users").child(user.getId()).setValue(user);
+        firebase.child(Constants.USERS).child(user.getId()).setValue(user);
+
+//        Travel travel = new Travel("1");
+//        travel.setUserId(user.getId());
+//        travel.setDepartureDate(DateTime.now());
+//        travel.setDepartureAddress(new Address("Tokyo", "JAPAN"));
+//
+//        firebase.child(Constants.TRAVELS).child("travel-" + user.getId()).setValue(travel);
     }
 
 }

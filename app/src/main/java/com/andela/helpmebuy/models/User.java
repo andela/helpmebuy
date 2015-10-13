@@ -61,6 +61,11 @@ public class User {
         this.id = id;
     }
 
+    public User(String id, String fullName) {
+        this(id);
+        this.fullName = fullName;
+    }
+
     public String getId() {
         return id;
     }

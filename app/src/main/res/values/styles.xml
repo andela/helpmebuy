@@ -5,9 +5,24 @@
         <item name="android:textColorHint">#7fffffff</item>
         <item name="colorControlNormal">#7fffffff</item>
         <item name="colorControlActivated">#7fffffff</item>
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_color_dark</item>
+        <item name="colorAccent">@color/primary_color_dark</item>
     </style>
 
     <style name="TextInputStyle" parent="TextAppearance.AppCompat">
         <item name="android:textColor">#7fffffff</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="UserLocationTextStyle">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textColor">@color/primary_color</item>
     </style>
 </resources>
