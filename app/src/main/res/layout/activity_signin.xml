@@ -97,7 +97,7 @@
         android:id="@+id/googlePlusSignOut"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:onClick="onClickSignOut"
+        android:onClick="onClick"
         android:text="Sign Out"
         android:textAppearance="?android:textAppearanceSmall"
         android:textColor="#ffffff"
