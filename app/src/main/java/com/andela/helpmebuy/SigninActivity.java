@@ -44,7 +44,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class SigninActivity extends AppCompatActivity {
+public class SigninActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText emailText;
 
@@ -90,7 +90,7 @@ public class SigninActivity extends AppCompatActivity {
         loginButton = (LoginButton) findViewById(R.id.facebook_button);
 
         googleSignInButton = (SignInButton) findViewById(R.id.googleplus_button);
-        googleSignInButton.setOnClickListener(googleSignInButton);
+        googleSignInButton.setOnClickListener(this);
 
         googlePlusSignOut = (Button) findViewById(R.id.googlePlusSignOut);
 
@@ -156,8 +156,6 @@ public class SigninActivity extends AppCompatActivity {
         });
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) this)
-                .addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) this)
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
                 .addScope(new Scope(Scopes.EMAIL))
@@ -287,15 +285,16 @@ public class SigninActivity extends AppCompatActivity {
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
     }
 
+    @Override
     public void onClick(View v) {
         if (v.getId() == R.id.googleplus_button) {
-            //onSignInClicked();
+            googleClient.signIn();
 
             Snackbar.make(parentLayout, R.string.signing_in, Snackbar.LENGTH_LONG).show();
         }
 
         if(v.getId() == R.id.googlePlusSignOut) {
-            //signOutGooglePlus();
+            googleClient.signOut();
 
             googlePlusSignOut.setVisibility(View.INVISIBLE);
             googleSignInButton.setVisibility((View.VISIBLE));

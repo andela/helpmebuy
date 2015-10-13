@@ -14,13 +14,12 @@
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup" >
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
 
         <meta-data
@@ -36,23 +35,6 @@
             android:name=".SigninActivity"
             android:label="@string/title_activity_signin" />
         <activity
-            android:name=".HomeActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-        <activity
-            android:name=".SigninActivity"
-            android:label="@string/title_activity_signin" />
-        <activity
             android:name=".ForgotPassword"
             android:label="@string/title_activity_forgot_password"
             android:parentActivityName=".SigninActivity"
@@ -61,6 +43,28 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andela.helpmebuy.SigninActivity" />
         </activity>
+
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <!--
+        <activity
+            android:name=".SigninActivity"
+            android:label="@string/title_activity_signin" />
+
+        </activity>
+        -->
         <activity
             android:name=".ChangePasswordActivity"
             android:label="@string/title_activity_change_password"

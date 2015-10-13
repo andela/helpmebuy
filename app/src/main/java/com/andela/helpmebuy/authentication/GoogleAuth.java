@@ -34,6 +34,9 @@ public class GoogleAuth implements GoogleApiClient.ConnectionCallbacks,
         this.mGoogleApiClient = mGoogleApiClient;
 
         this.callback = callback;
+
+        mGoogleApiClient.registerConnectionCallbacks(this);
+        mGoogleApiClient.registerConnectionFailedListener(this);
     }
 
     public  void signIn() {
