@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.andela.helpmebuy.dal.Users;
+import com.andela.helpmebuy.dal.firebase.FirebaseUsers;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.AlertDialogHelper;
 import com.andela.helpmebuy.utilities.Constants;
@@ -55,6 +57,8 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     private EditText passwordText;
 
     private Button signInButton;
+
+    private Users users;
 
     private Firebase firebase;
 
@@ -106,6 +110,8 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
 
+        users = new FirebaseUsers();
+
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -114,11 +120,10 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             public void onSuccess(LoginResult loginResult) {
                 Snackbar.make(parentLayout, R.string.facebook_success, Snackbar.LENGTH_LONG).show();
 
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback()
-                {
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        try{
+                        try {
 
                             User user = new User(object.getString("id"));
                             user.setFullName(object.getString("name"));
@@ -128,7 +133,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
                                 JSONObject picture = (JSONObject) object.get("picture");
 
-                                if (picture !=null) {
+                                if (picture != null) {
 
                                     JSONObject data = (JSONObject) picture.get("data");
 
@@ -141,7 +146,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                                 }
                             }
 
-                        } catch(JSONException e){
+                        } catch (JSONException e) {
                             Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
                         }
                     }
@@ -256,7 +261,9 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             user.setProfilePictureUrl(currentPerson.getImage().getUrl());
             user.setEmail(Plus.AccountApi.getAccountName(mGoogleApiClient));
 
-            saveUser(user);
+            users.save(user, null);
+
+//            saveUser(user);
         }
     }
 
@@ -383,6 +390,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
         firebase.child("users").child(user.getId()).setValue(user);
     }
+
     @SuppressLint("NewApi")
     public void resetPassword(View view) {
         Intent intent = new Intent(this, ForgotPassword.class);

@@ -11,6 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.dal.DataCallback;
+import com.andela.helpmebuy.dal.Travels;
+import com.andela.helpmebuy.dal.Users;
+import com.andela.helpmebuy.dal.firebase.FirebaseTravels;
+import com.andela.helpmebuy.dal.firebase.FirebaseUsers;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
@@ -34,13 +39,16 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
     private List<Travel> travels;
 
+    private Users users;
+
     public TravellersAdapter(Context context) {
         this.context = context;
         this.travels = new ArrayList<>();
+        this.users = new FirebaseUsers();
     }
 
     public TravellersAdapter(Context context, List<Travel> travels) {
-        this.context = context;
+        this(context);
         this.travels = travels;
     }
 
@@ -62,13 +70,9 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
         final Travel travel = travels.get(position);
 
-        Firebase firebase = new Firebase(Constants.FIREBASE_URL + "/" + Constants.USERS + "/" + travel.getUserId());
-
-        firebase.addValueEventListener(new ValueEventListener() {
+        users.get(travel.getUserId(), new DataCallback<User>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-
+            public void onSuccess(User user) {
                 String profilePictureUrl = user.getProfilePictureUrl();
 
                 Picasso.with(context)
@@ -92,10 +96,11 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
                     departureDate.setText(travel.getArrivalDate().withZone(DateTimeZone.getDefault()).toString(formatter));
                 }
+
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onError(String errorMessage) {
 
             }
         });
