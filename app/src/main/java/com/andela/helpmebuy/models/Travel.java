@@ -1,6 +1,12 @@
 package com.andela.helpmebuy.models;
 
+import com.andela.helpmebuy.serializers.DateTimeDeserializer;
+import com.andela.helpmebuy.serializers.DateTimeSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import org.joda.time.DateTime;
+
 
 /**
  * Represents a travel information.
@@ -13,8 +19,15 @@ public class Travel {
     private String id;
 
     /**
+     * The ID of the user who is travelling.
+     */
+    private String userId;
+
+    /**
      * The date of departure.
      */
+    @JsonSerialize(using=DateTimeSerializer.class)
+    @JsonDeserialize(using=DateTimeDeserializer.class)
     private DateTime departureDate;
 
     /**
@@ -25,6 +38,8 @@ public class Travel {
     /**
      * The date of arrival.
      */
+    @JsonSerialize(using=DateTimeSerializer.class)
+    @JsonDeserialize(using=DateTimeDeserializer.class)
     private DateTime arrivalDate;
 
     /**
@@ -35,7 +50,7 @@ public class Travel {
     /**
      * Creates a new travel.
      */
-    public Travel(){
+    public Travel() {
     }
 
     /**
@@ -52,6 +67,14 @@ public class Travel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public DateTime getDepartureDate() {
