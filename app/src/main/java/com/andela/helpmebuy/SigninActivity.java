@@ -1,8 +1,13 @@
 package com.andela.helpmebuy;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.andela.helpmebuy.models.User;
+import com.andela.helpmebuy.utilities.AlertDialogHelper;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -67,8 +73,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     private LinearLayout parentLayout;
 
     private static final int RC_SIGN_IN = 0;
-
-    private static final String SAVED_PROGRESS = "sign_in_progress";
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -210,7 +214,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult){
 
-        Log.d(TAG,"onConnectionFailed:"+ connectionResult);
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
 
         if(!mIsResolving && mShouldResolve){
 
@@ -300,21 +304,25 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
         else if (password.equals(""))
             passwordText.setError(getResources().getString(R.string.password_missing));
-
         else {
 
             signInButton.setText((R.string.signing_in));
             signInButton.setEnabled(false);
 
-            firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+            final Activity that = this;
 
+            firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
                 @Override
                 public void onAuthenticated(AuthData authData) {
+                    if ((boolean)authData.getProviderData().get("isTemporaryPassword")) {
+                        AlertDialogHelper.createDialog(that).show();
 
-                    Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
-                    signInButton.setText(R.string.signin);
-                    signInButton.setEnabled(true);
-
+                        signInButton.setEnabled(true);
+                    } else {
+                        Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
+                        signInButton.setText(R.string.signin);
+                        signInButton.setEnabled(true);
+                    }
                 }
 
                 @Override
@@ -378,5 +386,10 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     public void saveUser(User user) {
 
         firebase.child("users").child(user.getId()).setValue(user);
+    }
+    @SuppressLint("NewApi")
+    public void resetPassword(View view) {
+        Intent intent = new Intent(this, ForgotPassword.class);
+        startActivity(intent);
     }
 }

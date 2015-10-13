@@ -75,7 +75,8 @@
         android:layout_height="wrap_content"
         android:text="@string/forgot_password"
         android:textColor="#ffffff"
-        style="?android:attr/borderlessButtonStyle"/>
+        style="?android:attr/borderlessButtonStyle"
+        android:onClick="resetPassword" />
 
    <com.facebook.login.widget.LoginButton
        android:id="@+id/facebook_button"
