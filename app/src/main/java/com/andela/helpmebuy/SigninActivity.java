@@ -316,6 +316,8 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                 public void onAuthenticated(AuthData authData) {
                     if ((boolean)authData.getProviderData().get("isTemporaryPassword")) {
                         AlertDialogHelper.createDialog(that).show();
+
+                        signInButton.setEnabled(true);
                     } else {
                         Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
                         signInButton.setText(R.string.signin);
