@@ -74,8 +74,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     private static final int RC_SIGN_IN = 0;
 
-    private static final String SAVED_PROGRESS = "sign_in_progress";
-
     private GoogleApiClient mGoogleApiClient;
 
     private boolean mIsResolving = false;
@@ -314,17 +312,15 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             final Activity that = this;
 
             firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
-
                 @Override
                 public void onAuthenticated(AuthData authData) {
                     if ((boolean)authData.getProviderData().get("isTemporaryPassword")) {
-                        AlertDialogHelper.createDialog(that);
+                        AlertDialogHelper.createDialog(that).show();
                     } else {
                         Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
                         signInButton.setText(R.string.signin);
                         signInButton.setEnabled(true);
                     }
-
                 }
 
                 @Override

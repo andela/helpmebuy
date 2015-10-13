@@ -30,8 +30,8 @@
     <string name="continue_button">Continue</string>
     <string name="title_activity_change_password">ChangePasswordActivity</string>
     <string name="alert_dialog_title">Reset Password</string>
-    <string name="alert_dialog_message">SignIn successful\n**WARNING** The password inputed will expire within the next 24
-    hours.\nClick on continue to change password</string>
+    <string name="alert_dialog_message">SignIn successful!\nWARNING: The password inputed will expire within the next 24
+    hours.\n\nClick on continue to change password</string>
 
 </resources>
 

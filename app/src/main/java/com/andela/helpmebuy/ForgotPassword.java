@@ -69,8 +69,6 @@ public class ForgotPassword extends AppCompatActivity {
 
                 @Override
                 public void onSuccess() {
-                    Snackbar.make(parentLayout, R.string.reset_password_successful, Snackbar.LENGTH_LONG).show();
-
                     startActivity(intent);
                     finish();
                 }
