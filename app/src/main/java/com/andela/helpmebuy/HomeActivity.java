@@ -28,12 +28,8 @@ import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.Travels;
 import com.andela.helpmebuy.dal.firebase.FirebaseTravels;
 import com.andela.helpmebuy.models.Travel;
-import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.ItemDivider;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;

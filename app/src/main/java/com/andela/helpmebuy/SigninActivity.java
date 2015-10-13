@@ -18,32 +18,24 @@ import android.widget.LinearLayout;
 
 import com.andela.helpmebuy.dal.Users;
 import com.andela.helpmebuy.dal.firebase.FirebaseUsers;
+import com.andela.helpmebuy.authentication.AuthCallback;
+import com.andela.helpmebuy.authentication.FacebookAuth;
+import com.firebase.client.Firebase;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.AlertDialogHelper;
 import com.andela.helpmebuy.utilities.Constants;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
-import com.facebook.FacebookSdk;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -62,13 +54,9 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     private Firebase firebase;
 
-    private LoginButton loginButton;
-
     private SignInButton googleSignInButton;
 
     private Button googlePlusSignOut;
-
-    private CallbackManager callbackManager;
 
     private LinearLayout parentLayout;
 
@@ -96,63 +84,23 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
         emailText = (EditText) findViewById(R.id.email_text);
         passwordText = (EditText) findViewById(R.id.password_text);
         signInButton = (Button) findViewById(R.id.signin_button);
-        loginButton = (LoginButton) findViewById(R.id.facebook_button);
 
         googleSignInButton = (SignInButton) findViewById(R.id.googleplus_button);
         googleSignInButton.setOnClickListener(this);
 
         googlePlusSignOut = (Button) findViewById(R.id.googlePlusSignOut);
 
-        callbackManager = CallbackManager.Factory.create();
-
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
 
         users = new FirebaseUsers();
 
+        LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Snackbar.make(parentLayout, R.string.facebook_success, Snackbar.LENGTH_LONG).show();
-
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        try {
-
-                            User user = new User(object.getString("id"));
-                            user.setFullName(object.getString("name"));
-                            user.setEmail(object.getString("email"));
-
-                            if (!object.isNull("picture")) {
-
-                                JSONObject picture = (JSONObject) object.get("picture");
-
-                                if (picture != null) {
-
-                                    JSONObject data = (JSONObject) picture.get("data");
-
-                                    if (data.length() != 0) {
-
-                                        user.setProfilePictureUrl(data.getString("url"));
-                                    }
-
-                                    firebase.child("users").child(user.getId()).setValue(user);
-                                }
-                            }
-
-                        } catch (JSONException e) {
-                            Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
-                        }
-                    }
-                });
-
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id, name, email, picture");
-                request.setParameters(parameters);
-                request.executeAsync();
+        FacebookAuth.onLoginButtonClicked(loginButton, new AuthCallback() {
+           @Override
+            public void onSuccess(User user) {
+                users.save(user, null);
             }
 
             @Override
@@ -161,7 +109,12 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             }
 
             @Override
-            public void onError(FacebookException e) {
+            public void onError(String errorMessage) {
+                Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
                 Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
@@ -259,8 +212,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             user.setEmail(Plus.AccountApi.getAccountName(mGoogleApiClient));
 
             users.save(user, null);
-
-//            saveUser(user);
         }
     }
 
@@ -293,8 +244,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void signIn(View view){
-//        firebase = new Firebase(Constants.FIREBASE_URL);
-
         final String email = emailText.getText().toString().trim();
 
         String password = passwordText.getText().toString();
@@ -383,14 +332,9 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
 
-    public void saveUser(User user) {
-
-        firebase.child("users").child(user.getId()).setValue(user);
-    }
-
     @SuppressLint("NewApi")
     public void resetPassword(View view) {
-        Intent intent = new Intent(this, ForgotPassword.class);
+        Intent intent = new Intent(this, ForgotPasswordActivity.class);
         startActivity(intent);
     }
 }

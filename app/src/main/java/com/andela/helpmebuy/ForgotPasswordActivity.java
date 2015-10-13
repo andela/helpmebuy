@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,13 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
-public class ForgotPassword extends AppCompatActivity {
-
-    public final String FIREBASE_URL = "https://hmbuy.firebaseio.com";
-
+public class ForgotPasswordActivity extends AppCompatActivity {
     private Firebase firebase;
 
     private LinearLayout parentLayout;
@@ -30,15 +29,16 @@ public class ForgotPassword extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Firebase.setAndroidContext(this);
-        firebase = new Firebase(FIREBASE_URL);
+        firebase = new Firebase(Constants.FIREBASE_URL);
 
         setContentView(R.layout.activity_forgot_password);
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
 
-        actionBar.show();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.show();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         sendResetEmailButton = (Button) findViewById(R.id.send_reset_email_button);
         emailEditText = (EditText) findViewById(R.id.send_reset_email_text);
