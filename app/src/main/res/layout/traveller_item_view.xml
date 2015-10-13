@@ -17,8 +17,8 @@
             android:id="@+id/traveller_profile_picture"
             android:layout_width="@dimen/profile_picture_width"
             android:layout_height="@dimen/profile_picture_height"
-            android:scaleType="centerInside"
-            android:layout_marginTop="25dp" />
+            android:layout_marginTop="@dimen/profile_picture_margin_top"
+            android:scaleType="centerInside" />
 
         <LinearLayout
             android:id="@+id/traveller_details"

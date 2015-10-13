@@ -23,8 +23,8 @@ import android.widget.TextView;
 
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.models.Travel;
-import com.andela.helpmebuy.util.Constants;
-import com.andela.helpmebuy.util.ItemDivider;
+import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.utilities.ItemDivider;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;

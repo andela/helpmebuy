@@ -5,6 +5,9 @@
         <item name="android:textColorHint">#7fffffff</item>
         <item name="colorControlNormal">#7fffffff</item>
         <item name="colorControlActivated">#7fffffff</item>
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_color_dark</item>
+        <item name="colorAccent">@color/primary_color_dark</item>
     </style>
 
     <style name="TextInputStyle" parent="TextAppearance.AppCompat">

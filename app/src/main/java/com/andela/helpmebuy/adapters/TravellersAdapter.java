@@ -14,7 +14,7 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
-import com.andela.helpmebuy.util.Constants;
+import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
