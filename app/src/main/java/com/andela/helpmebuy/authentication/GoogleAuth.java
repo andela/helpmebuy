@@ -1,7 +1,6 @@
 package com.andela.helpmebuy.authentication;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,61 +11,63 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
-public class GoogleAuth implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
-    public static final int RC_SIGN_IN = 0;
-
-    private boolean mIsResolving = false;
-
-    private boolean mShouldResolve = false;
-
+public class GoogleAuth implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public static final String TAG = "SigninActivity";
 
-    private GoogleApiClient mGoogleApiClient;
+    public static final int RC_SIGN_IN = 0;
+
+    private boolean resolving;
+
+    private boolean shouldResolve;
+
+    private GoogleApiClient googleApiClient;
 
     private AuthCallback callback;
 
     private Activity activity;
 
-    public GoogleAuth(Activity activity, GoogleApiClient mGoogleApiClient, AuthCallback callback) {
+    public GoogleAuth(Activity activity, GoogleApiClient googleApiClient, AuthCallback callback) {
         this.activity = activity;
 
-        this.mGoogleApiClient = mGoogleApiClient;
+        this.googleApiClient = googleApiClient;
+        this.googleApiClient.registerConnectionCallbacks(this);
+        this.googleApiClient.registerConnectionFailedListener(this);
 
         this.callback = callback;
 
-        this.mGoogleApiClient.registerConnectionCallbacks(this);
-        this.mGoogleApiClient.registerConnectionFailedListener(this);
+        this.resolving = false;
+        this.shouldResolve = false;
     }
 
-    public  void signIn() {
-        mShouldResolve = true;
+    public void signIn() {
+        shouldResolve = true;
 
-        mGoogleApiClient.connect();
+        googleApiClient.connect();
     }
 
     public void signOut() {
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+        if (googleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(googleApiClient);
 
-            mGoogleApiClient.disconnect();
+            googleApiClient.disconnect();
         }
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+        if (!resolving && shouldResolve) {
 
-        if (!mIsResolving && mShouldResolve) {
             if (connectionResult.hasResolution()) {
+
                 try {
                     connectionResult.startResolutionForResult(activity, RC_SIGN_IN);
-                    mIsResolving = true;
+                    resolving = true;
+
                 } catch (IntentSender.SendIntentException e) {
-                    Log.e(TAG, "Could not resolve ConnectionResult.", e);
-                    mIsResolving = false;
-                    mGoogleApiClient.connect();
+                    resolving = false;
+                    googleApiClient.connect();
                 }
+
             } else {
                 callback.onError(connectionResult.toString());
             }
@@ -75,33 +76,31 @@ public class GoogleAuth implements GoogleApiClient.ConnectionCallbacks,
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.d(TAG, "onConnected:" + bundle);
-        mShouldResolve = false;
+        shouldResolve = false;
 
-        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+        if (Plus.PeopleApi.getCurrentPerson(googleApiClient) != null) {
             User user = new User();
 
-            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(googleApiClient);
 
             user.setId(currentPerson.getId());
             user.setFullName(currentPerson.getDisplayName());
             user.setProfilePictureUrl(currentPerson.getImage().getUrl());
-            user.setEmail(Plus.AccountApi.getAccountName(mGoogleApiClient));
+            user.setEmail(Plus.AccountApi.getAccountName(googleApiClient));
 
             callback.onSuccess(user);
         }
     }
 
     @Override
-    public void onConnectionSuspended(int status){
-
+    public void onConnectionSuspended(int status) {
     }
 
-    public void setMIsResolving(boolean mIsResolving) {
-        this.mIsResolving = mIsResolving;
+    public void setResolving(boolean resolving) {
+        this.resolving = resolving;
     }
 
-    public void setMShouldResolve(boolean mShouldResolve) {
-        this.mShouldResolve = mShouldResolve;
+    public void setShouldResolve(boolean shouldResolve) {
+        this.shouldResolve = shouldResolve;
     }
 }

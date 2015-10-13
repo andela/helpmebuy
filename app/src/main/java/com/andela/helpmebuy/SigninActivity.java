@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -77,7 +76,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         signInButton = (Button) findViewById(R.id.signin_button);
 
         googleSignInButton = (SignInButton) findViewById(R.id.googleplus_button);
-        googleSignInButton.setOnClickListener(googleSignInButton);
+        googleSignInButton.setOnClickListener(this);
 
         googlePlusSignOut = (Button) findViewById(R.id.googlePlusSignOut);
 
@@ -119,11 +118,12 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         googleClient = new GoogleAuth(this, mGoogleApiClient, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
+                users.save(user, null);
+
                 googlePlusSignOut.setVisibility(View.VISIBLE);
                 googleSignInButton.setVisibility((View.GONE));
 
                 googleSignInButton.setEnabled(false);
-
             }
 
             @Override
@@ -142,48 +142,40 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onStart() {
         super.onStart();
+
         mGoogleApiClient.connect();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mGoogleApiClient.disconnect();
-    }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+        mGoogleApiClient.disconnect();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d(GoogleAuth.TAG, "onActivityResult: " + resultCode + ":" + resultCode + ":" + data);
-
         if (requestCode == GoogleAuth.RC_SIGN_IN) {
 
             if(resultCode != RESULT_OK) {
-                googleClient.setMShouldResolve(false);
+                googleClient.setShouldResolve(false);
             }
 
-            googleClient.setMIsResolving(false);
+            googleClient.setResolving(false);
             mGoogleApiClient.connect();
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_signin, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -214,12 +206,14 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
                 @Override
                 public void onAuthenticated(AuthData authData) {
-                    if ((boolean)authData.getProviderData().get("isTemporaryPassword")) {
+                    if ((boolean) authData.getProviderData().get("isTemporaryPassword")) {
                         AlertDialogHelper.createDialog(that).show();
 
                         signInButton.setEnabled(true);
+
                     } else {
                         Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
+
                         signInButton.setText(R.string.signin);
                         signInButton.setEnabled(true);
                     }
