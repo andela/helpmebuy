@@ -2,15 +2,13 @@ package com.andela.helpmebuy;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,11 +17,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.andela.helpmebuy.models.User;
-<<<<<<< HEAD
 import com.andela.helpmebuy.utilities.AlertDialogHelper;
-=======
 import com.andela.helpmebuy.utilities.Constants;
->>>>>>> 8c1a654ae69158f35e3a627e1fde6bd60e141c9f
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
