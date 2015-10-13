@@ -2,7 +2,9 @@ package com.andela.helpmebuy;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -54,6 +56,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView userLocationTextView;
 
+    private CoordinatorLayout parentLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,8 @@ public class HomeActivity extends AppCompatActivity {
         firebase = new Firebase(Constants.FIREBASE_URL + "/" + Constants.TRAVELS);
 
         travels = new ArrayList<>();
+
+        parentLayout = (CoordinatorLayout) findViewById(R.id.parent_layout);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.home_activity_drawer_layout);
 
@@ -172,19 +178,40 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        ContextMenu.ContextMenuInfo i =  item.getMenuInfo();
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
             case R.id.message_action:
+                message(info);
                 return true;
+
             case R.id.connect_action:
+                connect(info);
                 return true;
+
             case R.id.more_action:
+                more(info);
                 return true;
+
+
             default:
                 return super.onContextItemSelected(item);
         }
     }
+
+    private void connect(AdapterView.AdapterContextMenuInfo info) {
+        Snackbar.make(parentLayout,"Connect clicked", Snackbar.LENGTH_LONG).show();
+    }
+
+    private void message(AdapterView.AdapterContextMenuInfo info) {
+        Snackbar.make(parentLayout, "Message clicked", Snackbar.LENGTH_LONG).show();
+    }
+
+    private void more(AdapterView.AdapterContextMenuInfo info) {
+        Snackbar.make(parentLayout,"More clicked",Snackbar.LENGTH_LONG).show();
+    }
+
 
     private int findIndex(Travel travel) {
         for (int i = 0, size = travels.size(); i < size; ++i) {

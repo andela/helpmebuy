@@ -123,6 +123,5 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
             itemView = (FrameLayout) view;
         }
-
     }
 }
