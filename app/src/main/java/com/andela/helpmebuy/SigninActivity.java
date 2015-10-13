@@ -80,8 +80,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
         setContentView(R.layout.activity_signin);
 
         ActionBar actionBar = getSupportActionBar();
@@ -89,7 +87,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
             actionBar.hide();
         }
 
-        Firebase.setAndroidContext(this);
         firebase = new Firebase(Constants.FIREBASE_URL);
 
         emailText = (EditText) findViewById(R.id.email_text);
