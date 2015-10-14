@@ -79,31 +79,29 @@
         android:onClick="resetPassword" />
 
    <com.facebook.login.widget.LoginButton
-       android:id="@+id/facebook_button"
+       android:id="@+id/facebook_login_button"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_marginTop="5dp"
-       android:onClick="signInWithFacebook"/>
+       android:onClick="logInWithFacebook"/>
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/googleplus_button"
+        android:id="@+id/google_signin_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:visibility="visible"
-        android:onClick="onClick" />
+        android:visibility="visible" />
 
     <Button
-        android:id="@+id/googlePlusSignOut"
+        android:id="@+id/google_signout_button"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:onClick="onClick"
-        android:text="Sign Out"
+        android:text="@string/sign_out"
         android:textAppearance="?android:textAppearanceSmall"
         android:textColor="#ffffff"
         android:background="#d34836"
         android:visibility="invisible"
         android:layout_marginTop="15dp"
-        style="?android:attr/borderlessButtonStyle"/>
+        style="?android:attr/borderlessButtonStyle" />
 
 </LinearLayout>

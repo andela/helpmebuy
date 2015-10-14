@@ -3,7 +3,6 @@ package com.andela.helpmebuy.authentication;
 import android.app.Activity;
 import android.content.IntentSender;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.andela.helpmebuy.models.User;
 import com.google.android.gms.common.ConnectionResult;
@@ -12,8 +11,6 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
 public class GoogleAuth implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    public static final String TAG = "SigninActivity";
-
     public static final int RC_SIGN_IN = 0;
 
     private boolean resolving;

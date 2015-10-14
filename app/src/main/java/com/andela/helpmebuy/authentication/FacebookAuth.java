@@ -1,6 +1,7 @@
 package com.andela.helpmebuy.authentication;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import com.andela.helpmebuy.models.User;
@@ -9,15 +10,41 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 public class FacebookAuth {
 
-    public static void onLoginButtonClicked(LoginButton loginButton, final AuthCallback callback) {
+    private Activity activity;
+
+    private LoginButton loginButton;
+
+    private AuthCallback callback;
+
+    public FacebookAuth(Activity activity, LoginButton button, AuthCallback callback) {
+        this.activity = activity;
+        this.loginButton = button;
+        this.callback = callback;
+
+        initialize();
+    }
+
+    public void logIn() {
+        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
+    }
+
+    private void initialize() {
+        onLoginButtonClicked(callback);
+    }
+
+
+    private void onLoginButtonClicked(final AuthCallback callback) {
         CallbackManager manager = CallbackManager.Factory.create();
 
         loginButton.registerCallback(manager, new FacebookCallback<LoginResult>() {
