@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.Firebase;
@@ -141,14 +142,9 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void saveUser(User user) {
-        firebase.child(Constants.USERS).child(user.getId()).setValue(user);
+        FirebaseCollection<User> users = new FirebaseCollection<>(Constants.USERS, User.class);
 
-//        Travel travel = new Travel("1");
-//        travel.setUserId(user.getId());
-//        travel.setDepartureDate(DateTime.now());
-//        travel.setDepartureAddress(new Address("Tokyo", "JAPAN"));
-//
-//        firebase.child(Constants.TRAVELS).child("travel-" + user.getId()).setValue(travel);
+        users.save(user, null);
     }
 
 }

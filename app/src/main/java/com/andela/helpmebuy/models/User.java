@@ -6,12 +6,7 @@ import java.util.List;
 /**
  * A user of HelpMeBuy application.
  */
-public class User {
-
-    /**
-     * The ID of the user.
-     */
-    private String id;
+public class User extends Model {
 
     /**
      * The fullname of the user.
@@ -48,6 +43,8 @@ public class User {
      */
 
     public User() {
+        super();
+
         deliveryAddresses = new ArrayList<>();
         connections = new ArrayList<>();
     }
@@ -57,21 +54,12 @@ public class User {
      * @param id the ID of the newly created user.
      */
     public User(String id) {
-        this();
-        this.id = id;
+        super(id);
     }
 
     public User(String id, String fullName) {
         this(id);
         this.fullName = fullName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getFullName() {

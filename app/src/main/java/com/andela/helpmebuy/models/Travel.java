@@ -11,12 +11,7 @@ import org.joda.time.DateTime;
 /**
  * Represents a travel information.
  */
-public class Travel {
-
-    /**
-     * The ID of the travel.
-     */
-    private String id;
+public class Travel extends Model {
 
     /**
      * The ID of the user who is travelling.
@@ -57,16 +52,8 @@ public class Travel {
      * Creates a new travel with the specified ID.
      * @param id the ID of the travel.
      */
-    public Travel(String id){
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public Travel(String id) {
+        super(id);
     }
 
     public String getUserId() {
