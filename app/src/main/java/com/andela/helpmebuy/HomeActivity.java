@@ -25,9 +25,9 @@ import android.widget.TextView;
 
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
-import com.andela.helpmebuy.dal.Travels;
-import com.andela.helpmebuy.dal.firebase.FirebaseTravels;
+import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Travel;
+import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.ItemDivider;
 import com.firebase.client.Firebase;
 
@@ -55,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private CoordinatorLayout parentLayout;
 
-    private Travels travelsCollection;
+    private FirebaseCollection<Travel> travelsCollection;
 
 
     @Override
@@ -138,7 +138,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadTravels() {
-        travelsCollection = new FirebaseTravels();
+        travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
 
         travelsCollection.getAll(new DataCallback<List<Travel>>() {
             @Override

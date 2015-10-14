@@ -1,8 +1,9 @@
 package com.andela.helpmebuy.dal.firebase;
 
 
+import com.andela.helpmebuy.dal.Collection;
 import com.andela.helpmebuy.dal.DataCallback;
-import com.andela.helpmebuy.dal.Users;
+import com.andela.helpmebuy.models.Model;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.DataSnapshot;
@@ -10,38 +11,48 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirebaseUsers implements Users {
+public class FirebaseCollection<T extends Model> implements Collection<T> {
 
-    Firebase firebase;
+    private Firebase firebase;
 
-    public FirebaseUsers() {
-        firebase = new Firebase(Constants.FIREBASE_URL);
+    private String childName;
+
+    private Class<T> type;
+
+    @SuppressWarnings("unchecked")
+    public FirebaseCollection(String childName, Class<T> type) {
+        this.firebase = new Firebase(Constants.FIREBASE_URL);
+
+        this.childName = childName;
+
+        this.type = type;
     }
 
     @Override
-    public void save(User user, DataCallback<User> callback) {
-        firebase.child(Constants.USERS)
-                .child(user.getId())
-                .setValue(user);
+    public void save(T data, DataCallback<T> callback) {
+        firebase.child(childName)
+                .child(data.getId())
+                .setValue(data);
 
         if (callback != null) {
-            callback.onSuccess(user);
+            callback.onSuccess(data);
         }
     }
 
     @Override
-    public void get(String userId, final DataCallback<User> callback) {
-        firebase.child(Constants.USERS)
-                .child(userId)
+    public void get(String id, final DataCallback<T> callback) {
+        firebase.child(childName)
+                .child(id)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-
-                        callback.onSuccess(user);
+                        callback.onSuccess(dataSnapshot.getValue(type));
                     }
 
                     @Override
@@ -52,18 +63,18 @@ public class FirebaseUsers implements Users {
     }
 
     @Override
-    public void getAll(final DataCallback<List<User>> callback) {
-        firebase.child(Constants.USERS)
+    public void getAll(final DataCallback<List<T>> callback) {
+        firebase.child(childName)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        List<User> users = new ArrayList<>();
+                        List<T> data = new ArrayList<>();
 
                         for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                            users.add(snapshot.getValue(User.class));
+                            data.add(snapshot.getValue(type));
                         }
 
-                        callback.onSuccess(users);
+                        callback.onSuccess(data);
                     }
 
                     @Override
@@ -74,7 +85,8 @@ public class FirebaseUsers implements Users {
     }
 
     @Override
-    public void query(String[] selection, String[] selectionArgs, final DataCallback<List<User>> callback) {
-        callback.onSuccess(new ArrayList<User>());
+    public void query(String[] selection, String[] selectionArgs, final DataCallback<List<T>> callback) {
+        callback.onSuccess(new ArrayList<T>());
     }
+
 }

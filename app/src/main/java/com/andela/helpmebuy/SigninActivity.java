@@ -14,8 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.andela.helpmebuy.dal.Users;
-import com.andela.helpmebuy.dal.firebase.FirebaseUsers;
+import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FacebookAuth;
 import com.firebase.client.Firebase;
@@ -43,7 +42,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private Button signInButton;
 
-    private Users users;
+    private FirebaseCollection<User> users;
 
     private Firebase firebase;
 
@@ -77,7 +76,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         passwordText = (EditText) findViewById(R.id.password_text);
         signInButton = (Button) findViewById(R.id.signin_button);
 
-        users = new FirebaseUsers();
+        users = new FirebaseCollection<>(Constants.USERS, User.class);
 
         initializeFacebookAuth();
 
