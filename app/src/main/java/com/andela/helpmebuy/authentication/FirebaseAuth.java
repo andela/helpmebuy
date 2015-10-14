@@ -74,5 +74,6 @@ public class FirebaseAuth implements EmailPasswordAuth {
     }
 
     @Override
-    public void signOut() {}
+    public void signOut() {
+    }
 }

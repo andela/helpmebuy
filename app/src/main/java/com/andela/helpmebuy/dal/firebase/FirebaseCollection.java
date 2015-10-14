@@ -4,16 +4,12 @@ package com.andela.helpmebuy.dal.firebase;
 import com.andela.helpmebuy.dal.Collection;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.models.Model;
-import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 

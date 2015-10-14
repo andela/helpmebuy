@@ -285,7 +285,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 Snackbar.make(parentLayout, R.string.google_signin_cancel, Snackbar.LENGTH_LONG).show();
             }
         });
-
     }
 
     private void initializeEmailPasswordAuth() {

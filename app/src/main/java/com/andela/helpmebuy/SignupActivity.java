@@ -99,6 +99,8 @@ public class SignupActivity extends AppCompatActivity {
                     signupButton.setText(R.string.signup);
                     signupButton.setEnabled(true);
 
+                    user.setFullName(fullName);
+
                     saveUser(user);
 
                     Snackbar.make(parentLayout, "Created user ID = " + user.getId(), Snackbar.LENGTH_LONG).show();
