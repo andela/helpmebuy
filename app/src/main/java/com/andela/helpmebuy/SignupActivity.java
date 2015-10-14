@@ -5,7 +5,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,16 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.andela.helpmebuy.authentication.AuthCallback;
+import com.andela.helpmebuy.authentication.EmailPasswordAuth;
+import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-
-import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
-    public final String TAG = "SignupActivity";
 
     private Firebase firebase;
 
@@ -35,6 +33,8 @@ public class SignupActivity extends AppCompatActivity {
     private EditText passwordEditText;
 
     private Button signupButton;
+
+    private EmailPasswordAuth emailPasswordAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,8 @@ public class SignupActivity extends AppCompatActivity {
         emailEditText = (EditText) findViewById(R.id.email_text);
         passwordEditText = (EditText) findViewById(R.id.password_text);
         signupButton = (Button) findViewById(R.id.signup_button);
+
+        initializeEmailPasswordAuth();
     }
 
     @Override
@@ -97,42 +99,39 @@ public class SignupActivity extends AppCompatActivity {
             signupButton.setText(R.string.signing_up);
             signupButton.setEnabled(false);
 
-            firebase.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
-
+            emailPasswordAuth.signUp(email, password, new AuthCallback() {
                 @Override
-                public void onSuccess(Map<String, Object> result) {
-                    String id = result.get("uid").toString();
-
-                    Log.i(TAG, "Created user ID = " + id);
-
-                    User user = new User(id);
-                    user.setFullName(fullName);
-                    user.setEmail(email);
+                public void onSuccess(User user) {
+                    signupButton.setText(R.string.signup);
+                    signupButton.setEnabled(true);
 
                     saveUser(user);
 
-                    signupButton.setText(R.string.signup);
-                    signupButton.setEnabled(true);
-
-                    Snackbar.make(parentLayout, "Created user ID = " + id, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(parentLayout, "Created user ID = " + user.getId(), Snackbar.LENGTH_LONG).show();
                 }
 
                 @Override
-                public void onError(FirebaseError firebaseError) {
-                    Log.d(TAG, firebaseError.toString());
+                public void onCancel() {
+                    Snackbar.make(parentLayout, R.string.signUp_cancelled, Snackbar.LENGTH_LONG).show();
+                }
 
+                @Override
+                public void onError(String errorMessage) {
                     signupButton.setText(R.string.signup);
                     signupButton.setEnabled(true);
 
-                    String message = firebaseError.getMessage();
-                    if (message.contains("email")) {
-                        emailEditText.setError(message);
+                    if (errorMessage.contains("email")) {
+                        emailEditText.setError(errorMessage);
                     } else {
-                        Snackbar.make(parentLayout, firebaseError.getMessage(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
                     }
                 }
-            });
 
+                @Override
+                public void onFailure(Exception e) {
+                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
+            });
         }
     }
 
@@ -145,6 +144,10 @@ public class SignupActivity extends AppCompatActivity {
         FirebaseCollection<User> users = new FirebaseCollection<>(Constants.USERS, User.class);
 
         users.save(user, null);
+    }
+
+    public void initializeEmailPasswordAuth() {
+        emailPasswordAuth = new FirebaseAuth();
     }
 
 }

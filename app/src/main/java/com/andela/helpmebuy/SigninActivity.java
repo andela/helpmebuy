@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.andela.helpmebuy.authentication.EmailPasswordAuth;
+import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FacebookAuth;
@@ -58,6 +60,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private Button googleSignOutButton;
 
+    private EmailPasswordAuth emailPasswordAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +85,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         initializeFacebookAuth();
 
         initializeGoogleAuth();
+
+        initializeEmailPasswordAuth();
     }
 
     @Override
@@ -130,7 +136,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         return super.onOptionsItemSelected(item);
     }
 
-    public void signIn(View view){
+    public void signIn(View view) {
         final String email = emailText.getText().toString().trim();
 
         String password = passwordText.getText().toString();
@@ -147,29 +153,34 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
             final Activity that = this;
 
-            firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+            emailPasswordAuth.signIn(email, password, new AuthCallback() {
                 @Override
-                public void onAuthenticated(AuthData authData) {
-                    if ((boolean) authData.getProviderData().get("isTemporaryPassword")) {
+                public void onSuccess(User user) {
+                    Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
+
+                    signInButton.setText(R.string.signin);
+                    signInButton.setEnabled(true);
+                }
+
+                @Override
+                public void onCancel() {
+                    Snackbar.make(parentLayout, R.string.signIn_cancelled, Snackbar.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    if (errorMessage.equals(FirebaseAuth.TEMPORARY_PASSWORD)) {
                         AlertDialogHelper.createDialog(that).show();
 
                         signInButton.setEnabled(true);
-
                     } else {
-                        Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
-
-                        signInButton.setText(R.string.signin);
-                        signInButton.setEnabled(true);
+                        Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
-                public void onAuthenticationError(FirebaseError firebaseError) {
-                    Snackbar.make(parentLayout, firebaseError.getMessage(), Snackbar.LENGTH_LONG).show();
-
-                    signInButton.setText(R.string.signin);
-
-                    signInButton.setEnabled(true);
+                public void onFailure(Exception e) {
+                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             });
         }
@@ -282,5 +293,9 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
+    }
+
+    private void initializeEmailPasswordAuth() {
+        emailPasswordAuth = new FirebaseAuth();
     }
 }
