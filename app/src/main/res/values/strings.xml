@@ -43,13 +43,10 @@
     <string name="more">More</string>
     <string name="sign_out">Sign out</string>
     <string name="google_sign_out_successful">Google signout successful</string>
-<<<<<<< HEAD
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="change_password">Change Password</string>
-=======
     <string name="signIn_cancelled">SignIn Cancelled!</string>
     <string name="signUp_cancelled">SignUp Cancelled!</string>
->>>>>>> 650e9acac6b67364ca1229d3dfd6e0b8fba2ede0
 </resources>
 
