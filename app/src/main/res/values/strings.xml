@@ -43,5 +43,8 @@
     <string name="more">More</string>
     <string name="sign_out">Sign out</string>
     <string name="google_sign_out_successful">Google signout successful</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="change_password">Change Password</string>
 </resources>
 
