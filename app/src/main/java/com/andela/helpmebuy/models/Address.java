@@ -3,7 +3,7 @@ package com.andela.helpmebuy.models;
 /**
  * Represents a simple address.
  */
-public class Address {
+public class Address extends Model {
 
     /**
      * The city part of the address.

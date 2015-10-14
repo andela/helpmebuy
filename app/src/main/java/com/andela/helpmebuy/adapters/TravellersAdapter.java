@@ -12,18 +12,11 @@ import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.dal.DataCallback;
-import com.andela.helpmebuy.dal.Travels;
-import com.andela.helpmebuy.dal.Users;
-import com.andela.helpmebuy.dal.firebase.FirebaseTravels;
-import com.andela.helpmebuy.dal.firebase.FirebaseUsers;
+import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
 import com.andela.helpmebuy.utilities.Constants;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTimeZone;
@@ -39,12 +32,12 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
     private List<Travel> travels;
 
-    private Users users;
+    private FirebaseCollection<User> users;
 
     public TravellersAdapter(Context context) {
         this.context = context;
         this.travels = new ArrayList<>();
-        this.users = new FirebaseUsers();
+        this.users = new FirebaseCollection<>(Constants.USERS, User.class);
     }
 
     public TravellersAdapter(Context context, List<Travel> travels) {
