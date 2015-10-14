@@ -25,7 +25,6 @@ import com.andela.helpmebuy.authentication.GoogleAuth;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.AlertDialogHelper;
 import com.andela.helpmebuy.utilities.Constants;
-import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
 import com.firebase.client.FirebaseError;
@@ -48,15 +47,17 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private Firebase firebase;
 
-    private SignInButton googleSignInButton;
-
-    private Button googlePlusSignOut;
-
     private LinearLayout parentLayout;
 
-    private GoogleApiClient mGoogleApiClient;
+    private FacebookAuth facebookAuth;
 
-    private GoogleAuth googleClient;
+    private GoogleApiClient googleApiClient;
+
+    private GoogleAuth googleAuth;
+
+    private SignInButton googleSignInButton;
+
+    private Button googleSignOutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,86 +72,30 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
         firebase = new Firebase(Constants.FIREBASE_URL);
 
+        parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
         emailText = (EditText) findViewById(R.id.email_text);
         passwordText = (EditText) findViewById(R.id.password_text);
         signInButton = (Button) findViewById(R.id.signin_button);
 
-        googleSignInButton = (SignInButton) findViewById(R.id.googleplus_button);
-        googleSignInButton.setOnClickListener(this);
-
-        googlePlusSignOut = (Button) findViewById(R.id.googlePlusSignOut);
-
-        parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
-
         users = new FirebaseUsers();
 
-        LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+        initializeFacebookAuth();
 
-        FacebookAuth.onLoginButtonClicked(loginButton, new AuthCallback() {
-           @Override
-            public void onSuccess(User user) {
-                users.save(user, null);
-            }
-
-            @Override
-            public void onCancel() {
-                Snackbar.make(parentLayout, R.string.facebook_cancel, Snackbar.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
-            }
-        });
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Plus.API)
-                .addScope(new Scope(Scopes.PROFILE))
-                .addScope(new Scope(Scopes.EMAIL))
-                .build();
-
-        googleClient = new GoogleAuth(this, mGoogleApiClient, new AuthCallback() {
-            @Override
-            public void onSuccess(User user) {
-                users.save(user, null);
-
-                googlePlusSignOut.setVisibility(View.VISIBLE);
-                googleSignInButton.setVisibility((View.GONE));
-
-                googleSignInButton.setEnabled(false);
-            }
-
-            @Override
-            public void onError(String string) {}
-
-            @Override
-            public void onFailure(Exception e) {}
-
-            @Override
-            public void onCancel() {
-
-            }
-        });
+        initializeGoogleAuth();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        mGoogleApiClient.connect();
+        googleApiClient.connect();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        mGoogleApiClient.disconnect();
+        googleApiClient.disconnect();
     }
 
     @Override
@@ -160,11 +105,11 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         if (requestCode == GoogleAuth.RC_SIGN_IN) {
 
             if(resultCode != RESULT_OK) {
-                googleClient.setShouldResolve(false);
+                googleAuth.setShouldResolve(false);
             }
 
-            googleClient.setResolving(false);
-            mGoogleApiClient.connect();
+            googleAuth.setResolving(false);
+            googleApiClient.connect();
         }
     }
 
@@ -231,28 +176,36 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void signInWithFacebook(View view) {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+    public void logInWithFacebook(View view) {
+        facebookAuth.logIn();
+    }
+
+    public void signInWithGooglePlus() {
+        googleAuth.signIn();
+    }
+
+    public void signOutWithGooglePlus() {
+        googleAuth.signOut();
+
+        googleSignOutButton.setVisibility(View.INVISIBLE);
+
+
+        googleSignInButton.setEnabled(true);
+        googleSignInButton.setVisibility((View.VISIBLE));
+
+        Snackbar.make(parentLayout, R.string.google_sign_out_successful, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.googleplus_button) {
-            googleClient.signIn();
+        switch (v.getId()) {
+            case R.id.google_signin_button:
+                signInWithGooglePlus();
+                break;
 
-            Snackbar.make(parentLayout, R.string.signing_in, Snackbar.LENGTH_LONG).show();
-        }
-
-        if(v.getId() == R.id.googlePlusSignOut) {
-            googleClient.signOut();
-
-            googlePlusSignOut.setVisibility(View.INVISIBLE);
-            googleSignInButton.setVisibility((View.VISIBLE));
-
-            googleSignInButton.setEnabled(true);
-
-            Snackbar.make(parentLayout, "Signout successful", Snackbar.LENGTH_LONG).show();
-
+            case R.id.google_signout_button:
+                signOutWithGooglePlus();
+                break;
         }
     }
 
@@ -260,5 +213,75 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     public void resetPassword(View view) {
         Intent intent = new Intent(this, ForgotPasswordActivity.class);
         startActivity(intent);
+    }
+
+    private void initializeFacebookAuth() {
+        LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+
+        facebookLoginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+
+        facebookAuth = new FacebookAuth(this, facebookLoginButton, new AuthCallback() {
+            @Override
+            public void onSuccess(User user) {
+                users.save(user, null);
+            }
+
+            @Override
+            public void onCancel() {
+                Snackbar.make(parentLayout, R.string.facebook_login_cancelled, Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void initializeGoogleAuth() {
+        googleSignInButton = (SignInButton) findViewById(R.id.google_signin_button);
+        googleSignInButton.setOnClickListener(this);
+
+        googleSignOutButton = (Button) findViewById(R.id.google_signout_button);
+        googleSignOutButton.setOnClickListener(this);
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+            .addApi(Plus.API)
+            .addScope(new Scope(Scopes.PROFILE))
+            .addScope(new Scope(Scopes.EMAIL))
+            .build();
+
+        googleAuth = new GoogleAuth(this, googleApiClient, new AuthCallback() {
+            @Override
+            public void onSuccess(User user) {
+                users.save(user, null);
+
+                googleSignOutButton.setVisibility(View.VISIBLE);
+                googleSignInButton.setVisibility((View.GONE));
+
+                googleSignInButton.setEnabled(false);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancel() {
+                Snackbar.make(parentLayout, R.string.google_signin_cancel, Snackbar.LENGTH_LONG).show();
+            }
+        });
+
     }
 }
