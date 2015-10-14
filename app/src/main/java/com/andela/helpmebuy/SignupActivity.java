@@ -18,11 +18,8 @@ import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
-import com.firebase.client.Firebase;
 
 public class SignupActivity extends AppCompatActivity {
-
-    private Firebase firebase;
 
     private RelativeLayout parentLayout;
 
@@ -39,9 +36,6 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Firebase.setAndroidContext(this);
-        firebase = new Firebase(Constants.FIREBASE_URL);
 
         setContentView(R.layout.activity_signup);
 
@@ -86,13 +80,13 @@ public class SignupActivity extends AppCompatActivity {
         final String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
 
-        if (fullName.equals("")) {
+        if (fullName.isEmpty()) {
             fullNameEditText.setError(getResources().getString(R.string.fullname_missing));
 
-        } else if (email.equals("")) {
+        } else if (email.isEmpty()) {
             emailEditText.setError(getResources().getString(R.string.email_missing));
 
-        } else if (password.equals("")) {
+        } else if (password.isEmpty()) {
             passwordEditText.setError(getResources().getString(R.string.password_missing));
 
         } else {

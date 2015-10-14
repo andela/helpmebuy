@@ -19,7 +19,6 @@ import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FacebookAuth;
-import com.firebase.client.Firebase;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.andela.helpmebuy.authentication.GoogleAuth;
@@ -27,8 +26,6 @@ import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.AlertDialogHelper;
 import com.andela.helpmebuy.utilities.Constants;
 import com.facebook.login.widget.LoginButton;
-import com.firebase.client.AuthData;
-import com.firebase.client.FirebaseError;
 
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.Scope;
@@ -45,8 +42,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     private Button signInButton;
 
     private FirebaseCollection<User> users;
-
-    private Firebase firebase;
 
     private LinearLayout parentLayout;
 
@@ -72,8 +67,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         if (actionBar != null) {
             actionBar.hide();
         }
-
-        firebase = new Firebase(Constants.FIREBASE_URL);
 
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
         emailText = (EditText) findViewById(R.id.email_text);
@@ -141,10 +134,10 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
         String password = passwordText.getText().toString();
 
-        if (email.equals(""))
+        if (email.isEmpty())
             emailText.setError(getResources().getString(R.string.email_missing));
 
-        else if (password.equals(""))
+        else if (password.isEmpty())
             passwordText.setError(getResources().getString(R.string.password_missing));
         else {
 
@@ -190,11 +183,11 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         facebookAuth.logIn();
     }
 
-    public void signInWithGooglePlus() {
+    private void signInWithGooglePlus() {
         googleAuth.signIn();
     }
 
-    public void signOutWithGooglePlus() {
+    private void signOutWithGooglePlus() {
         googleAuth.signOut();
 
         googleSignOutButton.setVisibility(View.INVISIBLE);
