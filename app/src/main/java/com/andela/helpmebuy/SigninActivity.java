@@ -59,6 +59,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private Button googleSignOutButton;
 
+    public static String UserEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,6 +136,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     public void signIn(View view){
         final String email = emailText.getText().toString().trim();
 
+
         String password = passwordText.getText().toString();
 
         if (email.equals(""))
@@ -151,6 +154,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
                 @Override
                 public void onAuthenticated(AuthData authData) {
+                    UserEmail = email;
+
                     if ((boolean) authData.getProviderData().get("isTemporaryPassword")) {
                         AlertDialogHelper.createDialog(that).show();
 
