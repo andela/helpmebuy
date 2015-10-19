@@ -19,6 +19,7 @@ import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FacebookAuth;
+import com.andela.helpmebuy.utilities.UserUtilities;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.andela.helpmebuy.authentication.GoogleAuth;
@@ -60,6 +61,13 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (UserUtilities.currentUser(this) != null){
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+
+            finish();
+        }
 
         setContentView(R.layout.activity_signin);
 
@@ -153,6 +161,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                     signInButton.setText(R.string.signin);
                     signInButton.setEnabled(true);
+
+                    UserUtilities.saveUser(user, that);
                 }
 
                 @Override
@@ -168,12 +178,16 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                         signInButton.setEnabled(true);
                     } else {
                         Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
+
+                        signInButton.setEnabled(true);
                     }
                 }
 
                 @Override
                 public void onFailure(Exception e) {
                     Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+
+                    signInButton.setEnabled(true);
                 }
             });
         }
@@ -223,10 +237,14 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
         facebookLoginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
+        final Activity that = this;
+
         facebookAuth = new FacebookAuth(this, facebookLoginButton, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);
+
+                UserUtilities.saveUser(user, that);
             }
 
             @Override
@@ -259,10 +277,13 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             .addScope(new Scope(Scopes.EMAIL))
             .build();
 
+        final Activity that = this;
+
         googleAuth = new GoogleAuth(this, googleApiClient, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);
+                UserUtilities.saveUser(user, that);
 
                 googleSignOutButton.setVisibility(View.VISIBLE);
                 googleSignInButton.setVisibility((View.GONE));

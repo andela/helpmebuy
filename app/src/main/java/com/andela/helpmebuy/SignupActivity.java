@@ -1,5 +1,6 @@
 package com.andela.helpmebuy;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -18,6 +19,7 @@ import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.utilities.UserUtilities;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -36,6 +38,13 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (UserUtilities.currentUser(this) != null){
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+
+            finish();
+        }
 
         setContentView(R.layout.activity_signup);
 
@@ -93,6 +102,8 @@ public class SignupActivity extends AppCompatActivity {
             signupButton.setText(R.string.signing_up);
             signupButton.setEnabled(false);
 
+            final Activity that = this;
+
             emailPasswordAuth.signUp(email, password, new AuthCallback() {
                 @Override
                 public void onSuccess(User user) {
@@ -104,6 +115,8 @@ public class SignupActivity extends AppCompatActivity {
                     saveUser(user);
 
                     Snackbar.make(parentLayout, "Created user ID = " + user.getId(), Snackbar.LENGTH_LONG).show();
+
+                    UserUtilities.saveUser(user, that);
                 }
 
                 @Override
