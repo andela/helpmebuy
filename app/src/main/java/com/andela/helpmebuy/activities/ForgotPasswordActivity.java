@@ -1,4 +1,4 @@
-package com.andela.helpmebuy;
+package com.andela.helpmebuy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;

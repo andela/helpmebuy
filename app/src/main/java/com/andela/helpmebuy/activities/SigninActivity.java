@@ -1,4 +1,4 @@
-package com.andela.helpmebuy;
+package com.andela.helpmebuy.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.authentication.EmailPasswordAuth;
 import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;

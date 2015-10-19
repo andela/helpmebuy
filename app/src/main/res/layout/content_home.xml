@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_home" tools:context="com.andela.helpmebuy.HomeActivity">
+    tools:showIn="@layout/activity_home" tools:context="com.andela.helpmebuy.activities.HomeActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

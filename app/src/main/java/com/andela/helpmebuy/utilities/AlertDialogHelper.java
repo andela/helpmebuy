@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 
-import com.andela.helpmebuy.ChangePasswordActivity;
+import com.andela.helpmebuy.activities.ChangePasswordActivity;
 import com.andela.helpmebuy.R;
 
 public class AlertDialogHelper {
