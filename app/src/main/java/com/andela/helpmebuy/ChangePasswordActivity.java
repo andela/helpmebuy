@@ -18,11 +18,11 @@ import com.andela.helpmebuy.models.User;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
-    private Button change_password_buton;
+    private Button changePasswordButton;
     private EditText emailText;
-    private EditText old_password;
-    private EditText new_password;
-    private LinearLayout parent_layout;
+    private EditText oldPassword;
+    private EditText newPassword;
+    private LinearLayout parentLayout;
     private PasswordReset firebasePasswordReset;
 
     @Override
@@ -33,35 +33,35 @@ public class ChangePasswordActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         firebasePasswordReset = new FirebasePasswordReset();
-        parent_layout = (LinearLayout) findViewById(R.id.linear_layout);
-        old_password = (EditText) findViewById(R.id.old_password);
-        new_password = (EditText) findViewById(R.id.new_password);
+        parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
+        oldPassword = (EditText) findViewById(R.id.old_password);
+        newPassword = (EditText) findViewById(R.id.new_password);
         emailText = (EditText) findViewById(R.id.emailtext);
-        change_password_buton = (Button) findViewById(R.id.change_password);
+        changePasswordButton = (Button) findViewById(R.id.change_password);
 
     }
 
     public void changePassword(View view) {
         String email = emailText.getText().toString().trim();
-        String oldPassword = old_password.getText().toString();
-        String newPassword = new_password.getText().toString();
+        String oldPassword = this.oldPassword.getText().toString();
+        String newPassword = this.newPassword.getText().toString();
 
         if (email.isEmpty())
             emailText.setError(getResources().getString(R.string.email_missing));
         else if(oldPassword.equals("")) {
-            old_password.setError(getResources().getString(R.string.password_missing));
+            this.oldPassword.setError(getResources().getString(R.string.password_missing));
         }
         else if (newPassword.equals("")){
-            new_password.setError(getResources().getString(R.string.password_missing));
+            this.newPassword.setError(getResources().getString(R.string.password_missing));
         }
         else {
-            change_password_buton.setEnabled(false);
+            changePasswordButton.setEnabled(false);
 
             final Intent intent =new Intent(this, HomeActivity.class);
             firebasePasswordReset.changePassword(email, oldPassword, newPassword, new AuthCallback() {
                 @Override
                 public void onSuccess(User user) {
-                    Snackbar.make(parent_layout, "Password changed successfully", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(parentLayout, "Password changed successfully", Snackbar.LENGTH_LONG).show();
                     startActivity(intent);
                     finish();
                 }
@@ -73,12 +73,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(String errorMessage) {
-                   Snackbar.make(parent_layout, errorMessage.toString(), Snackbar.LENGTH_LONG).show();
+                   Snackbar.make(parentLayout, errorMessage.toString(), Snackbar.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onFailure(Exception e) {
-                    Snackbar.make(parent_layout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             });
         }
