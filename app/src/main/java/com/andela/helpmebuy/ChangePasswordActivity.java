@@ -39,7 +39,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     public void changePassword(View view) {
         String oldPassword = old_password.getText().toString();
         String newPassword = new_password.getText().toString();
-        String email = SigninActivity.UserEmail;
+
 
         if(oldPassword.equals("")) {
             old_password.setError(getResources().getString(R.string.password_missing));
@@ -49,7 +49,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }
         else {
             change_password_buton.setEnabled(false);
-            Snackbar.make(parent_layout,email,Snackbar.LENGTH_LONG).show();
+            //Snackbar.make(parent_layout,email,Snackbar.LENGTH_LONG).show();
 
             /*firebase.changePassword(email, oldPassword, newPassword, new Firebase.ResultHandler() {
                 @Override
