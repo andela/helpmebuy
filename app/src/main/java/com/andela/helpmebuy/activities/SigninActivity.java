@@ -138,6 +138,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     public void signIn(View view) {
         final String email = emailText.getText().toString().trim();
 
+
         String password = passwordText.getText().toString();
 
         if (email.isEmpty())
@@ -153,7 +154,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             final Activity that = this;
 
             emailPasswordAuth.signIn(email, password, new AuthCallback() {
-                @Override
+
                 public void onSuccess(User user) {
                     UserUtilities.saveUser(user, that);
 
@@ -280,6 +281,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);
+
                 UserUtilities.saveUser(user, that);
 
                 launchHomeActivity();
