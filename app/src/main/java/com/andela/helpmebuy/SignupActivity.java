@@ -39,11 +39,8 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (UserUtilities.currentUser(this) != null){
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
-
-            finish();
+        if (UserUtilities.currentUser(this) != null) {
+            launchHomeActivity();
         }
 
         setContentView(R.layout.activity_signup);
@@ -108,15 +105,14 @@ public class SignupActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(User user) {
                     signupButton.setText(R.string.signup);
-                    signupButton.setEnabled(true);
 
                     user.setFullName(fullName);
 
                     saveUser(user);
 
-                    Snackbar.make(parentLayout, "Created user ID = " + user.getId(), Snackbar.LENGTH_LONG).show();
-
                     UserUtilities.saveUser(user, that);
+
+                    launchHomeActivity();
                 }
 
                 @Override
@@ -159,4 +155,10 @@ public class SignupActivity extends AppCompatActivity {
         emailPasswordAuth = new FirebaseAuth();
     }
 
+    public void launchHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+
+        finish();
+    }
 }
