@@ -12,11 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.andela.helpmebuy.authentication.AuthCallback;
+import com.andela.helpmebuy.authentication.FirebasePasswordReset;
+import com.andela.helpmebuy.authentication.PasswordReset;
+import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
-public class ForgotPasswordActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends AppCompatActivity  {
     private Firebase firebase;
 
     private LinearLayout parentLayout;
@@ -24,6 +28,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private EditText emailEditText;
 
     private Button sendResetEmailButton;
+
+    private PasswordReset passwordReset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +45,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             actionBar.show();
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
+        passwordReset = new FirebasePasswordReset();
         sendResetEmailButton = (Button) findViewById(R.id.send_reset_email_button);
         emailEditText = (EditText) findViewById(R.id.send_reset_email_text);
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
+
+
     }
 
     @Override
@@ -56,6 +64,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     public void sendTemporaryPassword(View view) {
+
         final String email = emailEditText.getText().toString().trim();
 
         if (email.equals("")) {
@@ -64,22 +73,47 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             sendResetEmailButton.setEnabled(false);
 
             final Intent intent = new Intent(this, SigninActivity.class);
-
-            firebase.resetPassword(emailEditText.getText().toString(), new Firebase.ResultHandler() {
-
+            passwordReset.sendTemporaryPassword(email, new AuthCallback() {
                 @Override
-                public void onSuccess() {
+                public void onSuccess(User user) {
                     startActivity(intent);
                     finish();
                 }
 
                 @Override
-                public void onError(FirebaseError firebaseError) {
-                    Snackbar.make(parentLayout, "Failed: " + firebaseError.toString(), Snackbar.LENGTH_LONG).show();
+                public void onCancel() {
+
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Snackbar.make(parentLayout, "Failed: " + errorMessage.toString(), Snackbar.LENGTH_LONG).show();
 
                     sendResetEmailButton.setEnabled(true);
+
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             });
+
+//            firebase.resetPassword(emailEditText.getText().toString(), new Firebase.ResultHandler() {
+//
+//                @Override
+//                public void onSuccess() {
+//                    startActivity(intent);
+//                    finish();
+//                }
+//
+//                @Override
+//                public void onError(FirebaseError firebaseError) {
+//                    Snackbar.make(parentLayout, "Failed: " + firebaseError.toString(), Snackbar.LENGTH_LONG).show();
+//
+//                    sendResetEmailButton.setEnabled(true);
+//                }
+//            });
         }
     }
 

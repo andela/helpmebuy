@@ -55,11 +55,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private Button googleSignOutButton;
 
-<<<<<<< HEAD
-    public static String UserEmail;
-=======
     private EmailPasswordAuth emailPasswordAuth;
->>>>>>> 650e9acac6b67364ca1229d3dfd6e0b8fba2ede0
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,17 +149,10 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             final Activity that = this;
 
             emailPasswordAuth.signIn(email, password, new AuthCallback() {
-                @Override
-<<<<<<< HEAD
-                public void onAuthenticated(AuthData authData) {
-                    UserEmail = email;
 
-                    if ((boolean) authData.getProviderData().get("isTemporaryPassword")) {
-                        AlertDialogHelper.createDialog(that).show();
-=======
                 public void onSuccess(User user) {
                     Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
->>>>>>> 650e9acac6b67364ca1229d3dfd6e0b8fba2ede0
+
 
                     signInButton.setText(R.string.signin);
                     signInButton.setEnabled(true);
