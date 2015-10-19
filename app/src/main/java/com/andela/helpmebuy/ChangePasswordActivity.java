@@ -1,5 +1,6 @@
 package com.andela.helpmebuy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +14,6 @@ import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FirebasePasswordReset;
 import com.andela.helpmebuy.authentication.PasswordReset;
 import com.andela.helpmebuy.models.User;
-import com.andela.helpmebuy.utilities.Constants;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 
 
 public class ChangePasswordActivity extends AppCompatActivity {
@@ -24,7 +22,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText emailText;
     private EditText old_password;
     private EditText new_password;
-    private Firebase firebase;
     private LinearLayout parent_layout;
     private PasswordReset firebasePasswordReset;
 
@@ -35,12 +32,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        firebase = new Firebase(Constants.FIREBASE_URL);
         firebasePasswordReset = new FirebasePasswordReset();
         parent_layout = (LinearLayout) findViewById(R.id.linear_layout);
         old_password = (EditText) findViewById(R.id.old_password);
         new_password = (EditText) findViewById(R.id.new_password);
         emailText = (EditText) findViewById(R.id.emailtext);
+        change_password_buton = (Button) findViewById(R.id.change_password);
 
     }
 
@@ -59,10 +56,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }
         else {
             change_password_buton.setEnabled(false);
+            final Intent intent =new Intent(this, HomeActivity.class);
             firebasePasswordReset.changePassword(email, oldPassword, newPassword, new AuthCallback() {
                 @Override
                 public void onSuccess(User user) {
                     Snackbar.make(parent_layout, "Password changed successfully", Snackbar.LENGTH_LONG).show();
+                    startActivity(intent);
+                    finish();
                 }
 
                 @Override
@@ -81,19 +81,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }
             });
 
-            /*firebase.changePassword(email, oldPassword, newPassword, new Firebase.ResultHandler() {
-                @Override
-                public void onSuccess() {
-                    change_password_buton.setEnabled(true);
-                    Snackbar.make(parent_layout,"Password successfully changed",Snackbar.LENGTH_LONG).show();
-                }
 
-                @Override
-                public void onError(FirebaseError firebaseError) {
-                    change_password_buton.setEnabled(true);
-                    Snackbar.make(parent_layout,firebaseError.getMessage(),Snackbar.LENGTH_LONG).show();
-                }
-            });*/
         }
     }
 

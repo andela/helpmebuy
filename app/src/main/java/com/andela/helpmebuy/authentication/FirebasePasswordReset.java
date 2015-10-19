@@ -5,9 +5,6 @@ import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
-/**
- * Created by Daniel James on 10/14/2015.
- */
 public class FirebasePasswordReset implements PasswordReset {
     private Firebase firebase;
 
