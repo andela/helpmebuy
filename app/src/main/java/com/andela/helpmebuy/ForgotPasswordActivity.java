@@ -16,12 +16,8 @@ import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FirebasePasswordReset;
 import com.andela.helpmebuy.authentication.PasswordReset;
 import com.andela.helpmebuy.models.User;
-import com.andela.helpmebuy.utilities.Constants;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 
 public class ForgotPasswordActivity extends AppCompatActivity  {
-    private Firebase firebase;
 
     private LinearLayout parentLayout;
 
@@ -34,8 +30,6 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        firebase = new Firebase(Constants.FIREBASE_URL);
 
         setContentView(R.layout.activity_forgot_password);
 
@@ -98,22 +92,6 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
                     Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             });
-
-//            firebase.resetPassword(emailEditText.getText().toString(), new Firebase.ResultHandler() {
-//
-//                @Override
-//                public void onSuccess() {
-//                    startActivity(intent);
-//                    finish();
-//                }
-//
-//                @Override
-//                public void onError(FirebaseError firebaseError) {
-//                    Snackbar.make(parentLayout, "Failed: " + firebaseError.toString(), Snackbar.LENGTH_LONG).show();
-//
-//                    sendResetEmailButton.setEnabled(true);
-//                }
-//            });
         }
     }
 

@@ -15,7 +15,20 @@ public class FirebasePasswordReset implements PasswordReset {
         firebase = new Firebase(Constants.FIREBASE_URL);
     }
     @Override
-    public void changePassword(String email, String oldPassword, String newPassword, AuthCallback authCallback) {
+    public void changePassword(String email, String oldPassword, String newPassword, final AuthCallback authCallback) {
+        firebase.changePassword(email, oldPassword, newPassword, new Firebase.ResultHandler() {
+            @Override
+            public void onSuccess() {
+                User user = new User();
+                authCallback.onSuccess(user);
+            }
+
+            @Override
+            public void onError(FirebaseError firebaseError) {
+                authCallback.onError(firebaseError.getMessage());
+            }
+
+            });
 
     }
 
