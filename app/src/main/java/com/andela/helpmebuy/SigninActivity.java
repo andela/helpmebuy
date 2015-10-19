@@ -132,6 +132,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     public void signIn(View view) {
         final String email = emailText.getText().toString().trim();
 
+
         String password = passwordText.getText().toString();
 
         if (email.isEmpty())
@@ -147,9 +148,10 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             final Activity that = this;
 
             emailPasswordAuth.signIn(email, password, new AuthCallback() {
-                @Override
+
                 public void onSuccess(User user) {
                     Snackbar.make(parentLayout, R.string.success_login, Snackbar.LENGTH_LONG).show();
+
 
                     signInButton.setText(R.string.signin);
                     signInButton.setEnabled(true);
