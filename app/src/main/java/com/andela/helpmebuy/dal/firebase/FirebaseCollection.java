@@ -1,7 +1,7 @@
 package com.andela.helpmebuy.dal.firebase;
 
 
-import com.andela.helpmebuy.dal.Collection;
+import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.models.Model;
 import com.andela.helpmebuy.utilities.Constants;
@@ -13,7 +13,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirebaseCollection<T extends Model> implements Collection<T> {
+public class FirebaseCollection<T extends Model> implements DataCollection<T> {
 
     private Firebase firebase;
 

@@ -3,7 +3,7 @@ package com.andela.helpmebuy.dal;
 
 import java.util.List;
 
-public interface Collection<T> {
+public interface DataCollection<T> {
 
     void save(T data, DataCallback<T> callback);
 
