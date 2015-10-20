@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -100,8 +99,6 @@ public class SignupActivity extends AppCompatActivity {
             signupButton.setText(R.string.signing_up);
             signupButton.setEnabled(false);
 
-            final Activity that = this;
-
             emailPasswordAuth.signUp(email, password, new AuthCallback() {
                 @Override
                 public void onSuccess(User user) {
@@ -111,14 +108,13 @@ public class SignupActivity extends AppCompatActivity {
 
                     saveUser(user);
 
-                    CurrentUser.save(user, that);
+                    CurrentUser.save(user, SignupActivity.this);
 
                     launchHomeActivity();
                 }
 
                 @Override
                 public void onCancel() {
-                    Snackbar.make(parentLayout, R.string.signUp_cancelled, Snackbar.LENGTH_LONG).show();
                 }
 
                 @Override

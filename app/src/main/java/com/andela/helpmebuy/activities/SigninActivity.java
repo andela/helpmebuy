@@ -1,7 +1,6 @@
 package com.andela.helpmebuy.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -151,12 +150,10 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             signInButton.setText((R.string.signing_in));
             signInButton.setEnabled(false);
 
-            final Activity that = this;
-
             emailPasswordAuth.signIn(email, password, new AuthCallback() {
 
                 public void onSuccess(User user) {
-                    CurrentUser.save(user, that);
+                    CurrentUser.save(user, SigninActivity.this);
 
                     launchHomeActivity();
                 }
@@ -169,7 +166,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onError(String errorMessage) {
                     if (errorMessage.equals(FirebaseAuth.TEMPORARY_PASSWORD)) {
-                        AlertDialogHelper.createDialog(that).show();
+                        AlertDialogHelper.createDialog(SigninActivity.this).show();
 
                         signInButton.setEnabled(true);
                     } else {
@@ -233,21 +230,18 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
         facebookLoginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
-        final Activity that = this;
-
         facebookAuth = new FacebookAuth(this, facebookLoginButton, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);
 
-                CurrentUser.save(user, that);
+                CurrentUser.save(user, SigninActivity.this);
 
                 launchHomeActivity();
             }
 
             @Override
             public void onCancel() {
-                Snackbar.make(parentLayout, R.string.facebook_login_cancelled, Snackbar.LENGTH_LONG).show();
             }
 
             @Override
@@ -275,14 +269,12 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             .addScope(new Scope(Scopes.EMAIL))
             .build();
 
-        final Activity that = this;
-
         googleAuth = new GoogleAuth(this, googleApiClient, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);
 
-                CurrentUser.save(user, that);
+                CurrentUser.save(user, SigninActivity.this);
 
                 launchHomeActivity();
             }
@@ -299,7 +291,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onCancel() {
-                Snackbar.make(parentLayout, R.string.google_signin_cancel, Snackbar.LENGTH_LONG).show();
             }
         });
     }

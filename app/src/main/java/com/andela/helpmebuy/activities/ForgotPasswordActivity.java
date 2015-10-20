@@ -40,12 +40,11 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
             actionBar.show();
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
         passwordReset = new FirebasePasswordReset();
         sendResetEmailButton = (Button) findViewById(R.id.send_reset_email_button);
         emailEditText = (EditText) findViewById(R.id.send_reset_email_text);
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
-
-
     }
 
     @Override
@@ -62,12 +61,13 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
 
         final String email = emailEditText.getText().toString().trim();
 
-        if (email.equals("")) {
+        if (email.isEmpty()) {
             emailEditText.setError(getResources().getString(R.string.email_missing));
         } else {
             sendResetEmailButton.setEnabled(false);
 
             final Intent intent = new Intent(this, SigninActivity.class);
+
             passwordReset.sendTemporaryPassword(email, new AuthCallback() {
                 @Override
                 public void onSuccess(User user) {
@@ -77,7 +77,6 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
 
                 @Override
                 public void onCancel() {
-
                 }
 
                 @Override
@@ -85,7 +84,6 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
                     Snackbar.make(parentLayout, "Failed: " + errorMessage.toString(), Snackbar.LENGTH_LONG).show();
 
                     sendResetEmailButton.setEnabled(true);
-
                 }
 
                 @Override
@@ -95,5 +93,4 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
             });
         }
     }
-
 }
