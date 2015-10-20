@@ -21,10 +21,15 @@ import com.andela.helpmebuy.R;
 public class ChangePasswordActivity extends AppCompatActivity {
 
     private Button changePasswordButton;
+
     private EditText emailText;
+
     private EditText oldPassword;
+
     private EditText newPassword;
+
     private LinearLayout parentLayout;
+
     private PasswordReset firebasePasswordReset;
 
     @Override
@@ -40,7 +45,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newPassword = (EditText) findViewById(R.id.new_password);
         emailText = (EditText) findViewById(R.id.emailtext);
         changePasswordButton = (Button) findViewById(R.id.change_password);
-
     }
 
     public void changePassword(View view) {
@@ -50,16 +54,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         if (email.isEmpty())
             emailText.setError(getResources().getString(R.string.email_missing));
-        else if(oldPassword.equals("")) {
+        else if (oldPassword.isEmpty()) {
             this.oldPassword.setError(getResources().getString(R.string.password_missing));
         }
-        else if (newPassword.equals("")){
+        else if (newPassword.isEmpty()){
             this.newPassword.setError(getResources().getString(R.string.password_missing));
         }
         else {
             changePasswordButton.setEnabled(false);
 
-            final Intent intent =new Intent(this, HomeActivity.class);
+            final Intent intent = new Intent(this, HomeActivity.class);
+
             firebasePasswordReset.changePassword(email, oldPassword, newPassword, new AuthCallback() {
                 @Override
                 public void onSuccess(User user) {
@@ -70,7 +75,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancel() {
-
                 }
 
                 @Override
@@ -85,5 +89,4 @@ public class ChangePasswordActivity extends AppCompatActivity {
             });
         }
     }
-
 }

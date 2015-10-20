@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -20,7 +19,7 @@ import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
-import com.andela.helpmebuy.utilities.UserUtilities;
+import com.andela.helpmebuy.utilities.CurrentUser;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -40,7 +39,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (UserUtilities.currentUser(this) != null) {
+        if (CurrentUser.get(this) != null) {
             launchHomeActivity();
         }
 
@@ -100,8 +99,6 @@ public class SignupActivity extends AppCompatActivity {
             signupButton.setText(R.string.signing_up);
             signupButton.setEnabled(false);
 
-            final Activity that = this;
-
             emailPasswordAuth.signUp(email, password, new AuthCallback() {
                 @Override
                 public void onSuccess(User user) {
@@ -111,14 +108,13 @@ public class SignupActivity extends AppCompatActivity {
 
                     saveUser(user);
 
-                    UserUtilities.saveUser(user, that);
+                    CurrentUser.save(user, SignupActivity.this);
 
                     launchHomeActivity();
                 }
 
                 @Override
                 public void onCancel() {
-                    Snackbar.make(parentLayout, R.string.signUp_cancelled, Snackbar.LENGTH_LONG).show();
                 }
 
                 @Override

@@ -1,7 +1,6 @@
 package com.andela.helpmebuy.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -20,7 +19,7 @@ import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FacebookAuth;
-import com.andela.helpmebuy.utilities.UserUtilities;
+import com.andela.helpmebuy.utilities.CurrentUser;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.andela.helpmebuy.authentication.GoogleAuth;
@@ -63,7 +62,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (UserUtilities.currentUser(this) != null) {
+        if (CurrentUser.get(this) != null) {
             launchHomeActivity();
         }
 
@@ -138,7 +137,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     public void signIn(View view) {
         final String email = emailText.getText().toString().trim();
 
-
         String password = passwordText.getText().toString();
 
         if (email.isEmpty())
@@ -147,35 +145,34 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         else if (password.isEmpty())
             passwordText.setError(getResources().getString(R.string.password_missing));
         else {
-
             signInButton.setText((R.string.signing_in));
             signInButton.setEnabled(false);
-
-            final Activity that = this;
 
             emailPasswordAuth.signIn(email, password, new AuthCallback() {
 
                 public void onSuccess(User user) {
-                    UserUtilities.saveUser(user, that);
+                    CurrentUser.save(user, SigninActivity.this);
 
                     launchHomeActivity();
                 }
 
                 @Override
                 public void onCancel() {
-                    Snackbar.make(parentLayout, R.string.signIn_cancelled, Snackbar.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onError(String errorMessage) {
                     if (errorMessage.equals(FirebaseAuth.TEMPORARY_PASSWORD)) {
-                        AlertDialogHelper.createDialog(that).show();
+                        AlertDialogHelper.createDialog(SigninActivity.this).show();
 
                         signInButton.setEnabled(true);
+                        signInButton.setText((R.string.signin));
+
                     } else {
                         Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
 
                         signInButton.setEnabled(true);
+                        signInButton.setText((R.string.signin));
                     }
                 }
 
@@ -184,6 +181,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                     Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
 
                     signInButton.setEnabled(true);
+                    signInButton.setText((R.string.signin));
                 }
             });
         }
@@ -201,7 +199,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         googleAuth.signOut();
 
         googleSignOutButton.setVisibility(View.INVISIBLE);
-
 
         googleSignInButton.setEnabled(true);
         googleSignInButton.setVisibility((View.VISIBLE));
@@ -233,21 +230,18 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
         facebookLoginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
-        final Activity that = this;
-
         facebookAuth = new FacebookAuth(this, facebookLoginButton, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);
 
-                UserUtilities.saveUser(user, that);
+                CurrentUser.save(user, SigninActivity.this);
 
                 launchHomeActivity();
             }
 
             @Override
             public void onCancel() {
-                Snackbar.make(parentLayout, R.string.facebook_login_cancelled, Snackbar.LENGTH_LONG).show();
             }
 
             @Override
@@ -275,14 +269,12 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             .addScope(new Scope(Scopes.EMAIL))
             .build();
 
-        final Activity that = this;
-
         googleAuth = new GoogleAuth(this, googleApiClient, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);
 
-                UserUtilities.saveUser(user, that);
+                CurrentUser.save(user, SigninActivity.this);
 
                 launchHomeActivity();
             }
@@ -299,7 +291,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onCancel() {
-                Snackbar.make(parentLayout, R.string.google_signin_cancel, Snackbar.LENGTH_LONG).show();
             }
         });
     }

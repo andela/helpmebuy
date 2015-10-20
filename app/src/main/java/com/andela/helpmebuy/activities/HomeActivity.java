@@ -192,7 +192,6 @@ public class HomeActivity extends AppCompatActivity {
                 more(info);
                 return true;
 
-
             default:
                 return super.onContextItemSelected(item);
         }
@@ -233,5 +232,4 @@ public class HomeActivity extends AppCompatActivity {
 
         toolbar.addView(view);
     }
-
 }

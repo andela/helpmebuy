@@ -10,11 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-public class UserUtilities {
+public class CurrentUser {
 
     private final static String CURRENT_USER_KEY = "currentUserKey";
 
-    public static void saveUser(User user, Context context) {
+    public static void save(User user, Context context) {
         String value = toJson(user);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -26,7 +26,7 @@ public class UserUtilities {
         editor.commit();
     }
 
-    public static User currentUser(Context context) {
+    public static User get(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         return toUser(preferences.getString(CURRENT_USER_KEY, ""));
