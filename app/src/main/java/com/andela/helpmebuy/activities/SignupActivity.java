@@ -6,11 +6,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.andela.helpmebuy.R;
@@ -34,6 +36,8 @@ public class SignupActivity extends AppCompatActivity {
 
     private Button signupButton;
 
+    private ImageButton passwordVisibility;
+
     private EmailPasswordAuth emailPasswordAuth;
 
     @Override
@@ -56,6 +60,7 @@ public class SignupActivity extends AppCompatActivity {
         emailEditText = (EditText) findViewById(R.id.email_text);
         passwordEditText = (EditText) findViewById(R.id.password_text);
         signupButton = (Button) findViewById(R.id.signup_button);
+        passwordVisibility = (ImageButton) findViewById(R.id.password_visibility);
 
         initializeEmailPasswordAuth();
     }
@@ -155,11 +160,23 @@ public class SignupActivity extends AppCompatActivity {
     public void initializeEmailPasswordAuth() {
         emailPasswordAuth = new FirebaseAuth();
     }
-
     public void launchHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
 
         finish();
+    }
+
+    public void togglePasswordVisibility(View view) {
+        if(passwordEditText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+            passwordVisibility.setImageResource(R.drawable.ic_visibility_off_white_18dp);
+        }
+        else {
+            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            passwordVisibility.setImageResource(R.drawable.ic_visibility_white_18dp);
+        }
+        passwordEditText.selectAll();
+
     }
 }
