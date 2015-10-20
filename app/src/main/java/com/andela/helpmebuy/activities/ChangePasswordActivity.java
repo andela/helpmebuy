@@ -1,4 +1,4 @@
-package com.andela.helpmebuy;
+package com.andela.helpmebuy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import com.andela.helpmebuy.authentication.FirebasePasswordReset;
 import com.andela.helpmebuy.authentication.PasswordReset;
 import com.andela.helpmebuy.models.User;
 
+
+import com.andela.helpmebuy.R;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
