@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.activities;
 
-import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,7 @@ import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.CurrentUser;
+import com.andela.helpmebuy.utilities.Launcher;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -40,7 +40,8 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (CurrentUser.get(this) != null) {
-            launchHomeActivity();
+            Launcher.launchActivity(this, HomeActivity.class);
+            finish();
         }
 
         setContentView(R.layout.activity_signup);
@@ -110,7 +111,8 @@ public class SignupActivity extends AppCompatActivity {
 
                     CurrentUser.save(user, SignupActivity.this);
 
-                    launchHomeActivity();
+                    Launcher.launchActivity(SignupActivity.this, HomeActivity.class);
+                    finish();
                 }
 
                 @Override
@@ -138,8 +140,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void signIn(View view) {
-        Intent intent = new Intent(this, SigninActivity.class);
-        startActivity(intent);
+        Launcher.launchActivity(this, SigninActivity.class);
+        finish();
     }
 
     public void saveUser(User user) {
@@ -150,12 +152,5 @@ public class SignupActivity extends AppCompatActivity {
 
     public void initializeEmailPasswordAuth() {
         emailPasswordAuth = new FirebaseAuth();
-    }
-
-    public void launchHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-
-        finish();
     }
 }

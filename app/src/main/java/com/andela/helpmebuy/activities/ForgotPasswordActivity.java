@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
@@ -17,6 +16,7 @@ import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FirebasePasswordReset;
 import com.andela.helpmebuy.authentication.PasswordReset;
 import com.andela.helpmebuy.models.User;
+import com.andela.helpmebuy.utilities.Launcher;
 
 public class ForgotPasswordActivity extends AppCompatActivity  {
 
@@ -66,12 +66,10 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
         } else {
             sendResetEmailButton.setEnabled(false);
 
-            final Intent intent = new Intent(this, SigninActivity.class);
-
             passwordReset.sendTemporaryPassword(email, new AuthCallback() {
                 @Override
                 public void onSuccess(User user) {
-                    startActivity(intent);
+                    Launcher.launchActivity(ForgotPasswordActivity.this, SigninActivity.class);
                     finish();
                 }
 
@@ -81,7 +79,7 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
 
                 @Override
                 public void onError(String errorMessage) {
-                    Snackbar.make(parentLayout, "Failed: " + errorMessage.toString(), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(parentLayout, "Failed: " + errorMessage, Snackbar.LENGTH_LONG).show();
 
                     sendResetEmailButton.setEnabled(true);
                 }
