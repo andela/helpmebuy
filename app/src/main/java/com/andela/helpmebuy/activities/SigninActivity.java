@@ -137,7 +137,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     public void signIn(View view) {
         final String email = emailText.getText().toString().trim();
 
-
         String password = passwordText.getText().toString();
 
         if (email.isEmpty())
@@ -160,7 +159,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                 @Override
                 public void onCancel() {
-                    Snackbar.make(parentLayout, R.string.signIn_cancelled, Snackbar.LENGTH_LONG).show();
                 }
 
                 @Override
@@ -198,7 +196,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         googleAuth.signOut();
 
         googleSignOutButton.setVisibility(View.INVISIBLE);
-
 
         googleSignInButton.setEnabled(true);
         googleSignInButton.setVisibility((View.VISIBLE));
