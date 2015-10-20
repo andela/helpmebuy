@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +16,7 @@ import com.andela.helpmebuy.models.User;
 
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.utilities.Launcher;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
@@ -63,13 +63,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
         else {
             changePasswordButton.setEnabled(false);
 
-            final Intent intent = new Intent(this, HomeActivity.class);
-
             firebasePasswordReset.changePassword(email, oldPassword, newPassword, new AuthCallback() {
                 @Override
                 public void onSuccess(User user) {
                     Snackbar.make(parentLayout, "Password changed successfully", Snackbar.LENGTH_LONG).show();
-                    startActivity(intent);
+                    Launcher.launchActivity(ChangePasswordActivity.this, HomeActivity.class);
                     finish();
                 }
 
@@ -79,7 +77,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(String errorMessage) {
-                   Snackbar.make(parentLayout, errorMessage.toString(), Snackbar.LENGTH_LONG).show();
+                   Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
                 }
 
                 @Override

@@ -20,6 +20,7 @@ import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FacebookAuth;
 import com.andela.helpmebuy.utilities.CurrentUser;
+import com.andela.helpmebuy.utilities.Launcher;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.andela.helpmebuy.authentication.GoogleAuth;
@@ -63,7 +64,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
 
         if (CurrentUser.get(this) != null) {
-            launchHomeActivity();
+            Launcher.launchActivity(this, HomeActivity.class);
+            finish();
         }
 
         setContentView(R.layout.activity_signin);
@@ -153,7 +155,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 public void onSuccess(User user) {
                     CurrentUser.save(user, SigninActivity.this);
 
-                    launchHomeActivity();
+                    Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                    finish();
                 }
 
                 @Override
@@ -221,8 +224,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     @SuppressLint("NewApi")
     public void resetPassword(View view) {
-        Intent intent = new Intent(this, ForgotPasswordActivity.class);
-        startActivity(intent);
+        Launcher.launchActivity(this, ForgotPasswordActivity.class);
+        finish();
     }
 
     private void initializeFacebookAuth() {
@@ -237,7 +240,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                 CurrentUser.save(user, SigninActivity.this);
 
-                launchHomeActivity();
+                Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                finish();
             }
 
             @Override
@@ -276,7 +280,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                 CurrentUser.save(user, SigninActivity.this);
 
-                launchHomeActivity();
+                Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                finish();
             }
 
             @Override
@@ -297,12 +302,5 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private void initializeEmailPasswordAuth() {
         emailPasswordAuth = new FirebaseAuth();
-    }
-
-    public void launchHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-
-        finish();
     }
 }
