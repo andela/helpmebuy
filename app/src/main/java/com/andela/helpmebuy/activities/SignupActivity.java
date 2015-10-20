@@ -20,7 +20,7 @@ import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
-import com.andela.helpmebuy.utilities.UserUtilities;
+import com.andela.helpmebuy.utilities.CurrentUser;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -40,7 +40,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (UserUtilities.currentUser(this) != null) {
+        if (CurrentUser.get(this) != null) {
             launchHomeActivity();
         }
 
@@ -111,7 +111,7 @@ public class SignupActivity extends AppCompatActivity {
 
                     saveUser(user);
 
-                    UserUtilities.saveUser(user, that);
+                    CurrentUser.save(user, that);
 
                     launchHomeActivity();
                 }

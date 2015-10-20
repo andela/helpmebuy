@@ -20,7 +20,7 @@ import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FacebookAuth;
-import com.andela.helpmebuy.utilities.UserUtilities;
+import com.andela.helpmebuy.utilities.CurrentUser;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.andela.helpmebuy.authentication.GoogleAuth;
@@ -63,7 +63,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (UserUtilities.currentUser(this) != null) {
+        if (CurrentUser.get(this) != null) {
             launchHomeActivity();
         }
 
@@ -156,7 +156,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             emailPasswordAuth.signIn(email, password, new AuthCallback() {
 
                 public void onSuccess(User user) {
-                    UserUtilities.saveUser(user, that);
+                    CurrentUser.save(user, that);
 
                     launchHomeActivity();
                 }
@@ -240,7 +240,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             public void onSuccess(User user) {
                 users.save(user, null);
 
-                UserUtilities.saveUser(user, that);
+                CurrentUser.save(user, that);
 
                 launchHomeActivity();
             }
@@ -282,7 +282,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             public void onSuccess(User user) {
                 users.save(user, null);
 
-                UserUtilities.saveUser(user, that);
+                CurrentUser.save(user, that);
 
                 launchHomeActivity();
             }
