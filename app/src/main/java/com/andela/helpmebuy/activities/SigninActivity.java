@@ -145,7 +145,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         else if (password.isEmpty())
             passwordText.setError(getResources().getString(R.string.password_missing));
         else {
-
             signInButton.setText((R.string.signing_in));
             signInButton.setEnabled(false);
 
@@ -167,10 +166,13 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                         AlertDialogHelper.createDialog(SigninActivity.this).show();
 
                         signInButton.setEnabled(true);
+                        signInButton.setText((R.string.signin));
+
                     } else {
                         Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
 
                         signInButton.setEnabled(true);
+                        signInButton.setText((R.string.signin));
                     }
                 }
 
@@ -179,6 +181,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                     Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
 
                     signInButton.setEnabled(true);
+                    signInButton.setText((R.string.signin));
                 }
             });
         }
