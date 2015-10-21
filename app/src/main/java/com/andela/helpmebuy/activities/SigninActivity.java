@@ -21,6 +21,7 @@ import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FacebookAuth;
 import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.Launcher;
+import com.andela.helpmebuy.utilities.SoftKeyboard;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.andela.helpmebuy.authentication.GoogleAuth;
@@ -137,6 +138,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void signIn(View view) {
+        SoftKeyboard.hide(SigninActivity.this);
+
         final String email = emailText.getText().toString().trim();
 
         String password = passwordText.getText().toString();
