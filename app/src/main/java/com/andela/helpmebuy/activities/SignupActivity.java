@@ -22,6 +22,7 @@ import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.Launcher;
+import com.andela.helpmebuy.utilities.SoftKeyboard;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -85,6 +86,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void signUp(View view) {
+        SoftKeyboard.hide(SignupActivity.this);
+
         final String fullName = fullNameEditText.getText().toString().trim();
         final String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();

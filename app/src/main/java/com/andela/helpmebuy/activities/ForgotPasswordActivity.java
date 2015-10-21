@@ -17,6 +17,7 @@ import com.andela.helpmebuy.authentication.FirebasePasswordReset;
 import com.andela.helpmebuy.authentication.PasswordReset;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Launcher;
+import com.andela.helpmebuy.utilities.SoftKeyboard;
 
 public class ForgotPasswordActivity extends AppCompatActivity  {
 
@@ -58,6 +59,7 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
     }
 
     public void sendTemporaryPassword(View view) {
+        SoftKeyboard.hide(ForgotPasswordActivity.this);
 
         final String email = emailEditText.getText().toString().trim();
 

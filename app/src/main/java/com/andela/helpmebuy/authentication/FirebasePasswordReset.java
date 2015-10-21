@@ -25,7 +25,7 @@ public class FirebasePasswordReset implements PasswordReset {
                 authCallback.onError(firebaseError.getMessage());
             }
 
-            });
+        });
 
     }
 
