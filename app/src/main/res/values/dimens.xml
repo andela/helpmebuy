@@ -9,4 +9,5 @@
     <dimen name="profile_picture_margin_top">15dp</dimen>
     <dimen name="home_activity_drawer_header_height">220dp</dimen>
     <dimen name="user_location_layout_padding">5dp</dimen>
+    <dimen name="toggle_password_visibility_padding">10dp</dimen>
 </resources>
