@@ -40,7 +40,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        firebasePasswordReset = new FirebasePasswordReset();
+        firebasePasswordReset = new FirebasePasswordReset(this);
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
         oldPassword = (EditText) findViewById(R.id.old_password);
         newPassword = (EditText) findViewById(R.id.new_password);

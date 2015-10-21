@@ -156,6 +156,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void initializeEmailPasswordAuth() {
-        emailPasswordAuth = new FirebaseAuth();
+        emailPasswordAuth = new FirebaseAuth(this);
     }
 }

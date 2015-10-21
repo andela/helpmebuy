@@ -1,14 +1,21 @@
 package com.andela.helpmebuy.authentication;
 
+import android.app.Application;
+import android.content.Context;
+
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.utilities.FireBaseErrorHandler;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
-public class FirebasePasswordReset implements PasswordReset {
+public class FirebasePasswordReset  implements PasswordReset {
+
+    private Context context;
     private Firebase firebase;
 
-    public FirebasePasswordReset() {
+    public FirebasePasswordReset(Context context) {
+        this.context = context;
         firebase = new Firebase(Constants.FIREBASE_URL);
     }
     @Override
@@ -22,7 +29,7 @@ public class FirebasePasswordReset implements PasswordReset {
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                authCallback.onError(firebaseError.getMessage());
+                authCallback.onError(FireBaseErrorHandler.getErrorMessage(firebaseError, context));
             }
 
         });

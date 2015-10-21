@@ -42,7 +42,7 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        passwordReset = new FirebasePasswordReset();
+        passwordReset = new FirebasePasswordReset(this);
         sendResetEmailButton = (Button) findViewById(R.id.send_reset_email_button);
         emailEditText = (EditText) findViewById(R.id.send_reset_email_text);
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);

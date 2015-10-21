@@ -1,9 +1,14 @@
 package com.andela.helpmebuy.authentication;
 
+import android.app.Application;
+import android.content.Context;
+
+import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.utilities.FireBaseErrorHandler;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -13,9 +18,12 @@ import java.util.Map;
 public class FirebaseAuth implements EmailPasswordAuth {
     public static final String TEMPORARY_PASSWORD = "Temporary Password";
 
+
+    private Context context;
     private Firebase firebase;
 
-    public FirebaseAuth() {
+    public FirebaseAuth(Context context) {
+        this.context = context;
         firebase = new Firebase(Constants.FIREBASE_URL);
     }
 
@@ -46,7 +54,9 @@ public class FirebaseAuth implements EmailPasswordAuth {
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                callback.onError(firebaseError.getMessage());
+               // FireBaseErrorHandler.getErrorMessage(firebaseError,  FirebaseAuth.this)
+                callback.onError(FireBaseErrorHandler.getErrorMessage(firebaseError,context ));
+
             }
         });
 
@@ -67,7 +77,7 @@ public class FirebaseAuth implements EmailPasswordAuth {
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                callback.onError(firebaseError.getMessage());
+                callback.onError(FireBaseErrorHandler.getErrorMessage(firebaseError,context ));
             }
         });
 
