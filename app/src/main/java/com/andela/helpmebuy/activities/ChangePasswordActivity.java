@@ -17,6 +17,7 @@ import com.andela.helpmebuy.models.User;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.utilities.Launcher;
+import com.andela.helpmebuy.utilities.SoftKeyboard;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
@@ -48,6 +49,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     public void changePassword(View view) {
+        SoftKeyboard.hide(ChangePasswordActivity.this);
+
         String email = emailText.getText().toString().trim();
         String oldPassword = this.oldPassword.getText().toString();
         String newPassword = this.newPassword.getText().toString();
