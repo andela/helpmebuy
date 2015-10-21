@@ -36,8 +36,6 @@ public class SignupActivity extends AppCompatActivity {
 
     private Button signupButton;
 
-    private ImageButton passwordVisibility;
-
     private EmailPasswordAuth emailPasswordAuth;
 
     @Override
@@ -60,7 +58,6 @@ public class SignupActivity extends AppCompatActivity {
         emailEditText = (EditText) findViewById(R.id.email_text);
         passwordEditText = (EditText) findViewById(R.id.password_text);
         signupButton = (Button) findViewById(R.id.signup_button);
-        passwordVisibility = (ImageButton) findViewById(R.id.password_visibility);
 
         initializeEmailPasswordAuth();
     }
@@ -166,18 +163,5 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(intent);
 
         finish();
-    }
-
-    public void togglePasswordVisibility(View view) {
-        if(passwordEditText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-            passwordVisibility.setImageResource(R.drawable.ic_visibility_off_white_18dp);
-
-        } else {
-            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            passwordVisibility.setImageResource(R.drawable.ic_visibility_white_18dp);
-        }
-
-        passwordEditText.setSelection(passwordEditText.getText().length());
     }
 }

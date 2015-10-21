@@ -91,15 +91,15 @@
                     android:textCursorDrawable="@null"/>
             </android.support.design.widget.TextInputLayout>
 
-            <ImageButton
-                android:id="@+id/password_visibility"
+            <com.andela.helpmebuy.views.TogglePasswordVisibilityButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="@dimen/toggle_password_visibility_padding"
                 android:background="@drawable/toggle_password_visibility_state_list"
-                android:onClick="togglePasswordVisibility"
-                android:src="@drawable/ic_visibility_white_18dp" />
+                app:passwordEditText="@id/password_text"
+                app:passwordInvisibleImageResource="@drawable/ic_visibility_white_18dp"
+                app:passwordVisibleImageResource="@drawable/ic_visibility_off_white_18dp" />
 
         </LinearLayout>
 
