@@ -304,6 +304,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initializeEmailPasswordAuth() {
-        emailPasswordAuth = new FirebaseAuth();
+        emailPasswordAuth = new FirebaseAuth(this);
     }
 }
