@@ -160,6 +160,7 @@ public class SignupActivity extends AppCompatActivity {
     public void initializeEmailPasswordAuth() {
         emailPasswordAuth = new FirebaseAuth();
     }
+
     public void launchHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
@@ -169,14 +170,14 @@ public class SignupActivity extends AppCompatActivity {
 
     public void togglePasswordVisibility(View view) {
         if(passwordEditText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT);
             passwordVisibility.setImageResource(R.drawable.ic_visibility_off_white_18dp);
-        }
-        else {
+
+        } else {
             passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             passwordVisibility.setImageResource(R.drawable.ic_visibility_white_18dp);
         }
-        passwordEditText.selectAll();
 
+        passwordEditText.setSelection(passwordEditText.getText().length());
     }
 }
