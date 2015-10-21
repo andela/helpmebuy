@@ -65,24 +65,44 @@
                 android:textCursorDrawable="@null"/>
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintTextAppearance="@style/TextInputStyle"
-            android:layout_marginTop="10dp">
-            <EditText
-                android:id="@+id/password_text"
-                android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                app:hintTextAppearance="@style/TextInputStyle"
                 android:layout_marginTop="10dp"
-                android:ems="10"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:textColor="#ffffff"
-                android:textColorHint="#7fffffff"
-                android:textCursorDrawable="@null"/>
-        </android.support.design.widget.TextInputLayout>
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/password_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#7fffffff"
+                    android:textCursorDrawable="@null"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <com.andela.helpmebuy.views.TogglePasswordVisibilityButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/toggle_password_visibility_padding"
+                android:background="@drawable/toggle_password_visibility_state_list"
+                app:passwordEditText="@id/password_text"
+                app:passwordInvisibleImageResource="@drawable/ic_visibility_white_18dp"
+                app:passwordVisibleImageResource="@drawable/ic_visibility_off_white_18dp" />
+
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/signup_button"

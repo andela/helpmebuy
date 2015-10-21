@@ -40,24 +40,42 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextInputStyle">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/password_text"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="@string/password"
-            android:textColor="#ffffff"
-            android:textColorHint="#7fffffff"
-            android:inputType="textPassword"
-            android:textCursorDrawable="@null" />
+            android:layout_weight="1"
+            app:hintTextAppearance="@style/TextInputStyle">
+
+            <EditText
+                android:id="@+id/password_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="@string/password"
+                android:textColor="#ffffff"
+                android:textColorHint="#7fffffff"
+                android:inputType="textPassword"
+                android:textCursorDrawable="@null" />
 
 
-    </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout>
+
+        <com.andela.helpmebuy.views.TogglePasswordVisibilityButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/toggle_password_visibility_padding"
+            android:background="@drawable/toggle_password_visibility_state_list"
+            app:passwordEditText="@id/password_text"
+            app:passwordInvisibleImageResource="@drawable/ic_visibility_white_18dp"
+            app:passwordVisibleImageResource="@drawable/ic_visibility_off_white_18dp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/signin_button"
