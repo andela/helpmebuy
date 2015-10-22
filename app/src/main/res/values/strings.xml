@@ -52,7 +52,7 @@
     <string name="firebase_email_taken">The specified email already exists</string>
     <string name="firebase_email_invalid">The specified email is invalid</string>
     <string name="firebase_password_invalid">The specified password is invalid</string>
-    <string name="firebase_credentials_invalid">The specified credientials is invalid</string>
+    <string name="firebase_credentials_invalid">The specified credentials is invalid</string>
     <string name="firebase_network_error">Network Error</string>
     <string name="firebase_network_disconnected">Network Disconnected</string>
     <string name="firebase_unknown_error">Unknown Error, Try Again</string>

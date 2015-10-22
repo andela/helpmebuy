@@ -19,7 +19,7 @@ public class FireBaseErrorHandler {
                 errorMessage = context.getResources().getString(R.string.firebase_email_taken);
                 break;
             case FirebaseError.INVALID_EMAIL:
-                errorMessage = context.getResources().getString(R.string.firebase_password_invalid);
+                errorMessage = context.getResources().getString(R.string.firebase_email_invalid);
                 break;
             case FirebaseError.INVALID_PASSWORD:
                 errorMessage = context.getResources().getString(R.string.firebase_password_invalid);
