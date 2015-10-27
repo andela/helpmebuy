@@ -209,7 +209,6 @@ public class HomeActivity extends AppCompatActivity {
         Snackbar.make(parentLayout,"More clicked",Snackbar.LENGTH_LONG).show();
     }
 
-
     private int findIndex(Travel travel) {
         for (int i = 0, size = travels.size(); i < size; ++i) {
             if (travel.getId().equals(travels.get(i).getId())) {
@@ -231,5 +230,9 @@ public class HomeActivity extends AppCompatActivity {
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
 
         toolbar.addView(view);
+    }
+
+    public void changeLocation(View view) {
+
     }
 }
