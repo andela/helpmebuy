@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.andela.helpmebuy.Places;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FirebasePasswordReset;
 import com.andela.helpmebuy.authentication.PasswordReset;
@@ -46,6 +47,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newPassword = (EditText) findViewById(R.id.new_password);
         emailText = (EditText) findViewById(R.id.emailtext);
         changePasswordButton = (Button) findViewById(R.id.change_password);
+
     }
 
     public void changePassword(View view) {
@@ -90,4 +92,5 @@ public class ChangePasswordActivity extends AppCompatActivity {
             });
         }
     }
+
 }
