@@ -108,8 +108,7 @@ public class GoogleAuth implements GoogleApiClient.ConnectionCallbacks, GoogleAp
     }
 
     @Override
-    public void onConnectionSuspended(int status)
-        Log.d("blab", "QDFQD");
+    public void onConnectionSuspended(int status) {
     }
 
     public void setResolving(boolean resolving) {
