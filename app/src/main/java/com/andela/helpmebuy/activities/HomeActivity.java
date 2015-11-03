@@ -28,7 +28,9 @@ import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Travel;
+import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.ItemDivider;
 import com.firebase.client.Firebase;
 
