@@ -71,23 +71,35 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
         setContentView(R.layout.activity_signin);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
+        hideActionBar();
 
-        parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
-        emailText = (EditText) findViewById(R.id.email_text);
-        passwordText = (EditText) findViewById(R.id.password_text);
-        signInButton = (Button) findViewById(R.id.signin_button);
+        loadComponents();
 
-        users = new FirebaseCollection<>(Constants.USERS, User.class);
+        initializeUserscollection();
 
         initializeFacebookAuth();
 
         initializeGoogleAuth();
 
         initializeEmailPasswordAuth();
+    }
+
+    private void hideActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
+    }
+
+    private void loadComponents() {
+        parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
+        emailText = (EditText) findViewById(R.id.email_text);
+        passwordText = (EditText) findViewById(R.id.password_text);
+        signInButton = (Button) findViewById(R.id.signin_button);
+    }
+
+    private void initializeUserscollection()  {
+        users = new FirebaseCollection<>(Constants.USERS, User.class);
     }
 
     @Override
@@ -153,43 +165,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             signInButton.setText((R.string.signing_in));
             signInButton.setEnabled(false);
 
-            emailPasswordAuth.signIn(email, password, new AuthCallback() {
-
-                public void onSuccess(User user) {
-                    CurrentUser.save(user, SigninActivity.this);
-
-                    Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
-                    finish();
-                }
-
-                @Override
-                public void onCancel() {
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-                    if (errorMessage.equals(FirebaseAuth.TEMPORARY_PASSWORD)) {
-                        AlertDialogHelper.createDialog(SigninActivity.this).show();
-
-                        signInButton.setEnabled(true);
-                        signInButton.setText((R.string.signin));
-
-                    } else {
-                        Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
-
-                        signInButton.setEnabled(true);
-                        signInButton.setText((R.string.signin));
-                    }
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
-
-                    signInButton.setEnabled(true);
-                    signInButton.setText((R.string.signin));
-                }
-            });
+            signIn(email, password);
         }
     }
 
@@ -210,6 +186,46 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         googleSignInButton.setVisibility((View.VISIBLE));
 
         Snackbar.make(parentLayout, R.string.google_sign_out_successful, Snackbar.LENGTH_LONG).show();
+    }
+
+    private void signIn(String email, String password) {
+        emailPasswordAuth.signIn(email, password, new AuthCallback() {
+
+            public void onSuccess(User user) {
+                CurrentUser.save(user, SigninActivity.this);
+
+                Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                if (errorMessage.equals(FirebaseAuth.TEMPORARY_PASSWORD)) {
+                    AlertDialogHelper.createDialog(SigninActivity.this).show();
+
+                    signInButton.setEnabled(true);
+                    signInButton.setText((R.string.signin));
+
+                } else {
+                    Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
+
+                    signInButton.setEnabled(true);
+                    signInButton.setText((R.string.signin));
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+
+                signInButton.setEnabled(true);
+                signInButton.setText((R.string.signin));
+            }
+        });
     }
 
     @Override
