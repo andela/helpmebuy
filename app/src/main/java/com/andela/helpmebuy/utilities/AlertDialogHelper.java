@@ -13,7 +13,7 @@ import com.andela.helpmebuy.R;
 public class AlertDialogHelper {
 
     public static Dialog displayWarning(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = initializeBuilder(context);
 
         final Intent intent = new Intent(context, ChangePasswordActivity.class);
 
@@ -31,7 +31,7 @@ public class AlertDialogHelper {
     }
 
     public static Dialog listCountries(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = initializeBuilder(context);
 
         String[] location = {"sli"};
 
@@ -43,5 +43,13 @@ public class AlertDialogHelper {
         });
 
         return builder.create();
+    }
+
+    public static Dialog signInDialog(final Context context) {
+        AlertDialog.Builder builder = initializeBuilder(context);
+    }
+
+    private static  AlertDialog.Builder initializeBuilder(Context context) {
+        return new AlertDialog.Builder(context);
     }
 }
