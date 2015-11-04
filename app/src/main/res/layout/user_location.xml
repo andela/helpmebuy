@@ -15,7 +15,6 @@
         android:textColor="@color/primary_color"
         android:maxLines="1"
         android:ellipsize="marquee"
-        android:background="@drawable/user_location_state_list"/>
-
-
+        android:background="@drawable/user_location_state_list"
+        android:onClick="changeLocation"/>
 </LinearLayout>

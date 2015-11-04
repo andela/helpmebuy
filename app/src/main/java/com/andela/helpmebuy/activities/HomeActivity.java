@@ -1,4 +1,4 @@
-package com.andela.helpmebuy;
+package com.andela.helpmebuy.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -23,22 +23,22 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
+import com.andela.helpmebuy.dal.DataCallback;
+import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Travel;
+import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.ItemDivider;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     public final static String TAG = "HomeActivity";
-
-    private Firebase firebase;
 
     private RecyclerView travellersView;
 
@@ -58,6 +58,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private CoordinatorLayout parentLayout;
 
+    private FirebaseCollection<Travel> travelsCollection;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,6 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         Firebase.setAndroidContext(this);
-        firebase = new Firebase(Constants.FIREBASE_URL + "/" + Constants.TRAVELS);
 
         travels = new ArrayList<>();
 
@@ -140,13 +141,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadTravels() {
-        firebase.addValueEventListener(new ValueEventListener() {
+        travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
+
+        travelsCollection.getAll(new DataCallback<List<Travel>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Travel travel = snapshot.getValue(Travel.class);
-
+            public void onSuccess(List<Travel> data) {
+                for (Travel travel: data) {
                     int index = findIndex(travel);
 
                     if (index < 0) {
@@ -162,8 +162,8 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d(TAG, firebaseError.getMessage());
+            public void onError(String errorMessage) {
+                Log.d(TAG, errorMessage);
             }
         });
     }
@@ -194,7 +194,6 @@ public class HomeActivity extends AppCompatActivity {
                 more(info);
                 return true;
 
-
             default:
                 return super.onContextItemSelected(item);
         }
@@ -211,7 +210,6 @@ public class HomeActivity extends AppCompatActivity {
     private void more(AdapterView.AdapterContextMenuInfo info) {
         Snackbar.make(parentLayout,"More clicked",Snackbar.LENGTH_LONG).show();
     }
-
 
     private int findIndex(Travel travel) {
         for (int i = 0, size = travels.size(); i < size; ++i) {
@@ -236,4 +234,7 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.addView(view);
     }
 
+    public void changeLocation(View view) {
+
+    }
 }
