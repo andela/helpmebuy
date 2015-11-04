@@ -3,7 +3,6 @@ package com.andela.helpmebuy.authentication;
 import android.app.Activity;
 import android.content.IntentSender;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.andela.helpmebuy.models.User;
 import com.google.android.gms.common.ConnectionResult;

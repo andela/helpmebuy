@@ -2,6 +2,7 @@ package com.andela.helpmebuy.utilities;
 
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,8 +46,12 @@ public class AlertDialogHelper {
         return builder.create();
     }
 
-    public static Dialog signInDialog(final Context context) {
-        AlertDialog.Builder builder = initializeBuilder(context);
+    public static Dialog processDialog(final Context context) {
+        ProgressDialog processDialog = new ProgressDialog(context);
+
+        processDialog.setMessage("Signing in...");
+
+        return processDialog;
     }
 
     private static  AlertDialog.Builder initializeBuilder(Context context) {

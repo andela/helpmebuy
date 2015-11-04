@@ -183,6 +183,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private void signInWithGooglePlus() {
         googleAuth.signIn();
+        AlertDialogHelper.processDialog(SigninActivity.this).show();
     }
 
     private void signOutWithGooglePlus() {
