@@ -3,10 +3,13 @@ package com.andela.helpmebuy.authentication;
 import android.app.Activity;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.andela.helpmebuy.models.User;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
@@ -23,10 +26,17 @@ public class GoogleAuth implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
     private Activity activity;
 
-    public GoogleAuth(Activity activity, GoogleApiClient googleApiClient, AuthCallback callback) {
+    public GoogleAuth(Activity activity, AuthCallback callback) {
         this.activity = activity;
 
-        this.googleApiClient = googleApiClient;
+        this.googleApiClient = new GoogleApiClient.Builder(activity)
+                .addApi(Plus.API)
+                .addScope(new Scope(Scopes.PROFILE))
+                .addScope(new Scope(Scopes.EMAIL))
+                .addScope(new Scope(Scopes.PLUS_LOGIN))
+                .addScope(new Scope(Scopes.PLUS_ME))
+                .build();
+
         this.googleApiClient.registerConnectionCallbacks(this);
         this.googleApiClient.registerConnectionFailedListener(this);
 
@@ -34,6 +44,14 @@ public class GoogleAuth implements GoogleApiClient.ConnectionCallbacks, GoogleAp
 
         this.resolving = false;
         this.shouldResolve = false;
+    }
+
+    public void connect() {
+        googleApiClient.connect();
+    }
+
+    public void disconnect() {
+        googleApiClient.disconnect();
     }
 
     public void signIn() {
