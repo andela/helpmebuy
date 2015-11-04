@@ -2,6 +2,7 @@ package com.andela.helpmebuy.utilities;
 
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,8 +13,8 @@ import com.andela.helpmebuy.R;
 
 public class AlertDialogHelper {
 
-    public static Dialog createDialog(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    public static Dialog displayWarning(final Context context) {
+        AlertDialog.Builder builder = initializeBuilder(context);
 
         final Intent intent = new Intent(context, ChangePasswordActivity.class);
 
@@ -28,5 +29,32 @@ public class AlertDialogHelper {
         builder.setMessage(R.string.alert_dialog_message);
 
         return builder.create();
+    }
+
+    public static Dialog listCountries(final Context context) {
+        AlertDialog.Builder builder = initializeBuilder(context);
+
+        String[] location = {"sli"};
+
+        builder.setTitle(R.string.select_country);
+        builder.setSingleChoiceItems(location, -1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        return builder.create();
+    }
+
+    public static Dialog processDialog(final Context context) {
+        ProgressDialog processDialog = new ProgressDialog(context);
+
+        processDialog.setMessage("Signing in...");
+
+        return processDialog;
+    }
+
+    private static  AlertDialog.Builder initializeBuilder(Context context) {
+        return new AlertDialog.Builder(context);
     }
 }

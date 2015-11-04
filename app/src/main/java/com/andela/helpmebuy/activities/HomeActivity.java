@@ -28,7 +28,9 @@ import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Travel;
+import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.ItemDivider;
 import com.firebase.client.Firebase;
 
@@ -209,7 +211,6 @@ public class HomeActivity extends AppCompatActivity {
         Snackbar.make(parentLayout,"More clicked",Snackbar.LENGTH_LONG).show();
     }
 
-
     private int findIndex(Travel travel) {
         for (int i = 0, size = travels.size(); i < size; ++i) {
             if (travel.getId().equals(travels.get(i).getId())) {
@@ -231,5 +232,9 @@ public class HomeActivity extends AppCompatActivity {
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
 
         toolbar.addView(view);
+    }
+
+    public void changeLocation(View view) {
+
     }
 }

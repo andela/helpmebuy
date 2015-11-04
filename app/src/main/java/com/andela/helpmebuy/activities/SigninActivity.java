@@ -50,8 +50,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private FacebookAuth facebookAuth;
 
-    private GoogleApiClient googleApiClient;
-
     private GoogleAuth googleAuth;
 
     private SignInButton googleSignInButton;
@@ -91,20 +89,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        googleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        googleApiClient.disconnect();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -115,7 +99,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             }
 
             googleAuth.setResolving(false);
-            googleApiClient.connect();
+            googleAuth.connect();
         }
     }
 
@@ -169,7 +153,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onError(String errorMessage) {
                     if (errorMessage.equals(FirebaseAuth.TEMPORARY_PASSWORD)) {
-                        AlertDialogHelper.createDialog(SigninActivity.this).show();
+                        AlertDialogHelper.displayWarning(SigninActivity.this).show();
 
                         signInButton.setEnabled(true);
                         signInButton.setText((R.string.signin));
@@ -199,6 +183,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private void signInWithGooglePlus() {
         googleAuth.signIn();
+        AlertDialogHelper.processDialog(SigninActivity.this).show();
     }
 
     private void signOutWithGooglePlus() {
@@ -270,13 +255,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         googleSignOutButton = (Button) findViewById(R.id.google_signout_button);
         googleSignOutButton.setOnClickListener(this);
 
-        googleApiClient = new GoogleApiClient.Builder(this)
-            .addApi(Plus.API)
-            .addScope(new Scope(Scopes.PROFILE))
-            .addScope(new Scope(Scopes.EMAIL))
-            .build();
-
-        googleAuth = new GoogleAuth(this, googleApiClient, new AuthCallback() {
+        googleAuth = new GoogleAuth(this, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);
