@@ -67,6 +67,17 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_home);
 
+        addActionBar();
+
+        loadComponents();
+
+        initializeUserLocation();
+
+        loadTravels();
+
+    }
+
+    private void addActionBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -75,10 +86,10 @@ public class HomeActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
+    }
 
-        Firebase.setAndroidContext(this);
 
-        travels = new ArrayList<>();
+    private void loadComponents() {
 
         parentLayout = (CoordinatorLayout) findViewById(R.id.parent_layout);
 
@@ -93,15 +104,11 @@ public class HomeActivity extends AppCompatActivity {
         travellersView.addItemDecoration(new ItemDivider(this));
         registerForContextMenu(travellersView);
 
-        initializeUserLocation();
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         travellersView.setLayoutManager(layoutManager);
 
         adapter = new TravellersAdapter(this, travels);
         travellersView.setAdapter(adapter);
-
-        loadTravels();
     }
 
     @Override
@@ -141,12 +148,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadTravels() {
+        travels = new ArrayList<>();
+
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
 
         travelsCollection.getAll(new DataCallback<List<Travel>>() {
             @Override
             public void onSuccess(List<Travel> data) {
-                for (Travel travel: data) {
+                for (Travel travel : data) {
                     int index = findIndex(travel);
 
                     if (index < 0) {

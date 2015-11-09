@@ -32,7 +32,7 @@ public class CurrentUser {
         return toUser(preferences.getString(CURRENT_USER_KEY, ""));
     }
 
-    public static String toJson(User user){
+    private static String toJson(User user){
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -42,7 +42,7 @@ public class CurrentUser {
         }
     }
 
-    public static User toUser(String json) {
+    private static User toUser(String json) {
         if (json == null || json.isEmpty()) {
             return null;
         }

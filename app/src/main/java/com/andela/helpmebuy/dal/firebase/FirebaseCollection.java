@@ -21,7 +21,6 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
 
     private Class<T> type;
 
-    @SuppressWarnings("unchecked")
     public FirebaseCollection(String childName, Class<T> type) {
         this.firebase = new Firebase(Constants.FIREBASE_URL);
 

@@ -32,15 +32,11 @@ public class FacebookAuth {
         this.loginButton = button;
         this.callback = callback;
 
-        initialize();
+        onLoginButtonClicked(this.callback);
     }
 
     public void logIn() {
         LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
-    }
-
-    private void initialize() {
-        onLoginButtonClicked(callback);
     }
 
 

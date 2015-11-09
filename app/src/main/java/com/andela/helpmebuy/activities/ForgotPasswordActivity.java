@@ -68,29 +68,33 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
         } else {
             sendResetEmailButton.setEnabled(false);
 
-            passwordReset.sendTemporaryPassword(email, new AuthCallback() {
-                @Override
-                public void onSuccess(User user) {
-                    Launcher.launchActivity(ForgotPasswordActivity.this, SigninActivity.class);
-                    finish();
-                }
-
-                @Override
-                public void onCancel() {
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-                    Snackbar.make(parentLayout, "Failed: " + errorMessage, Snackbar.LENGTH_LONG).show();
-
-                    sendResetEmailButton.setEnabled(true);
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
-                }
-            });
+            sendTemporarypassword(email);
         }
+    }
+
+    private void sendTemporarypassword(String email) {
+        passwordReset.sendTemporaryPassword(email, new AuthCallback() {
+            @Override
+            public void onSuccess(User user) {
+                Launcher.launchActivity(ForgotPasswordActivity.this, SigninActivity.class);
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Snackbar.make(parentLayout, "Failed: " + errorMessage, Snackbar.LENGTH_LONG).show();
+
+                sendResetEmailButton.setEnabled(true);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 }
