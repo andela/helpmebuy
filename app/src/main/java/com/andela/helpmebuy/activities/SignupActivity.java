@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.andela.helpmebuy.Places;
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.EmailPasswordAuth;
@@ -53,6 +54,8 @@ public class SignupActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
+        Places places = new Places();
+        places.listOfCountries();
 
         parentLayout = (RelativeLayout) findViewById(R.id.background);
         fullNameEditText = (EditText) findViewById(R.id.fullName_text);
