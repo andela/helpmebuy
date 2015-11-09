@@ -60,7 +60,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 
         public ViewHolder(View view) {
             super(view);
-            locationView = (TextView) view;
+            locationView = (TextView) view.findViewById(R.id.current_location);
         }
     }
 
