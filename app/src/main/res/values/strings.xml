@@ -57,6 +57,7 @@
     <string name="firebase_network_disconnected">Network Disconnected</string>
     <string name="firebase_unknown_error">Unknown Error, Try Again</string>
     <string name="select_country">Select Location</string>
+    <string name="location_filter">Filter by location</string>
 
 </resources>
 
