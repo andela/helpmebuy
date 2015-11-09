@@ -190,7 +190,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onError(String errorMessage) {
                 if (errorMessage.equals(FirebaseAuth.TEMPORARY_PASSWORD)) {
-                    AlertDialogHelper.createDialog(SigninActivity.this).show();
+                    AlertDialogHelper.displayWarning(SigninActivity.this).show();
 
                     signInButton.setEnabled(true);
                     signInButton.setText((R.string.signin));
