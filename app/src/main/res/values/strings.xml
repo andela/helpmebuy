@@ -18,9 +18,22 @@
     <string name="signing_in">Signing in …</string>
     <string name="signin">Sign in</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="googleplus_error">Connection cannot be established</string>
+    <string name="googleplus_signout">User signed out</string>
+    <string name="title_activity_forgot_password">Forgot Password</string>
+    <string name="send_reset_email">Send Password Reset</string>
+    <string name="password_reset_instructions">Enter the email address you registered
+        with and we\'ll send you instructions on how to reset your password.</string>
+    <string name="reset_password_successful">Reset Password Successful! Check your Email.</string>
+    <string name="continue_button">Continue</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="alert_dialog_title">Reset Password</string>
+    <string name="alert_dialog_message">SignIn successful!\nWARNING: The password inputed will expire within the next 24
+    hours.\n\nClick on continue to change password</string>
     <string name="success_login">Login Successful</string>
-    <string name="facebook_success">Login Successful!</string>
-    <string name="facebook_cancel">Login Cancelled</string>
+    <string name="facebook_login_success">Login Successful!</string>
+    <string name="facebook_login_cancelled">Facebook login cancelled</string>
+    <string name="google_signin_cancel">Google sign cancelled</string>
     <string name="facebook_app_id">972224049482698</string>
     <string name="coming_from">"Coming from "</string>
     <string name="on">"On "</string>
@@ -28,5 +41,21 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="message">Message</string>
     <string name="more">More</string>
+    <string name="sign_out">Sign out</string>
+    <string name="google_sign_out_successful">Google signout successful</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="signIn_cancelled">SignIn Cancelled!</string>
+    <string name="signUp_cancelled">SignUp Cancelled!</string>
+    <string name="firebase_user_does_not_exist">The specified user does not exist</string>
+    <string name="firebase_email_taken">The specified email already exists</string>
+    <string name="firebase_email_invalid">The specified email is invalid</string>
+    <string name="firebase_password_invalid">The specified password is invalid</string>
+    <string name="firebase_credentials_invalid">The specified credentials is invalid</string>
+    <string name="firebase_network_error">Network Error</string>
+    <string name="firebase_network_disconnected">Network Disconnected</string>
+    <string name="firebase_unknown_error">Unknown Error, Try Again</string>
+
 </resources>
 

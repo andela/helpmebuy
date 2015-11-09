@@ -1,29 +1,30 @@
-package com.andela.helpmebuy;
+package com.andela.helpmebuy.activities;
 
-import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.authentication.AuthCallback;
+import com.andela.helpmebuy.authentication.EmailPasswordAuth;
+import com.andela.helpmebuy.authentication.FirebaseAuth;
+import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-
-import java.util.Map;
+import com.andela.helpmebuy.utilities.CurrentUser;
+import com.andela.helpmebuy.utilities.Launcher;
+import com.andela.helpmebuy.utilities.SoftKeyboard;
 
 public class SignupActivity extends AppCompatActivity {
-    public final String TAG = "SignupActivity";
-
-    private Firebase firebase;
 
     private RelativeLayout parentLayout;
 
@@ -35,20 +36,34 @@ public class SignupActivity extends AppCompatActivity {
 
     private Button signupButton;
 
+    private EmailPasswordAuth emailPasswordAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Firebase.setAndroidContext(this);
-        firebase = new Firebase(Constants.FIREBASE_URL);
+        if (CurrentUser.get(this) != null) {
+            Launcher.launchActivity(this, HomeActivity.class);
+            finish();
+        }
 
         setContentView(R.layout.activity_signup);
 
+        hideActionBar();
+
+        loadComponents();
+
+        initializeEmailPasswordAuth();
+    }
+
+    private void hideActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
+    }
 
+    private void loadComponents() {
         parentLayout = (RelativeLayout) findViewById(R.id.background);
         fullNameEditText = (EditText) findViewById(R.id.fullName_text);
         emailEditText = (EditText) findViewById(R.id.email_text);
@@ -79,76 +94,80 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void signUp(View view) {
+        SoftKeyboard.hide(SignupActivity.this);
+
         final String fullName = fullNameEditText.getText().toString().trim();
         final String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
 
-        if (fullName.equals("")) {
+        if (fullName.isEmpty()) {
             fullNameEditText.setError(getResources().getString(R.string.fullname_missing));
 
-        } else if (email.equals("")) {
+        } else if (email.isEmpty()) {
             emailEditText.setError(getResources().getString(R.string.email_missing));
 
-        } else if (password.equals("")) {
+        } else if (password.isEmpty()) {
             passwordEditText.setError(getResources().getString(R.string.password_missing));
 
         } else {
             signupButton.setText(R.string.signing_up);
             signupButton.setEnabled(false);
-
-            firebase.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
-
-                @Override
-                public void onSuccess(Map<String, Object> result) {
-                    String id = result.get("uid").toString();
-
-                    Log.i(TAG, "Created user ID = " + id);
-
-                    User user = new User(id);
-                    user.setFullName(fullName);
-                    user.setEmail(email);
-
-                    saveUser(user);
-
-                    signupButton.setText(R.string.signup);
-                    signupButton.setEnabled(true);
-
-                    Snackbar.make(parentLayout, "Created user ID = " + id, Snackbar.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onError(FirebaseError firebaseError) {
-                    Log.d(TAG, firebaseError.toString());
-
-                    signupButton.setText(R.string.signup);
-                    signupButton.setEnabled(true);
-
-                    String message = firebaseError.getMessage();
-                    if (message.contains("email")) {
-                        emailEditText.setError(message);
-                    } else {
-                        Snackbar.make(parentLayout, firebaseError.getMessage(), Snackbar.LENGTH_LONG).show();
-                    }
-                }
-            });
-
+            signUp(fullName,email,password);
         }
     }
 
+    private void signUp(final String fullName,String email,String password) {
+
+        emailPasswordAuth.signUp(email, password, new AuthCallback() {
+            @Override
+            public void onSuccess(User user) {
+                signupButton.setText(R.string.signup);
+
+                user.setFullName(fullName);
+
+                saveUser(user);
+
+                CurrentUser.save(user, SignupActivity.this);
+
+                Launcher.launchActivity(SignupActivity.this, HomeActivity.class);
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                signupButton.setText(R.string.signup);
+                signupButton.setEnabled(true);
+
+                if (errorMessage.contains("email")) {
+                    emailEditText.setError(errorMessage);
+                } else {
+                    Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
+
     public void signIn(View view) {
-        Intent intent = new Intent(this, SigninActivity.class);
-        startActivity(intent);
+        Launcher.launchActivity(this, SigninActivity.class);
+        finish();
     }
 
     public void saveUser(User user) {
-        firebase.child(Constants.USERS).child(user.getId()).setValue(user);
+        FirebaseCollection<User> users = new FirebaseCollection<>(Constants.USERS, User.class);
 
-//        Travel travel = new Travel("1");
-//        travel.setUserId(user.getId());
-//        travel.setDepartureDate(DateTime.now());
-//        travel.setDepartureAddress(new Address("Tokyo", "JAPAN"));
-//
-//        firebase.child(Constants.TRAVELS).child("travel-" + user.getId()).setValue(travel);
+        users.save(user, null);
     }
 
+    public void initializeEmailPasswordAuth() {
+        emailPasswordAuth = new FirebaseAuth(this);
+    }
 }

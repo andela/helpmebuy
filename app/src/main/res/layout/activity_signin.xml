@@ -11,13 +11,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.andela.helpmebuy.SigninActivity">
+    tools:context="com.andela.helpmebuy.activities.SigninActivity">
 
     <ImageView
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/helpmebuy2" />
 
     <android.support.design.widget.TextInputLayout
@@ -40,31 +40,49 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextInputStyle">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/password_text"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="@string/password"
-            android:textColor="#ffffff"
-            android:textColorHint="#7fffffff"
-            android:inputType="textPassword"
-            android:textCursorDrawable="@null" />
+            android:layout_weight="1"
+            app:hintTextAppearance="@style/TextInputStyle">
+
+            <EditText
+                android:id="@+id/password_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="@string/password"
+                android:textColor="#ffffff"
+                android:textColorHint="#7fffffff"
+                android:inputType="textPassword"
+                android:textCursorDrawable="@null" />
 
 
-    </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout>
+
+        <com.andela.helpmebuy.views.TogglePasswordVisibilityButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/toggle_password_visibility_padding"
+            android:background="@drawable/toggle_password_visibility_state_list"
+            app:passwordEditText="@id/password_text"
+            app:passwordInvisibleImageResource="@drawable/ic_visibility_white_18dp"
+            app:passwordVisibleImageResource="@drawable/ic_visibility_off_white_18dp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/signin_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:onClick="signIn"
         android:text="@string/signin"
         android:textStyle="bold"
@@ -75,14 +93,33 @@
         android:layout_height="wrap_content"
         android:text="@string/forgot_password"
         android:textColor="#ffffff"
-        style="?android:attr/borderlessButtonStyle"/>
+        style="?android:attr/borderlessButtonStyle"
+        android:onClick="resetPassword" />
 
    <com.facebook.login.widget.LoginButton
-       android:id="@+id/facebook_button"
+       android:id="@+id/facebook_login_button"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_gravity="center"
-       android:layout_marginTop="16dp"
-       android:onClick="signInWithFacebook"/>
+       android:layout_marginTop="5dp"
+       android:onClick="logInWithFacebook"/>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/google_signin_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/google_signout_button"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="@string/sign_out"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="#ffffff"
+        android:background="#d34836"
+        android:visibility="invisible"
+        android:layout_marginTop="15dp"
+        style="?android:attr/borderlessButtonStyle" />
 
 </LinearLayout>
