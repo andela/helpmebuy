@@ -12,4 +12,6 @@ public class Constants {
     public final static String COUNTRIES = "countries";
 
     public final static String REGIONS = "regions";
+
+    public final static String CITIES = "cities";
 }

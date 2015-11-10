@@ -16,9 +16,12 @@ import android.widget.LinearLayout;
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.authentication.EmailPasswordAuth;
 import com.andela.helpmebuy.authentication.FirebaseAuth;
+import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FacebookAuth;
+import com.andela.helpmebuy.locations.FirebaseRegions;
+import com.andela.helpmebuy.models.Region;
 import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
@@ -30,6 +33,9 @@ import com.andela.helpmebuy.utilities.Constants;
 import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SigninActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -63,7 +69,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         setContentView(R.layout.activity_signin);
-
+        
         hideActionBar();
 
         loadComponents();
