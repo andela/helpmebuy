@@ -2,6 +2,7 @@ package com.andela.helpmebuy.locations;
 
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
+import com.andela.helpmebuy.models.Region;
 import com.andela.helpmebuy.utilities.Constants;
 
 import java.util.List;

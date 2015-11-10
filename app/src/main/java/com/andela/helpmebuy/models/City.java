@@ -1,11 +1,5 @@
 package com.andela.helpmebuy.models;
 
-<<<<<<< HEAD
-/**
- * Created by Oluwatosin on 11/10/2015.
- */
-public class City {
-=======
 
 public class City extends Model {
 
@@ -41,5 +35,5 @@ public class City extends Model {
     public void setName(String name) {
         this.name = name;
     }
->>>>>>> feature-restructure-countries-data
+
 }
