@@ -56,40 +56,43 @@ public class ChangePasswordActivity extends AppCompatActivity {
         String oldPassword = this.oldPassword.getText().toString();
         String newPassword = this.newPassword.getText().toString();
 
-        if (email.isEmpty())
+        if (email.isEmpty()) {
             emailText.setError(getResources().getString(R.string.email_missing));
+        }
         else if (oldPassword.isEmpty()) {
             this.oldPassword.setError(getResources().getString(R.string.password_missing));
         }
-        else if (newPassword.isEmpty()){
+        else if (newPassword.isEmpty()) {
             this.newPassword.setError(getResources().getString(R.string.password_missing));
         }
         else {
             changePasswordButton.setEnabled(false);
-
-            firebasePasswordReset.changePassword(email, oldPassword, newPassword, new AuthCallback() {
-                @Override
-                public void onSuccess(User user) {
-                    Snackbar.make(parentLayout, "Password changed successfully", Snackbar.LENGTH_LONG).show();
-                    Launcher.launchActivity(ChangePasswordActivity.this, HomeActivity.class);
-                    finish();
-                }
-
-                @Override
-                public void onCancel() {
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-                   Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
-                }
-            });
+            resetPassword(email, oldPassword, newPassword);
         }
     }
 
+    private void resetPassword(String email, String oldPassword, String newPassword) {
+        firebasePasswordReset.changePassword(email, oldPassword, newPassword, new AuthCallback() {
+            @Override
+            public void onSuccess(User user) {
+                Snackbar.make(parentLayout, "Password changed successfully", Snackbar.LENGTH_LONG).show();
+                Launcher.launchActivity(ChangePasswordActivity.this, HomeActivity.class);
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
+    }
 }

@@ -19,7 +19,7 @@ public class FirebaseRegions extends FirebaseCollection<Region> {
         getAll(new DataCallback<List<Region>>() {
             @Override
             public void onSuccess(List<Region> data) {
-                
+
             }
 
             @Override

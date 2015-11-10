@@ -24,16 +24,11 @@ import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.andela.helpmebuy.authentication.GoogleAuth;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.AlertDialogHelper;
 import com.andela.helpmebuy.utilities.Constants;
 import com.facebook.login.widget.LoginButton;
-
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
 
 import java.util.Arrays;
 
@@ -50,8 +45,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     private LinearLayout parentLayout;
 
     private FacebookAuth facebookAuth;
-
-    private GoogleApiClient googleApiClient;
 
     private GoogleAuth googleAuth;
 
@@ -72,17 +65,11 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
         setContentView(R.layout.activity_signin);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
+        hideActionBar();
 
-        parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
-        emailText = (EditText) findViewById(R.id.email_text);
-        passwordText = (EditText) findViewById(R.id.password_text);
-        signInButton = (Button) findViewById(R.id.signin_button);
+        loadComponents();
 
-        users = new FirebaseCollection<>(Constants.USERS, User.class);
+        initializeUserscollection();
 
         initializeFacebookAuth();
 
@@ -91,18 +78,22 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         initializeEmailPasswordAuth();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        googleApiClient.connect();
+    private void hideActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+    private void loadComponents() {
+        parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
+        emailText = (EditText) findViewById(R.id.email_text);
+        passwordText = (EditText) findViewById(R.id.password_text);
+        signInButton = (Button) findViewById(R.id.signin_button);
+    }
 
-        googleApiClient.disconnect();
+    private void initializeUserscollection()  {
+        users = new FirebaseCollection<>(Constants.USERS, User.class);
     }
 
     @Override
@@ -116,7 +107,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             }
 
             googleAuth.setResolving(false);
-            googleApiClient.connect();
+            googleAuth.connect();
         }
     }
 
@@ -154,43 +145,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             signInButton.setText((R.string.signing_in));
             signInButton.setEnabled(false);
 
-            emailPasswordAuth.signIn(email, password, new AuthCallback() {
-
-                public void onSuccess(User user) {
-                    CurrentUser.save(user, SigninActivity.this);
-
-                    Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
-                    finish();
-                }
-
-                @Override
-                public void onCancel() {
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-                    if (errorMessage.equals(FirebaseAuth.TEMPORARY_PASSWORD)) {
-                        AlertDialogHelper.createDialog(SigninActivity.this).show();
-
-                        signInButton.setEnabled(true);
-                        signInButton.setText((R.string.signin));
-
-                    } else {
-                        Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
-
-                        signInButton.setEnabled(true);
-                        signInButton.setText((R.string.signin));
-                    }
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
-
-                    signInButton.setEnabled(true);
-                    signInButton.setText((R.string.signin));
-                }
-            });
+            signIn(email, password);
         }
     }
 
@@ -200,6 +155,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private void signInWithGooglePlus() {
         googleAuth.signIn();
+        AlertDialogHelper.processDialog(SigninActivity.this).show();
     }
 
     private void signOutWithGooglePlus() {
@@ -211,6 +167,46 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         googleSignInButton.setVisibility((View.VISIBLE));
 
         Snackbar.make(parentLayout, R.string.google_sign_out_successful, Snackbar.LENGTH_LONG).show();
+    }
+
+    private void signIn(String email, String password) {
+        emailPasswordAuth.signIn(email, password, new AuthCallback() {
+
+            public void onSuccess(User user) {
+                CurrentUser.save(user, SigninActivity.this);
+
+                Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                if (errorMessage.equals(FirebaseAuth.TEMPORARY_PASSWORD)) {
+                    AlertDialogHelper.displayWarning(SigninActivity.this).show();
+
+                    signInButton.setEnabled(true);
+                    signInButton.setText((R.string.signin));
+
+                } else {
+                    Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
+
+                    signInButton.setEnabled(true);
+                    signInButton.setText((R.string.signin));
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+
+                signInButton.setEnabled(true);
+                signInButton.setText((R.string.signin));
+            }
+        });
     }
 
     @Override
@@ -229,7 +225,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     @SuppressLint("NewApi")
     public void resetPassword(View view) {
         Places places= new Places();
-        places.getCountriesmap();
+        System.out.println(places.getCountriesMap());
 //        Launcher.launchActivity(this, ForgotPasswordActivity.class);
 //        finish();
     }
@@ -273,13 +269,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         googleSignOutButton = (Button) findViewById(R.id.google_signout_button);
         googleSignOutButton.setOnClickListener(this);
 
-        googleApiClient = new GoogleApiClient.Builder(this)
-            .addApi(Plus.API)
-            .addScope(new Scope(Scopes.PROFILE))
-            .addScope(new Scope(Scopes.EMAIL))
-            .build();
-
-        googleAuth = new GoogleAuth(this, googleApiClient, new AuthCallback() {
+        googleAuth = new GoogleAuth(this, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);

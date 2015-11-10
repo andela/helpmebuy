@@ -52,27 +52,26 @@ public class SignupActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_signup);
 
+        hideActionBar();
+
+        loadComponents();
+
+        initializeEmailPasswordAuth();
+    }
+
+    private void hideActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
-        ExecutorService service = Executors.newFixedThreadPool(2);
-        Future future = service.submit(new Runnable() {
-            @Override
-            public void run() {
-                Places places = new Places();
-                places.listOfCountries();
-            }
-        });
 
-
+    }
+    private void loadComponents() {
         parentLayout = (RelativeLayout) findViewById(R.id.background);
         fullNameEditText = (EditText) findViewById(R.id.fullName_text);
         emailEditText = (EditText) findViewById(R.id.email_text);
         passwordEditText = (EditText) findViewById(R.id.password_text);
         signupButton = (Button) findViewById(R.id.signup_button);
-
-        initializeEmailPasswordAuth();
     }
 
     @Override
@@ -116,44 +115,48 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             signupButton.setText(R.string.signing_up);
             signupButton.setEnabled(false);
-
-            emailPasswordAuth.signUp(email, password, new AuthCallback() {
-                @Override
-                public void onSuccess(User user) {
-                    signupButton.setText(R.string.signup);
-
-                    user.setFullName(fullName);
-
-                    saveUser(user);
-
-                    CurrentUser.save(user, SignupActivity.this);
-
-                    Launcher.launchActivity(SignupActivity.this, HomeActivity.class);
-                    finish();
-                }
-
-                @Override
-                public void onCancel() {
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-                    signupButton.setText(R.string.signup);
-                    signupButton.setEnabled(true);
-
-                    if (errorMessage.contains("email")) {
-                        emailEditText.setError(errorMessage);
-                    } else {
-                        Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
-                }
-            });
+            signUp(fullName,email,password);
         }
+    }
+
+    private void signUp(final String fullName,String email,String password) {
+
+        emailPasswordAuth.signUp(email, password, new AuthCallback() {
+            @Override
+            public void onSuccess(User user) {
+                signupButton.setText(R.string.signup);
+
+                user.setFullName(fullName);
+
+                saveUser(user);
+
+                CurrentUser.save(user, SignupActivity.this);
+
+                Launcher.launchActivity(SignupActivity.this, HomeActivity.class);
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                signupButton.setText(R.string.signup);
+                signupButton.setEnabled(true);
+
+                if (errorMessage.contains("email")) {
+                    emailEditText.setError(errorMessage);
+                } else {
+                    Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void signIn(View view) {
