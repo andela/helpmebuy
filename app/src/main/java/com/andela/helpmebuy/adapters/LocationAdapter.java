@@ -6,16 +6,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.utilities.CountryFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder>{
+public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> implements Filterable{
 
     private Context context;
     private List<String> locations;
@@ -64,5 +67,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         }
     }
 
+    public Filter getFilter() {
+        return null;
+    }
 
 }

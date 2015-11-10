@@ -3,6 +3,8 @@ package com.andela.helpmebuy.views;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,8 +41,25 @@ public class LocationView extends FrameLayout {
         adapter = new LocationAdapter(getContext(), locations);
 
         recyclerView.setAdapter(adapter);
+
     }
 
+    public void locationFilter() {
 
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+    }
 }
