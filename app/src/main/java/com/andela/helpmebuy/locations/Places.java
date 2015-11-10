@@ -1,4 +1,4 @@
-package com.andela.helpmebuy;
+package com.andela.helpmebuy.locations;
 
 
 import com.andela.helpmebuy.dal.DataCallback;
@@ -49,9 +49,4 @@ public class Places {
         return countrys;
     }
 
-//    public List<String> listOfRegions() {
-//        for (String key : countries.keySet()) {
-//            regions.
-//        }
-//    }
 }

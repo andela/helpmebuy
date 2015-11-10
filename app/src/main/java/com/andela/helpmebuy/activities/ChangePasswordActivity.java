@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.andela.helpmebuy.Places;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FirebasePasswordReset;
 import com.andela.helpmebuy.authentication.PasswordReset;

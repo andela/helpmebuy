@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.andela.helpmebuy.Places;
+import com.andela.helpmebuy.locations.Places;
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.authentication.EmailPasswordAuth;
 import com.andela.helpmebuy.authentication.FirebaseAuth;

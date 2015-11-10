@@ -4,16 +4,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import com.andela.helpmebuy.Places;
+import com.andela.helpmebuy.locations.Places;
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.EmailPasswordAuth;
@@ -24,6 +22,10 @@ import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -54,8 +56,15 @@ public class SignupActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        Places places = new Places();
-        places.listOfCountries();
+        ExecutorService service = Executors.newFixedThreadPool(2);
+        Future future = service.submit(new Runnable() {
+            @Override
+            public void run() {
+                Places places = new Places();
+                places.listOfCountries();
+            }
+        });
+
 
         parentLayout = (RelativeLayout) findViewById(R.id.background);
         fullNameEditText = (EditText) findViewById(R.id.fullName_text);
