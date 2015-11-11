@@ -8,4 +8,6 @@ public class Constants {
     public final static String USERS = "users";
 
     public final static String TRAVELS = "travels";
+
+    public final static String COUNTRIES = "countries";
 }

@@ -46,6 +46,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newPassword = (EditText) findViewById(R.id.new_password);
         emailText = (EditText) findViewById(R.id.emailtext);
         changePasswordButton = (Button) findViewById(R.id.change_password);
+
     }
 
     public void changePassword(View view) {
