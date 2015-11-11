@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.dal.firebase;
 
-
 import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.models.Model;

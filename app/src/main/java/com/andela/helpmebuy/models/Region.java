@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.models;
 
-
 public class Region extends Model {
 
     private String countryId;
@@ -25,4 +24,5 @@ public class Region extends Model {
     public void setName(String name) {
         this.name = name;
     }
+
 }
