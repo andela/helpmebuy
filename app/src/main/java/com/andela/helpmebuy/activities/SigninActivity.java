@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.andela.helpmebuy.locations.Places;
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.authentication.EmailPasswordAuth;
 import com.andela.helpmebuy.authentication.FirebaseAuth;
@@ -23,16 +24,11 @@ import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.andela.helpmebuy.authentication.GoogleAuth;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.AlertDialogHelper;
 import com.andela.helpmebuy.utilities.Constants;
 import com.facebook.login.widget.LoginButton;
-
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
 
 import java.util.Arrays;
 
@@ -228,8 +224,10 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     @SuppressLint("NewApi")
     public void resetPassword(View view) {
-        Launcher.launchActivity(this, ForgotPasswordActivity.class);
-        finish();
+        Places places= new Places();
+        System.out.println(places.getCountriesMap());
+//        Launcher.launchActivity(this, ForgotPasswordActivity.class);
+//        finish();
     }
 
     private void initializeFacebookAuth() {
