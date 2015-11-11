@@ -4,46 +4,47 @@ import android.widget.Filter;
 
 import com.andela.helpmebuy.adapters.LocationAdapter;
 import com.andela.helpmebuy.models.Country;
+import com.andela.helpmebuy.models.Location;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CountryFilter extends ModelFilter<Country> {
-    private final LocationAdapter adapter;
+public class LocationFilter<T extends Location> extends Filter {
+    private final LocationAdapter<T> adapter;
 
-    public CountryFilter(LocationAdapter adapter, List<Country> originalValue) {
-        super();
+    public LocationFilter(LocationAdapter<T> adapter) {
         this.adapter = adapter;
-        this.initialValue = originalValue;
-        this.filteredResult = new ArrayList<>();
     }
 
     @Override
     protected Filter.FilterResults performFiltering(CharSequence constraint) {
-        filteredResult.clear();
+        List<T> result = new ArrayList<>();
+
         final Filter.FilterResults filterResults = new Filter.FilterResults();
 
+        List<T> locations = adapter.getInitialLocations();
+
         if (constraint.length() == 0) {
-            filteredResult.addAll(initialValue);
+            result.addAll(locations);
         } else {
             final String filterPattern = constraint.toString().toLowerCase().trim();
 
-            for (final Country country : initialValue) {
-                if (country.getName().contains(filterPattern)) {
-                    filteredResult.add(country);
+            for (final T location: locations) {
+                if (location.getName().toLowerCase().startsWith(filterPattern)) {
+                    result.add(location);
                 }
             }
         }
-        filterResults.values = filteredResult;
-        filterResults.count = filteredResult.size();
+
+        filterResults.values = result;
+        filterResults.count = result.size();
 
         return filterResults;
     }
 
     @Override
     protected void publishResults(CharSequence constraint, FilterResults filterResults) {
-        filteredResult.clear();
-        filteredResult.addAll((ArrayList<Country>) filterResults.values);
+        adapter.setLocations((ArrayList<T>) filterResults.values);
         adapter.notifyDataSetChanged();
     }
 }

@@ -1,13 +1,11 @@
 package com.andela.helpmebuy.models;
 
 
-public class City extends Model {
+public class City extends Location {
 
     private String regionId;
 
     private String countryId;
-
-    private String name;
 
     public City() {
     }
@@ -27,13 +25,4 @@ public class City extends Model {
     public void setCountryId(String countryId) {
         this.countryId = countryId;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }

@@ -9,7 +9,7 @@ public class Constants {
 
     public final static String TRAVELS = "travels";
 
-    public final static String COUNTRIES = "countries";
+    public final static String COUNTRIES = "Countries";
 
     public final static String REGIONS = "regions";
 
