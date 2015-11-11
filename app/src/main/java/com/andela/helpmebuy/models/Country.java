@@ -1,19 +1,10 @@
 package com.andela.helpmebuy.models;
 
-import com.andela.helpmebuy.locations.Region;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Country extends Model {
+
     private String name;
 
-    private List<Region> states;
-
-    public Country(String name) {
-        this.name = name;
-
-        states = new ArrayList<>();
+    public Country() {
     }
 
     public String getName() {
@@ -22,13 +13,5 @@ public class Country extends Model {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Region> getStates() {
-        return states;
-    }
-
-    public void setStates(List<Region> states) {
-        this.states = states;
     }
 }

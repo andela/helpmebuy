@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.andela.helpmebuy.locations.Places;
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.authentication.EmailPasswordAuth;
 import com.andela.helpmebuy.authentication.FirebaseAuth;
@@ -224,10 +223,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     @SuppressLint("NewApi")
     public void resetPassword(View view) {
-        Places places= new Places();
-        System.out.println(places.getCountriesMap());
-//        Launcher.launchActivity(this, ForgotPasswordActivity.class);
-//        finish();
+        Launcher.launchActivity(this, ForgotPasswordActivity.class);
+        finish();
     }
 
     private void initializeFacebookAuth() {
