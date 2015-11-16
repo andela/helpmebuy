@@ -12,7 +12,7 @@
         android:textColorHint="@color/border_stroke"
         android:background="@drawable/rectangle_border"
         android:layout_marginBottom="20dp"
-        android:maxLines="1"/>
+        android:singleLine="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"

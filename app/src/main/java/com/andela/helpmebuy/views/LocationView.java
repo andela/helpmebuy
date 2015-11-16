@@ -31,7 +31,11 @@ public class LocationView<T extends Location> extends FrameLayout {
 
     private LocationFilter<T> filter;
 
-    public LocationView(Context context,AttributeSet attributeSet) {
+    public LocationView(Context context) {
+        this(context, null);
+    }
+
+    public LocationView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.location_view,this,false);

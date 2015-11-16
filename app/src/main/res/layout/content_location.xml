@@ -10,8 +10,9 @@
     tools:showIn="@layout/activity_location"
     tools:context="com.andela.helpmebuy.activities.LocationActivity">
 
-    <com.andela.helpmebuy.views.LocationView
-        android:id="@+id/location_view"
+    <Button
+        android:id="@+id/show_location_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </RelativeLayout>
