@@ -31,6 +31,8 @@ public class LocationView<T extends Location> extends FrameLayout {
 
     LocationFilter<T> filter;
 
+    OnLocationClickedListener listener;
+
     public LocationView(Context context,AttributeSet attributeSet) {
         super(context, attributeSet);
 
@@ -75,5 +77,13 @@ public class LocationView<T extends Location> extends FrameLayout {
         };
 
         return textWatcher;
+    }
+
+    public interface OnLocationClickedListener {
+        void onLocationClicked(Location location);
+    }
+
+    public void setOnLocationClickedListener(OnLocationClickedListener listener) {
+        this.listener = listener;
     }
 }

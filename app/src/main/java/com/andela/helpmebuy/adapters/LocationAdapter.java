@@ -5,13 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.models.Location;
-import com.andela.helpmebuy.utilities.LocationFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +60,7 @@ public class LocationAdapter<T extends Location> extends RecyclerView.Adapter<Lo
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.locationView.setText(locations.get(position).getName());
+        viewHolder.locationName.setText(locations.get(position).getName());
     }
 
     @Override
@@ -71,12 +69,19 @@ public class LocationAdapter<T extends Location> extends RecyclerView.Adapter<Lo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView locationView;
+        public LinearLayout location;
+        public TextView locationName;
 
         public ViewHolder(View view) {
             super(view);
-            locationView = (TextView) view.findViewById(R.id.current_location);
+            locationName = (TextView) view.findViewById(R.id.current_location);
+            location = (LinearLayout) view.findViewById(R.id.item_view);
+            location.setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View v) {
+
+                        }
+                    });
         }
     }
 
