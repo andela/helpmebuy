@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.models.Location;
+import com.andela.helpmebuy.views.LocationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,8 @@ public class LocationAdapter<T extends Location> extends RecyclerView.Adapter<Lo
     private List<T> initialLocations;
 
     private List<T> locations;
+
+    private LocationView.OnLocationClickedListener<T> listener;
 
     public LocationAdapter(Context context) {
         this.context = context;
@@ -59,7 +62,7 @@ public class LocationAdapter<T extends Location> extends RecyclerView.Adapter<Lo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(LocationAdapter.ViewHolder viewHolder, int position) {
         viewHolder.locationName.setText(locations.get(position).getName());
     }
 
@@ -68,21 +71,30 @@ public class LocationAdapter<T extends Location> extends RecyclerView.Adapter<Lo
         return locations.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout location;
         public TextView locationName;
 
         public ViewHolder(View view) {
             super(view);
+
             locationName = (TextView) view.findViewById(R.id.current_location);
             location = (LinearLayout) view.findViewById(R.id.item_view);
             location.setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
+                            int position = ViewHolder.this.getAdapterPosition();
 
+                            T location = LocationAdapter.this.locations.get(position);
+
+                            LocationAdapter.this.listener.onLocationClicked(location);
                         }
                     });
         }
+    }
+
+    public void setOnLocationClickedListener(LocationView.OnLocationClickedListener listener) {
+        this.listener = listener;
     }
 
 }

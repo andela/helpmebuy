@@ -1,8 +1,10 @@
 package com.andela.helpmebuy.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +37,22 @@ public class LocationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_location);
 
         countriesView = (LocationView<Country>) findViewById(R.id.location_view);
+
+        countriesView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Country>() {
+            @Override
+            public void onLocationClicked(Country country) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(LocationActivity.this);
+                builder.setMessage("You cliked on " + country.getName())
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                builder.create().show();
+            }
+        });
 
         FirebaseCountries countries = new FirebaseCountries();
         countries.getAll(new DataCallback<List<Country>>() {

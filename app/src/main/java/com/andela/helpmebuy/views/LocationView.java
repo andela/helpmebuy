@@ -23,15 +23,13 @@ import java.util.List;
 
 public class LocationView<T extends Location> extends FrameLayout {
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
-    LinearLayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
 
-    LocationAdapter<T> adapter;
+    private LocationAdapter<T> adapter;
 
-    LocationFilter<T> filter;
-
-    OnLocationClickedListener listener;
+    private LocationFilter<T> filter;
 
     public LocationView(Context context,AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -45,7 +43,7 @@ public class LocationView<T extends Location> extends FrameLayout {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new LocationAdapter<T>(getContext());
+        adapter = new LocationAdapter<>(getContext());
 
         recyclerView.setAdapter(adapter);
 
@@ -79,11 +77,11 @@ public class LocationView<T extends Location> extends FrameLayout {
         return textWatcher;
     }
 
-    public interface OnLocationClickedListener {
-        void onLocationClicked(Location location);
+    public interface OnLocationClickedListener<T extends Location> {
+        void onLocationClicked(T location);
     }
 
-    public void setOnLocationClickedListener(OnLocationClickedListener listener) {
-        this.listener = listener;
+    public void setOnLocationClickedListener(OnLocationClickedListener<T> listener) {
+        this.adapter.setOnLocationClickedListener(listener);
     }
 }
