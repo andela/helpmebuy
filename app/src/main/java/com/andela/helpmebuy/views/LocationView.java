@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.andela.helpmebuy.R;
@@ -22,6 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LocationView<T extends Location> extends FrameLayout {
+
+    private EditText editText;
 
     private RecyclerView recyclerView;
 
@@ -41,7 +44,10 @@ public class LocationView<T extends Location> extends FrameLayout {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.location_view,this,false);
         addView(view);
 
-        recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        editText = (EditText) findViewById(R.id.search_view);
+        editText.addTextChangedListener(locationFilter());
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(getContext());

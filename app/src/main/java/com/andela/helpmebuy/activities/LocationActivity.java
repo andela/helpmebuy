@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.activities;
 
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +9,7 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.dialogs.CountryPickerDialog;
 
 public class LocationActivity extends AppCompatActivity {
+
     private Button testButton;
 
     @Override
