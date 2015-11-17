@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.dialogs.CityPickerDialog;
 import com.andela.helpmebuy.dialogs.CountryPickerDialog;
 
 public class LocationActivity extends AppCompatActivity {
@@ -19,8 +20,10 @@ public class LocationActivity extends AppCompatActivity {
         testButton = (Button) findViewById(R.id.show_location_button);
         testButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
-                CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
-                countryPickerDialog.show(LocationActivity.this.getSupportFragmentManager(),"countries_picker");
+                //CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
+                //countryPickerDialog.show(LocationActivity.this.getSupportFragmentManager(),"countries_picker");
+                CityPickerDialog cityPickerDialog = new CityPickerDialog();
+                cityPickerDialog.show(LocationActivity.this.getSupportFragmentManager(),"cities_picker");
             }
         });
     }
