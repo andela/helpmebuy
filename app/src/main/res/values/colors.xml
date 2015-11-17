@@ -14,4 +14,6 @@
 
     <color name="toggle_password_visibility_color">@android:color/transparent</color>
     <color name="toggle_password_visibility_pressed_color">#61ffffff</color>
+    <color name="border_background">#F5F5F5</color>
+    <color name="border_stroke">#BDBDBD</color>
 </resources>

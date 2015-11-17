@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.dal.firebase;
 
-
 import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.models.Model;
@@ -11,6 +10,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class FirebaseCollection<T extends Model> implements DataCollection<T> {
@@ -80,8 +80,30 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
     }
 
     @Override
+    public void getMap(final DataCallback<LinkedHashMap<String, LinkedHashMap<String, List<String>>>> callback) {
+        firebase.child(childName)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        LinkedHashMap<String, LinkedHashMap<String, List<String>>> countries = new LinkedHashMap<String, LinkedHashMap<String, List<String>>>();
+                        for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                            countries.put("countries", new LinkedHashMap<String, List<String>>());
+                        }
+                        callback.onSuccess(countries);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+                        callback.onError(firebaseError.getMessage());
+                    }
+                });
+    }
+
+    @Override
     public void query(String[] selection, String[] selectionArgs, final DataCallback<List<T>> callback) {
         callback.onSuccess(new ArrayList<T>());
     }
+
+
 
 }
