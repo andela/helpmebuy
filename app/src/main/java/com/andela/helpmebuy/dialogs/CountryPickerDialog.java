@@ -17,8 +17,9 @@ import com.andela.helpmebuy.views.LocationView;
 
 import java.util.List;
 
-
 public class CountryPickerDialog extends DialogFragment {
+
+    public static final String COUNTRY_ID = "CountryId";
 
     private DataCollection<Country> countries;
 
