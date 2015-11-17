@@ -19,6 +19,7 @@ import java.util.List;
 
 
 public class CountryPickerDialog extends DialogFragment {
+    public final static String COUNTRY_ID = "CountryId";
 
     private DataCollection<Country> countries;
 
@@ -44,6 +45,17 @@ public class CountryPickerDialog extends DialogFragment {
 
     private void initializeCountriesView() {
         countriesView = new LocationView<>(getActivity());
+        countriesView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Country>() {
+            @Override
+            public void onLocationClicked(Country country) {
+                RegionPickerDialog dialog = new RegionPickerDialog();
+
+                Bundle arguments = new Bundle();
+                arguments.putString(COUNTRY_ID, country.getId());
+
+                dialog.show(getActivity().getSupportFragmentManager(), "regionpickerdialog");
+            }
+        });
 
         countries = new FirebaseCountries();
         countries.getAll(new DataCallback<List<Country>>() {
