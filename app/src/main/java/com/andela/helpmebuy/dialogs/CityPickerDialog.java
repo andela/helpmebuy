@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.dialogs;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 
@@ -57,5 +56,4 @@ public class CityPickerDialog extends DialogFragment {
             }
         });
     }
-
 }
