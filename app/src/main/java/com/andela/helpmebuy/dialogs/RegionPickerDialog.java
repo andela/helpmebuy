@@ -15,7 +15,7 @@ import com.andela.helpmebuy.views.LocationView;
 import java.util.List;
 
 public class RegionPickerDialog extends DialogFragment {
-    public static final String REGION_ID = "regionId";
+    public static final String REGION = "region";
 
     private LocationView<Region> regionsView;
 
@@ -46,7 +46,7 @@ public class RegionPickerDialog extends DialogFragment {
                 CityPickerDialog dialog = new CityPickerDialog();
 
                 Bundle arguments = new Bundle();
-                arguments.putString(REGION_ID, region.getId());
+                arguments.putParcelable(REGION, region);
 
                 dialog.setArguments(arguments);
                 dialog.show(getActivity().getSupportFragmentManager(), "citypickerdialog");
