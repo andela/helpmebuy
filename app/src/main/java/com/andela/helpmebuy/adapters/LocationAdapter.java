@@ -83,11 +83,13 @@ public class LocationAdapter<T extends Location> extends RecyclerView.Adapter<Lo
             location.setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
-                            int position = ViewHolder.this.getAdapterPosition();
+                            if (LocationAdapter.this.listener != null) {
+                                int position = ViewHolder.this.getAdapterPosition();
 
-                            T location = LocationAdapter.this.locations.get(position);
+                                T location = LocationAdapter.this.locations.get(position);
 
-                            LocationAdapter.this.listener.onLocationClicked(location);
+                                LocationAdapter.this.listener.onLocationClicked(location);
+                            }
                         }
                     });
         }

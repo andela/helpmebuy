@@ -4,7 +4,7 @@ package com.andela.helpmebuy.dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
+
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -19,13 +19,18 @@ import java.util.List;
 
 
 public class CountryPickerDialog extends DialogFragment {
-    private Activity activity;
 
     private DataCollection<Country> countries;
 
     private LocationView<Country> countriesView;
 
     public CountryPickerDialog() {
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
         initializeCountriesView();
     }
 
@@ -38,7 +43,7 @@ public class CountryPickerDialog extends DialogFragment {
     }
 
     private void initializeCountriesView() {
-        countriesView = new LocationView<>(activity);
+        countriesView = new LocationView<>(getActivity());
 
         countries = new FirebaseCountries();
         countries.getAll(new DataCallback<List<Country>>() {
