@@ -53,6 +53,8 @@ public class CountryPickerDialog extends DialogFragment {
                 Bundle arguments = new Bundle();
                 arguments.putString(COUNTRY_ID, country.getId());
 
+                dialog.setArguments(arguments);
+
                 dialog.show(getActivity().getSupportFragmentManager(), "regionpickerdialog");
             }
         });

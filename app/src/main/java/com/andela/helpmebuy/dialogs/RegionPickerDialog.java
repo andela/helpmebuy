@@ -48,6 +48,7 @@ public class RegionPickerDialog extends DialogFragment {
                 Bundle arguments = new Bundle();
                 arguments.putString(REGION_ID, region.getId());
 
+                dialog.setArguments(arguments);
                 dialog.show(getActivity().getSupportFragmentManager(), "citypickerdialog");
             }
         });
