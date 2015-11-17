@@ -39,8 +39,13 @@ public class RegionPickerDialog extends DialogFragment {
         String countryId = getArguments().getString(CountryPickerDialog.COUNTRY_ID);
 
         regionsView = new LocationView<>(getActivity());
-        DataCollection<Region> regions = new FirebaseRegions(countryId);
+        regionsView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Region>() {
+            @Override
+            public void onLocationClicked(Region region) {
 
+            }
+        });
+        DataCollection<Region> regions = new FirebaseRegions(countryId);
         regions.getAll(new DataCallback<List<Region>>() {
             @Override
             public void onSuccess(List<Region> data) {
