@@ -15,6 +15,7 @@ import com.andela.helpmebuy.views.LocationView;
 import java.util.List;
 
 public class RegionPickerDialog extends DialogFragment {
+    private static final String REGION_ID = "regionId";
 
     private LocationView<Region> regionsView;
 
@@ -42,7 +43,12 @@ public class RegionPickerDialog extends DialogFragment {
         regionsView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Region>() {
             @Override
             public void onLocationClicked(Region region) {
+                CityPickerDialog dialog = new CityPickerDialog();
 
+                Bundle arguments = new Bundle();
+                arguments.putString(REGION_ID, region.getId());
+
+                dialog.show(getActivity().getSupportFragmentManager(), "citypickerdialog");
             }
         });
         DataCollection<Region> regions = new FirebaseRegions(countryId);
