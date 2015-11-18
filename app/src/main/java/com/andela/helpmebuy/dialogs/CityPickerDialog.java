@@ -34,11 +34,20 @@ public class CityPickerDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder =  new AlertDialog.Builder(getActivity());
-
-        Region region = getArguments().getParcelable(RegionPickerDialog.REGION);
+        final Region region = getArguments().getParcelable(RegionPickerDialog.REGION);
         if (region != null) {
             builder.setTitle(region.getName());
         }
+
+        citiesView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<City>() {
+            public void onLocationClicked(City city) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                String cityName = city.getName();
+                String regionName = region.getName();
+                alertDialog.setMessage(cityName +", "+regionName);
+                alertDialog.show();
+            }
+        });
 
         builder.setView(citiesView);
         return builder.create();

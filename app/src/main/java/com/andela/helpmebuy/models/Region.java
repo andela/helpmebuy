@@ -44,4 +44,5 @@ public class Region extends Location implements Parcelable {
     public void setCountryId(String countryId) {
         this.countryId = countryId;
     }
+
 }
