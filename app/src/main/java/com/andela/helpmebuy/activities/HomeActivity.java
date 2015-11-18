@@ -29,19 +29,10 @@ import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.dialogs.CityPickerDialog;
-import com.andela.helpmebuy.dialogs.RegionPickerDialog;
-import com.andela.helpmebuy.models.City;
-import com.andela.helpmebuy.models.Country;
-import com.andela.helpmebuy.models.Region;
+import com.andela.helpmebuy.dialogs.CountryPickerDialog;
 import com.andela.helpmebuy.models.Travel;
-import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
-import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.ItemDivider;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -245,8 +236,7 @@ public class HomeActivity extends AppCompatActivity  {
 
 
         userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
-        userLocationTextView.setText(CityPickerDialog.userLocation);
-        //userLocationTextView.setText("Lagos, Nigeria");
+        userLocationTextView.setText("Lagos, Nigeria");
 
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
 
@@ -254,6 +244,8 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     public void changeLocation(View view) {
-
+        CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
+        countryPickerDialog.show(HomeActivity.this.getSupportFragmentManager(), "countries_picker");
+        userLocationTextView.setText(CityPickerDialog.userLocation);
     }
 }

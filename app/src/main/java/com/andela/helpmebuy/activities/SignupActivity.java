@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import com.andela.helpmebuy.locations.Places;
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.EmailPasswordAuth;
@@ -22,10 +21,6 @@ import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class SignupActivity extends AppCompatActivity {
 

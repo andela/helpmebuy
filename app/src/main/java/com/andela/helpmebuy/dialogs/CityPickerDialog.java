@@ -58,12 +58,6 @@ public class CityPickerDialog extends DialogFragment {
 
                 Launcher.launchActivity(getContext(), HomeActivity.class);
                 dismiss();
-
-
-
-
-
-
             }
 
         });

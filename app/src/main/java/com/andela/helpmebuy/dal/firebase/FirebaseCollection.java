@@ -103,7 +103,4 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
     public void query(String[] selection, String[] selectionArgs, final DataCallback<List<T>> callback) {
         callback.onSuccess(new ArrayList<T>());
     }
-
-
-
 }

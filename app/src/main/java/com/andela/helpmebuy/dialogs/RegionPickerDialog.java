@@ -35,19 +35,25 @@ public class RegionPickerDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(regionsView);
 
+        Country country = getArguments().getParcelable(CountryPickerDialog.COUNTRY);
+        if (country != null) {
+            builder.setTitle(country.getName());
+        }
+
         return builder.create();
     }
 
     private void initializeRegionsView() {
         final Country country = getArguments().getParcelable(CountryPickerDialog.COUNTRY);
-        String countryId = country.getId();
-        RegionPickerDialog regionPickerDialog = this;
+
         regionsView = new LocationView<>(getActivity());
         regionsView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Region>() {
             @Override
             public void onLocationClicked(Region region) {
                 CityPickerDialog dialog = new CityPickerDialog();
+
                 Bundle arguments = new Bundle();
+
                 arguments.putParcelable(REGION, region);
                 arguments.putParcelable(COUNTRY, country);
 
@@ -55,18 +61,19 @@ public class RegionPickerDialog extends DialogFragment {
                 dialog.show(getActivity().getSupportFragmentManager(), "citypickerdialog");
             }
         });
-        DataCollection<Region> regions = new FirebaseRegions(countryId);
-        regions.getAll(new DataCallback<List<Region>>() {
-            @Override
-            public void onSuccess(List<Region> data) {
-                regionsView.setLocations(data);
-            }
 
-            @Override
-            public void onError(String errorMessage) {
-            }
-        });
+        if (country != null) {
+            DataCollection<Region> regions = new FirebaseRegions(country.getId());
+            regions.getAll(new DataCallback<List<Region>>() {
+                @Override
+                public void onSuccess(List<Region> data) {
+                    regionsView.setLocations(data);
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                }
+            });
+        }
     }
-
-
 }
