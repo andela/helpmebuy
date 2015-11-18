@@ -51,7 +51,7 @@ public class CountryPickerDialog extends DialogFragment {
                 RegionPickerDialog dialog = new RegionPickerDialog();
 
                 Bundle arguments = new Bundle();
-                arguments.putString(COUNTRY_ID, country.getId());
+                arguments.putParcelable(COUNTRY_ID, country);
 
                 dialog.setArguments(arguments);
 
