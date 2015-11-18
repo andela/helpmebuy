@@ -27,6 +27,7 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
+import com.andela.helpmebuy.dialogs.CountryPickerDialog;
 import com.andela.helpmebuy.models.City;
 import com.andela.helpmebuy.models.Country;
 import com.andela.helpmebuy.models.Region;
@@ -249,6 +250,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void changeLocation(View view) {
-
+        CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
+        countryPickerDialog.show(HomeActivity.this.getSupportFragmentManager(), "countries_picker");
     }
 }
