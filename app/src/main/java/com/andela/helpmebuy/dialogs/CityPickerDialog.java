@@ -59,6 +59,7 @@ public class CityPickerDialog extends DialogFragment {
 
         if (region != null) {
             citiesView = new LocationView<>(getActivity());
+
             cities = new FirebaseCities(region.getId());
 
             cities.getAll(new DataCallback<List<City>>() {
