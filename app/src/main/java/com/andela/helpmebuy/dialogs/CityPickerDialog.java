@@ -11,6 +11,7 @@ import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.locations.FirebaseCities;
 import com.andela.helpmebuy.models.City;
+import com.andela.helpmebuy.models.Region;
 import com.andela.helpmebuy.views.LocationView;
 
 import java.util.List;
@@ -33,27 +34,35 @@ public class CityPickerDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder =  new AlertDialog.Builder(getActivity());
+
+        Region region = getArguments().getParcelable(RegionPickerDialog.REGION);
+        if (region != null) {
+            builder.setTitle(region.getName());
+        }
+
         builder.setView(citiesView);
         return builder.create();
     }
 
 
     private void initializeCitiesView() {
-        String regionId = getArguments().getString(RegionPickerDialog.REGION_ID);
+        Region region = getArguments().getParcelable(RegionPickerDialog.REGION);
 
-        citiesView = new LocationView<City>(getActivity());
-        cities = new FirebaseCities(regionId);
+        if (region != null) {
+            citiesView = new LocationView<>(getActivity());
+            cities = new FirebaseCities(region.getId());
 
-        cities.getAll(new DataCallback<List<City>>() {
-            @Override
-            public void onSuccess(List<City> data) {
-                citiesView.setLocations(data);
-            }
+            cities.getAll(new DataCallback<List<City>>() {
+                @Override
+                public void onSuccess(List<City> data) {
+                    citiesView.setLocations(data);
+                }
 
-            @Override
-            public void onError(String errorMessage) {
+                @Override
+                public void onError(String errorMessage) {
 
-            }
-        });
+                }
+            });
+        }
     }
 }

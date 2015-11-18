@@ -39,4 +39,5 @@ public class Country extends Location implements Parcelable{
         dest.writeString(getId());
         dest.writeString(getName());
     }
+
 }
