@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.andela.helpmebuy.R;
-import com.andela.helpmebuy.dialogs.CityPickerDialog;
 import com.andela.helpmebuy.dialogs.CountryPickerDialog;
 
 public class LocationActivity extends AppCompatActivity {
