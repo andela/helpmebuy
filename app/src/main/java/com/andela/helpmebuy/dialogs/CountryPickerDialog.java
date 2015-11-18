@@ -52,7 +52,7 @@ public class CountryPickerDialog extends DialogFragment {
 
                 Bundle arguments = new Bundle();
 
-                arguments.putString(COUNTRY, "country");
+                arguments.putParcelable(COUNTRY, country);
 
                 dialog.setArguments(arguments);
 
