@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.models;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -33,7 +32,6 @@ public class City extends Location implements Parcelable {
                     city.setName(parcel.readString());
                     city.setRegionId(parcel.readString());
                     city.setCountryId(parcel.readString());
-
                     return city;
                 }
 

@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.locations.FirebaseRegions;
+import com.andela.helpmebuy.models.Country;
 import com.andela.helpmebuy.models.Region;
 import com.andela.helpmebuy.views.LocationView;
 
@@ -37,7 +38,8 @@ public class RegionPickerDialog extends DialogFragment {
     }
 
     private void initializeRegionsView() {
-        String countryId = getArguments().getString(CountryPickerDialog.COUNTRY_ID);
+        Country country = getArguments().getParcelable(CountryPickerDialog.COUNTRY_ID);
+        String countryId = country.getId();
 
         regionsView = new LocationView<>(getActivity());
         regionsView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Region>() {
