@@ -37,7 +37,7 @@ public class RegionPickerDialog extends DialogFragment {
     }
 
     private void initializeRegionsView() {
-        String countryId = getArguments().getString(CountryPickerDialog.COUNTRY_ID);
+        String countryId = getArguments().getString(CountryPickerDialog.COUNTRY);
 
         regionsView = new LocationView<>(getActivity());
         regionsView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Region>() {

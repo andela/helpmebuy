@@ -19,7 +19,7 @@ import java.util.List;
 
 public class CountryPickerDialog extends DialogFragment {
 
-    public static final String COUNTRY_ID = "CountryId";
+    public static final String COUNTRY = "Country";
 
     private DataCollection<Country> countries;
 
@@ -51,7 +51,7 @@ public class CountryPickerDialog extends DialogFragment {
                 RegionPickerDialog dialog = new RegionPickerDialog();
 
                 Bundle arguments = new Bundle();
-                arguments.putString(COUNTRY_ID, country.getId());
+                arguments.putString(COUNTRY, "country");
 
                 dialog.setArguments(arguments);
 
