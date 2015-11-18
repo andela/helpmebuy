@@ -9,13 +9,15 @@ import android.support.v7.app.AlertDialog;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.locations.FirebaseRegions;
+import com.andela.helpmebuy.models.Country;
 import com.andela.helpmebuy.models.Region;
 import com.andela.helpmebuy.views.LocationView;
 
 import java.util.List;
 
 public class RegionPickerDialog extends DialogFragment {
-    public static final String REGION_ID = "regionId";
+    public static final String REGION = "region";
+    public static final String COUNTRY = "country";
 
     private LocationView<Region> regionsView;
 
@@ -33,11 +35,16 @@ public class RegionPickerDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(regionsView);
 
+        Country country = getArguments().getParcelable(CountryPickerDialog.COUNTRY);
+        if (country != null) {
+            builder.setTitle(country.getName());
+        }
+
         return builder.create();
     }
 
     private void initializeRegionsView() {
-        String countryId = getArguments().getString(CountryPickerDialog.COUNTRY_ID);
+        final Country country = getArguments().getParcelable(CountryPickerDialog.COUNTRY);
 
         regionsView = new LocationView<>(getActivity());
         regionsView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Region>() {
@@ -46,23 +53,27 @@ public class RegionPickerDialog extends DialogFragment {
                 CityPickerDialog dialog = new CityPickerDialog();
 
                 Bundle arguments = new Bundle();
-                arguments.putString(REGION_ID, region.getId());
+
+                arguments.putParcelable(REGION, region);
+                arguments.putParcelable(COUNTRY, country);
 
                 dialog.setArguments(arguments);
                 dialog.show(getActivity().getSupportFragmentManager(), "citypickerdialog");
             }
         });
-        DataCollection<Region> regions = new FirebaseRegions(countryId);
-        regions.getAll(new DataCallback<List<Region>>() {
-            @Override
-            public void onSuccess(List<Region> data) {
-                regionsView.setLocations(data);
-            }
 
-            @Override
-            public void onError(String errorMessage) {
-            }
-        });
+        if (country != null) {
+            DataCollection<Region> regions = new FirebaseRegions(country.getId());
+            regions.getAll(new DataCallback<List<Region>>() {
+                @Override
+                public void onSuccess(List<Region> data) {
+                    regionsView.setLocations(data);
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                }
+            });
+        }
     }
-
 }
