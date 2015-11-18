@@ -17,6 +17,7 @@ import java.util.List;
 
 public class RegionPickerDialog extends DialogFragment {
     public static final String REGION = "region";
+    public static final String COUNTRY = "country";
 
     private LocationView<Region> regionsView;
 
@@ -38,17 +39,17 @@ public class RegionPickerDialog extends DialogFragment {
     }
 
     private void initializeRegionsView() {
-        Country country = getArguments().getParcelable(CountryPickerDialog.COUNTRY_ID);
+        final Country country = getArguments().getParcelable(CountryPickerDialog.COUNTRY);
         String countryId = country.getId();
-
+        RegionPickerDialog regionPickerDialog = this;
         regionsView = new LocationView<>(getActivity());
         regionsView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Region>() {
             @Override
             public void onLocationClicked(Region region) {
                 CityPickerDialog dialog = new CityPickerDialog();
-
                 Bundle arguments = new Bundle();
                 arguments.putParcelable(REGION, region);
+                arguments.putParcelable(COUNTRY, country);
 
                 dialog.setArguments(arguments);
                 dialog.show(getActivity().getSupportFragmentManager(), "citypickerdialog");
@@ -66,5 +67,6 @@ public class RegionPickerDialog extends DialogFragment {
             }
         });
     }
+
 
 }

@@ -2,6 +2,7 @@ package com.andela.helpmebuy.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -27,6 +28,8 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
+import com.andela.helpmebuy.dialogs.CityPickerDialog;
+import com.andela.helpmebuy.dialogs.RegionPickerDialog;
 import com.andela.helpmebuy.models.City;
 import com.andela.helpmebuy.models.Country;
 import com.andela.helpmebuy.models.Region;
@@ -43,7 +46,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity  {
     public final static String TAG = "HomeActivity";
 
     private RecyclerView travellersView;
@@ -240,8 +243,10 @@ public class HomeActivity extends AppCompatActivity {
 
         final View view = inflater.inflate(R.layout.user_location, null, false);
 
+
         userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
-        userLocationTextView.setText("Lagos, Nigeria");
+        userLocationTextView.setText(CityPickerDialog.userLocation);
+        //userLocationTextView.setText("Lagos, Nigeria");
 
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
 
