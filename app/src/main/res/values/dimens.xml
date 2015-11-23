@@ -19,4 +19,5 @@
     <dimen name="item_margin_top">20dp</dimen>
     <dimen name="sub_item_margin_top">5dp</dimen>
     <dimen name="page_indicator_size">20dp</dimen>
+    <dimen name="icon_padding">5dp</dimen>
 </resources>

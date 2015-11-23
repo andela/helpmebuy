@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:longClickable="true"
-    android:background="@drawable/traveller_item_state_list">
+    android:background="@drawable/item_state_list">
 
     <RelativeLayout
         android:layout_width="match_parent"
