@@ -50,7 +50,8 @@
                     android:clickable="true"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_navigate_next_white_48dp"
-                    android:background="@drawable/white_view_state_list" />
+                    android:background="@drawable/white_view_state_list"
+                    android:onClick="displayArrivalDetails"/>
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

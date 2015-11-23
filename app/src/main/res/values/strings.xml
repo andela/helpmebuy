@@ -61,6 +61,7 @@
     <string name="title_activity_location">LocationActivity</string>
     <string name="title_activity_create_travel">CreateTravelActivity</string>
     <string name="departure">Departure</string>
+    <string name="arrival">Arrival</string>
     <string name="location">Location</string>
     <string name="date">Date</string>
     <string name="time">Time</string>

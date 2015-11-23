@@ -1,8 +1,7 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.andela.helpmebuy.activities.CreateTravelActivityFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/create_travel_header"
@@ -52,10 +51,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/create_travel_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/create_travel_header" />
-
-</RelativeLayout>
+</LinearLayout>
