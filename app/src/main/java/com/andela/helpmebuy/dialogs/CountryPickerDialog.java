@@ -5,6 +5,8 @@ package com.andela.helpmebuy.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -28,6 +30,7 @@ public class CountryPickerDialog extends DialogFragment {
     public CountryPickerDialog() {
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -43,6 +46,12 @@ public class CountryPickerDialog extends DialogFragment {
         return builder.create();
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        dialog.dismiss();
+    }
+
     private void initializeCountriesView() {
         countriesView = new LocationView<>(getActivity());
         countriesView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Country>() {
@@ -55,8 +64,9 @@ public class CountryPickerDialog extends DialogFragment {
                 arguments.putParcelable(COUNTRY, country);
 
                 dialog.setArguments(arguments);
-
                 dialog.show(getActivity().getSupportFragmentManager(), "regionpickerdialog");
+//                android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.addToBackStack("dialog");
             }
         });
 

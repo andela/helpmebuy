@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 
 import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -51,13 +54,15 @@ public class CityPickerDialog extends DialogFragment {
 
         citiesView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<City>() {
             public void onLocationClicked(City city) {
-                userLocation = region.getName() + ","+country.getName();
+                userLocation = region.getName() + ", " + country.getName();
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(LOCATION, city);
 
-                Launcher.launchActivity(getContext(), HomeActivity.class);
                 dismiss();
+                dimissfragment();
+
+
             }
 
         });
@@ -66,8 +71,19 @@ public class CityPickerDialog extends DialogFragment {
         return builder.create();
     }
 
+    public void dimissfragment() {
+        android.support.v4.app.Fragment fragment = getFragmentManager().findFragmentByTag("regionpickerdialog");
+        android.support.v4.app.Fragment fragment2 = getFragmentManager().findFragmentByTag("countries_picker");
+        CountryPickerDialog c = (CountryPickerDialog) fragment2;
+        RegionPickerDialog  r = (RegionPickerDialog) fragment;
+        c.dismiss();
+        r.dismiss();
+
+    }
+
 
     private void initializeCitiesView() {
+
         Region region = getArguments().getParcelable(RegionPickerDialog.REGION);
 
         if (region != null) {

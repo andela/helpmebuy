@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -59,6 +61,8 @@ public class HomeActivity extends AppCompatActivity  {
     private CoordinatorLayout parentLayout;
 
     private FirebaseCollection<Travel> travelsCollection;
+
+    private String userLocation = CityPickerDialog.userLocation;
 
 
     @Override
@@ -237,6 +241,22 @@ public class HomeActivity extends AppCompatActivity  {
 
         userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
         userLocationTextView.setText("Lagos, Nigeria");
+        userLocationTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                s = CityPickerDialog.userLocation;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
 

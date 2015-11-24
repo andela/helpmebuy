@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 
 import com.andela.helpmebuy.dal.DataCallback;
@@ -22,6 +23,11 @@ public class RegionPickerDialog extends DialogFragment {
     private LocationView<Region> regionsView;
 
     public RegionPickerDialog() {}
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        super.show(manager, tag);
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -59,6 +65,7 @@ public class RegionPickerDialog extends DialogFragment {
 
                 dialog.setArguments(arguments);
                 dialog.show(getActivity().getSupportFragmentManager(), "citypickerdialog");
+
             }
         });
 
