@@ -1,11 +1,13 @@
 package com.andela.helpmebuy.activities;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.dialogs.HMBDatePickerDialog;
+import com.andela.helpmebuy.dialogs.HMBTimePickerDialog;
 import com.andela.helpmebuy.fragments.TravelArrivalFragment;
 import com.andela.helpmebuy.fragments.TravelDepartureFragment;
 
@@ -38,5 +40,21 @@ public class CreateTravelActivity extends AppCompatActivity {
                 .replace(R.id.create_travel_fragment_container,travelArrivalFragment)
                 .addToBackStack(null).commit();
     }
+
+    public void closeWindow(View view) {
+        finish();
+        System.exit(0);
+    }
+
+    public void showTimePickerDialog(View view) {
+        DialogFragment timeDialog = new HMBTimePickerDialog();
+        timeDialog.show(getFragmentManager(), "Time Picker");
+    }
+
+    public void showDatePickerDialog(View view) {
+        DialogFragment dateDialog = new HMBDatePickerDialog();
+        dateDialog.show(getFragmentManager(),"Date Picker");
+    }
+
 
 }

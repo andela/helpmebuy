@@ -25,6 +25,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_close_white_24dp"
                 android:clickable="true"
+                android:onClick="closeWindow"
                 android:background="@drawable/white_view_state_list" />
         </LinearLayout>
 
@@ -127,7 +128,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/secondary_text_color"
-            android:text="1:35 a.m"/>
+            android:text="1:35 a.m" />
     </LinearLayout>
 
 </LinearLayout>
