@@ -72,7 +72,7 @@ public class RegionPickerDialog extends DialogFragment {
                 arguments.putParcelable(REGION, region);
 
                 dialog.setArguments(arguments);
-                dialog.show(getActivity().getSupportFragmentManager(), "citypickerdialog");
+                dialog.show(getActivity().getSupportFragmentManager(), CityPickerDialog.TAG);
             }
         });
 

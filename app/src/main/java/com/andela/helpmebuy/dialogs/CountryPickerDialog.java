@@ -69,7 +69,7 @@ public class CountryPickerDialog extends DialogFragment {
 
                 dialog.setArguments(arguments);
 
-                dialog.show(getActivity().getSupportFragmentManager(), "regionpickerdialog");
+                dialog.show(getActivity().getSupportFragmentManager(), RegionPickerDialog.TAG);
             }
         });
 
