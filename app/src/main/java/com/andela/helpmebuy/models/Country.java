@@ -3,7 +3,7 @@ package com.andela.helpmebuy.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Country extends Location implements Parcelable{
+public class Country extends AbsLocation implements Parcelable{
 
     public Country() {
     }

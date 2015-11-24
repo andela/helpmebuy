@@ -9,14 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
-import com.andela.helpmebuy.models.Location;
+import com.andela.helpmebuy.models.AbsLocation;
 import com.andela.helpmebuy.views.LocationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class LocationAdapter<T extends Location> extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
+public class LocationAdapter<T extends AbsLocation> extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
 
     private Context context;
 

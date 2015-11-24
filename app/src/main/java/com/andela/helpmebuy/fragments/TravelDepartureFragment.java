@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.models.Location;
+import com.andela.helpmebuy.utilities.LocationPickerDialog;
 
-public class TravelDepartureFragment extends Fragment {
+public class TravelDepartureFragment extends Fragment implements View.OnClickListener {
 
     private View location;
 
@@ -31,9 +33,10 @@ public class TravelDepartureFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_departure_infos, container, false);
 
         travelInfoView = (TextView)view.findViewById(R.id.travel_info_title);
-
         travelInfoView.setText(R.string.departure);
+
         location = view.findViewById(R.id.location);
+        location.setOnClickListener(this);
         locationValue = (TextView) view.findViewById(R.id.location_value);
 
         date = view.findViewById(R.id.date);
@@ -43,5 +46,23 @@ public class TravelDepartureFragment extends Fragment {
         timeValue = (TextView) view.findViewById(R.id.time_value);
 
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.location) {
+            final LocationPickerDialog dialog = new LocationPickerDialog(getActivity());
+
+            dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
+                @Override
+                public void onLocationSet(Location location) {
+                    locationValue.setText(location.toString());
+
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+        }
     }
 }

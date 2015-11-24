@@ -18,12 +18,15 @@ import com.andela.helpmebuy.views.LocationView;
 import java.util.List;
 
 public class CountryPickerDialog extends DialogFragment {
+    public static final String TAG = "CountryPickerDialog";
 
     public static final String COUNTRY = "Country";
 
     private DataCollection<Country> countries;
 
     private LocationView<Country> countriesView;
+
+    private OnCountrySetListener listener;
 
     public CountryPickerDialog() {
     }
@@ -43,11 +46,21 @@ public class CountryPickerDialog extends DialogFragment {
         return builder.create();
     }
 
+    public void setOnCountrySetListener(OnCountrySetListener listener) {
+        this.listener = listener;
+    }
+
     private void initializeCountriesView() {
         countriesView = new LocationView<>(getActivity());
         countriesView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Country>() {
             @Override
             public void onLocationClicked(Country country) {
+                if (listener != null) {
+                    listener.onCountrySet(country);
+
+                    return;
+                }
+
                 RegionPickerDialog dialog = new RegionPickerDialog();
 
                 Bundle arguments = new Bundle();
@@ -72,6 +85,10 @@ public class CountryPickerDialog extends DialogFragment {
 
             }
         });
+    }
+
+    public interface OnCountrySetListener {
+        void onCountrySet(Country country);
     }
 
 }
