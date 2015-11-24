@@ -241,23 +241,6 @@ public class HomeActivity extends AppCompatActivity  {
 
         userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
         userLocationTextView.setText("Lagos, Nigeria");
-        userLocationTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                s = CityPickerDialog.userLocation;
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
 
         toolbar.addView(view);
