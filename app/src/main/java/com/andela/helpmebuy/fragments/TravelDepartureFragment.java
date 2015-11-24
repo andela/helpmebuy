@@ -24,10 +24,15 @@ public class TravelDepartureFragment extends Fragment {
 
     private TextView timeValue;
 
+    private TextView travelInfoView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_departure_infos, container, false);
 
+        travelInfoView = (TextView)view.findViewById(R.id.travel_info_title);
+
+        travelInfoView.setText(R.string.departure);
         location = view.findViewById(R.id.location);
         locationValue = (TextView) view.findViewById(R.id.location_value);
 

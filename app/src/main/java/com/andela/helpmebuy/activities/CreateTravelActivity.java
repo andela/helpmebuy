@@ -12,8 +12,8 @@ import com.andela.helpmebuy.fragments.TravelDepartureFragment;
 public class CreateTravelActivity extends AppCompatActivity {
 
     private TravelDepartureFragment travelDepartureFragment;
+
     private TravelArrivalFragment travelArrivalFragment;
-   
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,6 @@ public class CreateTravelActivity extends AppCompatActivity {
 
         travelDepartureFragment = new TravelDepartureFragment();
         travelArrivalFragment = new TravelArrivalFragment();
-
 
         getSupportFragmentManager()
                 .beginTransaction()

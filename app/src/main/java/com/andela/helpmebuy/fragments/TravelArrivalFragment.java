@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
 import com.andela.helpmebuy.R;
 
 public class TravelArrivalFragment extends Fragment {
@@ -23,9 +24,14 @@ public class TravelArrivalFragment extends Fragment {
 
     private TextView timeValue;
 
+    private TextView travelInfoTitle;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_arrival_infos,container,false);
+        View view =  inflater.inflate(R.layout.fragment_arrival_infos, container, false);
+
+        travelInfoTitle = (TextView)view.findViewById(R.id.travel_info_title);
+        travelInfoTitle.setText(R.string.arrival);
 
         location = view.findViewById(R.id.location);
         locationValue = (TextView)view.findViewById(R.id.location_value);
