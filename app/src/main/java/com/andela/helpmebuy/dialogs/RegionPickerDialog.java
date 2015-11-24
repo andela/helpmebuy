@@ -16,10 +16,13 @@ import com.andela.helpmebuy.views.LocationView;
 import java.util.List;
 
 public class RegionPickerDialog extends DialogFragment {
+    public static final String TAG = "RegionPickerDialog";
+
     public static final String REGION = "region";
-    public static final String COUNTRY = "country";
 
     private LocationView<Region> regionsView;
+
+    private OnRegionSetListener listener;
 
     public RegionPickerDialog() {}
 
@@ -43,6 +46,10 @@ public class RegionPickerDialog extends DialogFragment {
         return builder.create();
     }
 
+    public void setOnRegionSetListener(OnRegionSetListener listener) {
+        this.listener = listener;
+    }
+
     private void initializeRegionsView() {
         final Country country = getArguments().getParcelable(CountryPickerDialog.COUNTRY);
 
@@ -50,15 +57,22 @@ public class RegionPickerDialog extends DialogFragment {
         regionsView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Region>() {
             @Override
             public void onLocationClicked(Region region) {
+                if (listener != null) {
+                    listener.onRegionSet(region);
+
+                    return;
+                }
+
                 CityPickerDialog dialog = new CityPickerDialog();
 
                 Bundle arguments = new Bundle();
 
+                arguments.putParcelable(CountryPickerDialog.COUNTRY, country);
+
                 arguments.putParcelable(REGION, region);
-                arguments.putParcelable(COUNTRY, country);
 
                 dialog.setArguments(arguments);
-                dialog.show(getActivity().getSupportFragmentManager(), "citypickerdialog");
+                dialog.show(getActivity().getSupportFragmentManager(), CityPickerDialog.TAG);
             }
         });
 
@@ -75,5 +89,9 @@ public class RegionPickerDialog extends DialogFragment {
                 }
             });
         }
+    }
+
+    public interface OnRegionSetListener {
+        void onRegionSet(Region region);
     }
 }

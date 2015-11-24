@@ -74,8 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sub_item_margin_top"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/secondary_text_color"
-            android:text="Lagos, Nigeria"/>
+            android:textColor="@color/secondary_text_color" />
     </LinearLayout>
 
     <LinearLayout
@@ -101,8 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sub_item_margin_top"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/secondary_text_color"
-            android:text="23/11/2015" />
+            android:textColor="@color/secondary_text_color" />
     </LinearLayout>
 
     <LinearLayout
@@ -127,8 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/secondary_text_color"
-            android:text="1:35 a.m" />
+            android:textColor="@color/secondary_text_color" />
     </LinearLayout>
 
 </LinearLayout>

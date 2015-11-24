@@ -2,7 +2,6 @@ package com.andela.helpmebuy.fragments;
 
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,15 +11,19 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+
 import android.widget.TimePicker;
 
 import com.andela.helpmebuy.R;
-import com.andela.helpmebuy.dialogs.HMBDatePickerDialog;
-import com.andela.helpmebuy.dialogs.HMBTimePickerDialog;
 
-public class TravelDepartureFragment extends Fragment implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
+import com.andela.helpmebuy.dialogs.DatePickerFragment;
+import com.andela.helpmebuy.dialogs.TimePickerFragment;
+
+import com.andela.helpmebuy.models.Location;
+import com.andela.helpmebuy.utilities.LocationPickerDialog;
+import com.andela.helpmebuy.utilities.Utils;
+
+public class TravelDepartureFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
 
     private View location;
 
@@ -36,71 +39,80 @@ public class TravelDepartureFragment extends Fragment implements DatePickerDialo
 
     private TextView travelInfoView;
 
-    private TimePickerDialog timePickerDialog;
-
-    private LinearLayout timeLayout;
-
-    private LinearLayout dateLayout;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_departure_infos, container, false);
 
         travelInfoView = (TextView)view.findViewById(R.id.travel_info_title);
-
         travelInfoView.setText(R.string.departure);
+
         location = view.findViewById(R.id.location);
+        location.setOnClickListener(this);
         locationValue = (TextView) view.findViewById(R.id.location_value);
+        locationValue.setText(R.string.departure_location_value_summary);
 
         date = view.findViewById(R.id.date);
+        date.setOnClickListener(this);
         dateValue = (TextView) view.findViewById(R.id.date_value);
-
-        dateLayout = (LinearLayout) view.findViewById(R.id.date);
-        dateLayout.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                HMBDatePickerDialog dateDialog = new HMBDatePickerDialog();
-                dateDialog.setDateSetListener(TravelDepartureFragment.this);
-                dateDialog.show(getActivity().getFragmentManager(), "Date Picker");
-            }
-        });
+        dateValue.setText(R.string.departure_date_value_summary);
 
         time = view.findViewById(R.id.time);
+        time.setOnClickListener(this);
         timeValue = (TextView) view.findViewById(R.id.time_value);
-
-        timeLayout = (LinearLayout) view.findViewById(R.id.time);
-        timeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                HMBTimePickerDialog timeDialog = new HMBTimePickerDialog();
-                timeDialog.setTimeSetListener(TravelDepartureFragment.this);
-                timeDialog.show(getActivity().getFragmentManager(), "Time Picker");
-
-            }
-        });
+        timeValue.setText(R.string.departure_time_value_summary);
 
         return view;
     }
 
-    public void onTimeSet(TimePicker view,int hourOfDay, int minute) {
-        String am_pm = (hourOfDay < 12) ? "AM" : "PM";
-        int hour = getSelectedHour(hourOfDay,am_pm);
-        String selectedTime = String.format("%02d", hour) +":"+String.format("%02d", minute)+" "+am_pm;
-        timeValue.setText(selectedTime);
-    }
-
+    @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        int selectedMonth =  month+1;
-        String selectedDate = String.format("%02d", year) + "/"+String.format("%02d",selectedMonth)+"/"+ String.format("%02d",day);
-        dateValue.setText(selectedDate);
+        dateValue.setText(String.format("%02d/%02d/%02d", day, month + 1, year));
+        dateValue.setVisibility(View.VISIBLE);
     }
 
-    private int getSelectedHour(int hourOfDay, String am_pm) {
-        int hour = 0;
-        if(hourOfDay > 12 && am_pm == "PM") {
-            hour = hourOfDay % 12;
+    @Override
+    public void onTimeSet(TimePicker view,int hourOfDay, int minute) {
+        int hour = Utils.getHourIn12HoursFormat(hourOfDay);
+
+        timeValue.setText(String.format("%02d:%02d %s", hour, minute, (hour < 12) ? "AM" : "PM"));
+        timeValue.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.location:
+                final LocationPickerDialog dialog = new LocationPickerDialog(getActivity());
+
+                dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
+                    @Override
+                    public void onLocationSet(Location location) {
+                        locationValue.setText(location.toString());
+                        locationValue.setVisibility(View.VISIBLE);
+
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+                break;
+
+            case R.id.date:
+                DatePickerFragment dateDialog = new DatePickerFragment();
+
+                dateDialog.setDateSetListener(TravelDepartureFragment.this);
+                dateDialog.show(getActivity().getFragmentManager(), DatePickerFragment.TAG);
+                break;
+
+            case R.id.time:
+                TimePickerFragment timeDialog = new TimePickerFragment();
+
+                timeDialog.setTimeSetListener(TravelDepartureFragment.this);
+                timeDialog.show(getActivity().getFragmentManager(), TimePickerFragment.TAG);
+                break;
+
+            default:
+                break;
         }
-        return hour;
     }
-
 }

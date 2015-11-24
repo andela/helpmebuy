@@ -13,16 +13,12 @@ import android.widget.FrameLayout;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.LocationAdapter;
-import com.andela.helpmebuy.dal.DataCallback;
-import com.andela.helpmebuy.locations.FirebaseCountries;
-import com.andela.helpmebuy.models.Country;
-import com.andela.helpmebuy.models.Location;
+import com.andela.helpmebuy.models.AbsLocation;
 import com.andela.helpmebuy.utilities.LocationFilter;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class LocationView<T extends Location> extends FrameLayout {
+public class LocationView<T extends AbsLocation> extends FrameLayout {
 
     private EditText editText;
 
@@ -87,7 +83,7 @@ public class LocationView<T extends Location> extends FrameLayout {
         return textWatcher;
     }
 
-    public interface OnLocationClickedListener<T extends Location> {
+    public interface OnLocationClickedListener<T extends AbsLocation> {
         void onLocationClicked(T location);
     }
 

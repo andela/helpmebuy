@@ -11,7 +11,8 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 
 
-public class HMBDatePickerDialog extends DialogFragment {
+public class DatePickerFragment extends DialogFragment {
+    public static final String TAG = "DatePickerFragment";
 
     private DatePickerDialog.OnDateSetListener  dateSetListener;
 
@@ -19,11 +20,12 @@ public class HMBDatePickerDialog extends DialogFragment {
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar calendar = Calendar.getInstance();
+
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(),dateSetListener,year,month,day);
+        return new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
 
     }
 
