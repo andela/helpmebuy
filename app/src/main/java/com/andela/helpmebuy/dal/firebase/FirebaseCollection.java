@@ -10,7 +10,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class FirebaseCollection<T extends Model> implements DataCollection<T> {
