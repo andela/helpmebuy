@@ -71,4 +71,11 @@ public class Location {
     public void setCity(City city) {
         this.city = city;
     }
+
+    public String toFullString(){
+        return getCountry().getId() + ":" + getCountry().getName() +
+                ";" + getRegion().getId() + ":" + getRegion().getName() +
+                ";" + getCity().getId() + ":" + getCity().getName();
+
+    }
 }

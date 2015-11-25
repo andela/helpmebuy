@@ -72,7 +72,7 @@ public class HomeActivity extends AppCompatActivity  {
 
     private FirebaseCollection<Travel> travelsCollection;
 
-    private String userLocation = CityPickerDialog.userLocation;
+    private Location userLocation;
 
 
     @Override
@@ -82,12 +82,12 @@ public class HomeActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_home);
 
         addActionBar();
+        initializeUserLocation();
 
-        loadTravels();
+        loadTravelsByLocation();
 
         loadComponents();
 
-        initializeUserLocation();
         saveTravels();
     }
 
@@ -200,6 +200,34 @@ public class HomeActivity extends AppCompatActivity  {
 
     }
 
+    private void loadTravelsByLocation(){
+        travels = new ArrayList<>();
+        travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
+        travelsCollection.query("departureAddress/location", userLocation.toFullString(), new DataCallback<List<Travel>>() {
+            @Override
+            public void onSuccess(List<Travel> data) {
+                for (Travel travel : data) {
+                    int index = findIndex(travel);
+
+                    if (index <= 0) {
+                        travels.add(travel);
+
+                        adapter.notifyItemInserted(travels.size() -1);
+                    } else {
+                        travels.set(index, travel);
+
+                        adapter.notifyItemChanged(index);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.d(TAG, errorMessage);
+            }
+        });
+    }
+
     private void loadTravels() {
         travels = new ArrayList<>();
 
@@ -284,6 +312,20 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     private void initializeUserLocation() {
+        Country country = new Country();
+        country.setId("200");
+        country.setName("Nigeria");
+        Region region = new Region();
+        region.setId("100");
+        region.setName("Lagos");
+        region.setCountryId("200");
+        City city = new City();
+        city.setId("500");
+        city.setCountryId("200");
+        city.setName("Yaba");
+        city.setRegionId("100");
+        Location location = new  Location(country, region, city);
+        userLocation = location;
         LayoutInflater inflater = getLayoutInflater();
 
         final View view = inflater.inflate(R.layout.user_location, null, false);
@@ -302,12 +344,14 @@ public class HomeActivity extends AppCompatActivity  {
             @Override
             public void onLocationSet(Location location) {
                 userLocationTextView.setText(location.toString());
-
+                userLocation = location;
+                loadTravelsByLocation();
                 dialog.dismiss();
             }
         });
 
         dialog.show();
+
 
 //        CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
 //        countryPickerDialog.show(HomeActivity.this.getSupportFragmentManager(), "countries_picker");
