@@ -48,10 +48,7 @@ public class CountryPickerDialog extends DialogFragment {
 
         return builder.create();
     }
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
-        dialog.dismiss();
+
     public void setOnCountrySetListener(OnCountrySetListener listener) {
         this.listener = listener;
     }

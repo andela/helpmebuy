@@ -4,13 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 
 import android.app.Dialog;
-<<<<<<< HEAD
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
-=======
->>>>>>> 98d15294d0de544d43a4849570c78ae62a7db7da
+
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
