@@ -59,6 +59,14 @@
     <string name="select_country">Select Location</string>
     <string name="location_filter">Filter location...</string>
     <string name="title_activity_location">LocationActivity</string>
+    <string name="title_activity_create_travel">CreateTravelActivity</string>
+    <string name="departure">Departure</string>
+    <string name="arrival">Arrival</string>
+    <string name="location">Location</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
 
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
 

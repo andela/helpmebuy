@@ -32,9 +32,11 @@ import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.dialogs.CityPickerDialog;
 import com.andela.helpmebuy.dialogs.CountryPickerDialog;
+import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.ItemDivider;
+import com.andela.helpmebuy.utilities.LocationPickerDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -247,8 +249,20 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     public void changeLocation(View view) {
-        CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
-        countryPickerDialog.show(HomeActivity.this.getSupportFragmentManager(), "countries_picker");
-        userLocationTextView.setText(CityPickerDialog.userLocation);
+        final LocationPickerDialog dialog = new LocationPickerDialog(this);
+        dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
+            @Override
+            public void onLocationSet(Location location) {
+                userLocationTextView.setText(location.toString());
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+//        CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
+//        countryPickerDialog.show(HomeActivity.this.getSupportFragmentManager(), "countries_picker");
+//        userLocationTextView.setText(CityPickerDialog.userLocation);
     }
 }

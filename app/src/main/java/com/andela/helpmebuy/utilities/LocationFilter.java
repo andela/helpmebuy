@@ -3,13 +3,12 @@ package com.andela.helpmebuy.utilities;
 import android.widget.Filter;
 
 import com.andela.helpmebuy.adapters.LocationAdapter;
-import com.andela.helpmebuy.models.Country;
-import com.andela.helpmebuy.models.Location;
+import com.andela.helpmebuy.models.AbsLocation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationFilter<T extends Location> extends Filter {
+public class LocationFilter<T extends AbsLocation> extends Filter {
     private final LocationAdapter<T> adapter;
 
     public LocationFilter(LocationAdapter<T> adapter) {

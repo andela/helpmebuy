@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:longClickable="true"
-    android:background="@drawable/traveller_item_state_list">
+    android:background="@drawable/item_state_list">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/traveller_name_text_color"
+                android:textColor="@color/primary_text_color"
                 android:maxLines="1"
                 android:ellipsize="end"/>
 
@@ -48,14 +48,14 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/coming_from"
-                    android:textColor="@color/traveller_details_hint_text_color" />
+                    android:textColor="@color/hint_text_color" />
 
                 <TextView
                     android:id="@+id/traveller_departure_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/traveller_details_text_color"
+                    android:textColor="@color/secondary_text_color"
                     android:textStyle="italic"
                     android:maxLines="1"
                     android:ellipsize="end"/>
@@ -71,14 +71,14 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/on"
-                    android:textColor="@color/traveller_details_hint_text_color"/>
+                    android:textColor="@color/hint_text_color"/>
 
                 <TextView
                     android:id="@+id/traveller_arrival_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/traveller_details_text_color"
+                    android:textColor="@color/secondary_text_color"
                     android:textStyle="italic"
                     android:maxLines="1"
                     android:ellipsize="end"/>

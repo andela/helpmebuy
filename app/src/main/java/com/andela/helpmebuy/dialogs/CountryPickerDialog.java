@@ -20,12 +20,15 @@ import com.andela.helpmebuy.views.LocationView;
 import java.util.List;
 
 public class CountryPickerDialog extends DialogFragment {
+    public static final String TAG = "CountryPickerDialog";
 
     public static final String COUNTRY = "Country";
 
     private DataCollection<Country> countries;
 
     private LocationView<Country> countriesView;
+
+    private OnCountrySetListener listener;
 
     public CountryPickerDialog() {
     }
@@ -45,11 +48,12 @@ public class CountryPickerDialog extends DialogFragment {
 
         return builder.create();
     }
-
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         dialog.dismiss();
+    public void setOnCountrySetListener(OnCountrySetListener listener) {
+        this.listener = listener;
     }
 
     private void initializeCountriesView() {
@@ -57,6 +61,12 @@ public class CountryPickerDialog extends DialogFragment {
         countriesView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Country>() {
             @Override
             public void onLocationClicked(Country country) {
+                if (listener != null) {
+                    listener.onCountrySet(country);
+
+                    return;
+                }
+
                 RegionPickerDialog dialog = new RegionPickerDialog();
 
                 Bundle arguments = new Bundle();
@@ -64,9 +74,8 @@ public class CountryPickerDialog extends DialogFragment {
                 arguments.putParcelable(COUNTRY, country);
 
                 dialog.setArguments(arguments);
-                dialog.show(getActivity().getSupportFragmentManager(), "regionpickerdialog");
-//                android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                ft.addToBackStack("dialog");
+
+                dialog.show(getActivity().getSupportFragmentManager(), RegionPickerDialog.TAG);
             }
         });
 
@@ -82,6 +91,10 @@ public class CountryPickerDialog extends DialogFragment {
 
             }
         });
+    }
+
+    public interface OnCountrySetListener {
+        void onCountrySet(Country country);
     }
 
 }
