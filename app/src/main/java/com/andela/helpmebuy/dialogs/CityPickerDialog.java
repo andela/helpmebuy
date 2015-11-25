@@ -64,7 +64,6 @@ public class CityPickerDialog extends DialogFragment {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(LOCATION, city);
 
-//                Launcher.launchActivity(getContext(), HomeActivity.class);
                 dismiss();
             }
 

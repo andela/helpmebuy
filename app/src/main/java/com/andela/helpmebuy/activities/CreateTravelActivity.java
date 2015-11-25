@@ -46,15 +46,4 @@ public class CreateTravelActivity extends AppCompatActivity {
         System.exit(0);
     }
 
-    public void showTimePickerDialog(View view) {
-        DialogFragment timeDialog = new TimePickerFragment();
-        timeDialog.show(getFragmentManager(), "Time Picker");
-    }
-
-    public void showDatePickerDialog(View view) {
-        DialogFragment dateDialog = new DatePickerFragment();
-        dateDialog.show(getFragmentManager(),"Date Picker");
-    }
-
-
 }
