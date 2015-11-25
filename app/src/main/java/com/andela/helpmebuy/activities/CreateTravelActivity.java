@@ -79,10 +79,11 @@ public class CreateTravelActivity extends AppCompatActivity {
         Address departureAddress =  new Address();
         Address arrivalAddress =  new Address();
 
-        User user  =  new User();
-        travel.setUserId("c655fd62-41e0-4ac1-8bbb-737c03666a42");
+        //User user  =  new User();
+        User user = CurrentUser.get(this);
+        //travel.setUserId("c655fd62-41e0-4ac1-8bbb-737c03666a42");
         travel.setId("123456");
-        //travel.setUserId(user.getId());
+        travel.setUserId(user.getId());
 
         Location departureLocation = travelDepartureFragment.getDepartureLocation();
         departureAddress.setLocation(departureLocation);
@@ -101,7 +102,7 @@ public class CreateTravelActivity extends AppCompatActivity {
                         .setMessage("Travel Details Successfully saved").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        
+
                     }
                 }).show();
             }
