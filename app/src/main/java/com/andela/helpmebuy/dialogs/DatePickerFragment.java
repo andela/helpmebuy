@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.widget.DatePicker;
 
+import com.andela.helpmebuy.fragments.TravelArrivalFragment;
+
 import java.util.Calendar;
 
 
 public class DatePickerFragment extends DialogFragment {
     public static final String TAG = "DatePickerFragment";
+    TravelArrivalFragment travelArrivalFragment = new TravelArrivalFragment();
 
     private DatePickerDialog.OnDateSetListener  dateSetListener;
 
@@ -25,7 +28,9 @@ public class DatePickerFragment extends DialogFragment {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+
         return new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
+
 
     }
 

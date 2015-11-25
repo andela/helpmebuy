@@ -5,21 +5,7 @@ package com.andela.helpmebuy.models;
  */
 public class Address extends Model {
 
-    /**
-     * The city part of the address.
-     */
-    private String city;
-
-    /**
-     * The state part of the address.
-     */
-    private String state;
-
-    /**
-     * The country part of the address.
-     */
-    private String country;
-
+    private Location location;
     /**
      * The street part of the address.
      */
@@ -39,36 +25,6 @@ public class Address extends Model {
      * Creates a new address.
      */
     public Address(){
-    }
-
-    public Address(String city, String country) {
-        this();
-        this.city = city;
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public String getStreet() {
@@ -93,5 +49,13 @@ public class Address extends Model {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

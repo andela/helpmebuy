@@ -62,7 +62,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@string/arrival_details_completion"
                 android:textColor="@color/done_text_arrival_details"
                 android:textSize="24sp"
                 android:layout_weight="0"
@@ -70,7 +69,7 @@
                 android:padding="@dimen/icon_padding"
                 android:clickable="true"
                 android:background="@drawable/white_view_state_list"
-                android:onClick="displayArrivalDetails"/>
+                android:onClick="saveDetails"/>
         </RelativeLayout>
         </LinearLayout>
     </FrameLayout>

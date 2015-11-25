@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,11 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
 import com.andela.helpmebuy.utilities.Utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TravelDepartureFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
 
     private View location;
@@ -38,6 +44,12 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
     private TextView timeValue;
 
     private TextView travelInfoView;
+
+    private Date departureDate;
+
+    private Date departureTime;
+
+    private Location departureLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,15 +78,32 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
+
+        DateFormat dateFormat = new SimpleDateFormat("MM/d/yyyy");
         dateValue.setText(String.format("%02d/%02d/%02d", day, month + 1, year));
+        try {
+            TravelDepartureFragment.this.setDepartureDate(dateFormat.parse(dateValue.getText().toString()));
+        }
+        catch (ParseException parseException) {
+            parseException.printStackTrace();
+        }
         dateValue.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onTimeSet(TimePicker view,int hourOfDay, int minute) {
+        DateFormat timeFormat = new SimpleDateFormat("hh:mm a");
         int hour = Utils.getHourIn12HoursFormat(hourOfDay);
 
         timeValue.setText(String.format("%02d:%02d %s", hour, minute, (hour < 12) ? "AM" : "PM"));
+
+        try {
+            TravelDepartureFragment.this.setDepartureTime(timeFormat.parse(dateValue.getText().toString()));
+        }
+        catch (ParseException parseException) {
+            parseException.printStackTrace();
+        }
+
         timeValue.setVisibility(View.VISIBLE);
     }
 
@@ -88,6 +117,7 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
                     @Override
                     public void onLocationSet(Location location) {
                         locationValue.setText(location.toString());
+                        TravelDepartureFragment.this.setDepartureLocation(location);
                         locationValue.setVisibility(View.VISIBLE);
 
                         dialog.dismiss();
@@ -114,5 +144,29 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
             default:
                 break;
         }
+    }
+
+    public Date getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(Date departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public Date getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(Date departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public Location getDepartureLocation() {
+        return departureLocation;
+    }
+
+    public void setDepartureLocation(Location departureLocation) {
+        this.departureLocation = departureLocation;
     }
 }

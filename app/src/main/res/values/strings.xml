@@ -71,7 +71,8 @@
     <string name="arrival_location_value_summary">Select the location where you are going to</string>
     <string name="arrival_date_value_summary">Select your arrival date</string>
     <string name="arrival_time_value_summary">Select your arrival time</string>
-    <string name="arrival_details_completion">DONE</string>
+    <string name="location_date_format">"DD/MM/YYYY"</string>
+
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
