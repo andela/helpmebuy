@@ -32,11 +32,19 @@ import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.dialogs.CityPickerDialog;
 import com.andela.helpmebuy.dialogs.CountryPickerDialog;
+import com.andela.helpmebuy.models.Address;
+import com.andela.helpmebuy.models.City;
+import com.andela.helpmebuy.models.Country;
 import com.andela.helpmebuy.models.Location;
+import com.andela.helpmebuy.models.Region;
 import com.andela.helpmebuy.models.Travel;
+import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.ItemDivider;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +88,7 @@ public class HomeActivity extends AppCompatActivity  {
         loadComponents();
 
         initializeUserLocation();
+        saveTravels();
     }
 
     private void addActionBar() {
@@ -152,6 +161,45 @@ public class HomeActivity extends AppCompatActivity  {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    public void saveTravels() {
+        User user = CurrentUser.get(this);
+        Travel travel = new Travel();
+        travel.setId("150");
+        travel.setUserId(user.getId());
+        Country country = new Country();
+        country.setId("200");
+        country.setName("Nigeria");
+        Region region = new Region();
+        region.setId("100");
+        region.setName("Lagos");
+        region.setCountryId("200");
+        City city = new City();
+        city.setId("500");
+        city.setCountryId("200");
+        city.setName("Yaba");
+        city.setRegionId("100");
+        Location location = new Location(country, region, city);
+        Address depature = new Address();
+        depature.setLocation(location);
+        travel.setDepartureAddress(depature);
+        travel.setArrivalAddress(depature);
+        travel.setArrivalDate(DateTime.now());
+        travel.setDepartureDate(DateTime.now());
+        FirebaseCollection<Travel> firebaseCollection =new FirebaseCollection<Travel>(Constants.TRAVELS, Travel.class);
+        firebaseCollection.save(travel, new DataCallback<Travel>() {
+            @Override
+            public void onSuccess(Travel data) {
+                Log.d(TAG, "SUCCESS");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.d(TAG, errorMessage);
+            }
+        });
+
+    }
+
     private void loadTravels() {
         travels = new ArrayList<>();
 
@@ -163,10 +211,10 @@ public class HomeActivity extends AppCompatActivity  {
                 for (Travel travel : data) {
                     int index = findIndex(travel);
 
-                    if (index < 0) {
+                    if (index <= 0) {
                         travels.add(travel);
 
-                        adapter.notifyItemInserted(travels.size() - 1);
+                        adapter.notifyItemInserted(travels.size());
                     } else {
                         travels.set(index, travel);
 
