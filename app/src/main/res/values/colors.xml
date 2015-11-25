@@ -11,6 +11,7 @@
 
     <color name="user_location_background_color">#deffffff</color>
     <color name="user_location_pressed_background_color">#ffffff</color>
+    <color name="done_text_arrival_details">#ffffff</color>
 
     <color name="white_view_color">@android:color/transparent</color>
     <color name="white_view_pressed_color">#61ffffff</color>

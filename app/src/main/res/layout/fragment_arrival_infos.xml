@@ -41,21 +41,37 @@
                 android:src="@drawable/ic_panorama_fish_eye_black_48dp"
                 android:alpha="0.5"/>
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:orientation="horizontal"
             android:background="@color/primary_color">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/icon_padding"
+                android:layout_alignParentLeft="true"
                 android:clickable="true"
                 android:scaleType="centerInside"
+                android:src="@drawable/ic_navigate_before_white_48dp"
+                android:background="@drawable/white_view_state_list"
+                android:onClick="displayDepartureDetails"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/arrival_details_completion"
+                android:textColor="@color/done_text_arrival_details"
+                android:textSize="24sp"
+                android:layout_weight="0"
                 android:src="@drawable/ic_done_white_48dp"
-                android:background="@drawable/white_view_state_list"/>
-        </LinearLayout>
+                android:padding="@dimen/icon_padding"
+                android:clickable="true"
+                android:background="@drawable/white_view_state_list"
+                android:onClick="displayArrivalDetails"/>
+        </RelativeLayout>
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>
