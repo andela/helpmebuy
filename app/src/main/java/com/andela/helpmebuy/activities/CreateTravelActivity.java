@@ -83,6 +83,8 @@ public class CreateTravelActivity extends AppCompatActivity {
 
         Location arrivalLocation = travelArrivalFragment.getArrivalLocation();
         arrivalAddress.setLocation(arrivalLocation);
+        DateTime arrivalDateTime = travelArrivalFragment.getArrivalDateTime();
+        travel.setDepartureDate(arrivalDateTime);
         travel.setArrivalAddress(arrivalAddress);
 
         FirebaseCollection<Travel> firebaseCollection = new FirebaseCollection<Travel>(Constants.TRAVELS,Travel.class);

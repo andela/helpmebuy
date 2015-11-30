@@ -21,6 +21,8 @@ import com.andela.helpmebuy.utilities.LocationPickerDialog;
 import com.andela.helpmebuy.utilities.Utils;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -43,11 +45,11 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
 
     private TextView travelInfoTitle;
 
-    private Date arrivalDate;
+    private DateTime arrivalDate;
 
-    private Date arrivalTime;
+    private DateTime arrivalTime;
 
-    private DateTime arrivalDateTime;
+    private String arrivalDateTime;
 
     private Location arrivalLocation;
 
@@ -78,33 +80,25 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        DateFormat dateFormat = new SimpleDateFormat("MM d, yyyy");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy");
         dateValue.setText(String.format("%02d/%02d/%02d", day, month + 1, year));
 
-        try {
-            TravelArrivalFragment.this.setArrivalDate(dateFormat.parse(dateValue.getText().toString()));
-        }
-        catch (ParseException parseException) {
-            parseException.printStackTrace();
-        }
-
+        arrivalDateTime = dateValue.getText().toString();
+        TravelArrivalFragment.this.setArrivalDate(formatter.parseDateTime(arrivalDateTime));
         dateValue.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onTimeSet(TimePicker view,int hourOfDay, int minute) {
-        DateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm:ss");
         int hour = Utils.getHourIn12HoursFormat(hourOfDay);
+        int second = 00;
 
         timeValue.setText(String.format("%02d:%02d %s", hour, minute, (hour < 12) ? "AM" : "PM"));
+        String timeFormat = String.format("%02d:%02d:%02d", hourOfDay, minute, second);
 
-        try {
-            TravelArrivalFragment.this.setArrivalTime(timeFormat.parse(timeValue.getText().toString()));
-        }
-        catch (ParseException parseException) {
-            parseException.printStackTrace();
-        }
-
+        arrivalDateTime += " "+ timeFormat;
+        TravelArrivalFragment.this.setArrivalTime(formatter.parseDateTime(timeFormat));
         timeValue.setVisibility(View.VISIBLE);
     }
 
@@ -143,19 +137,19 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    public Date getArrivalDate() {
+    public DateTime getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(Date arrivalDate) {
+    public void setArrivalDate(DateTime arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
-    public Date getArrivalTime() {
+    public DateTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(Date arrivalTime) {
+    public void setArrivalTime(DateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
@@ -165,5 +159,10 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
 
     public void setArrivalLocation(Location arrivalLocation) {
         this.arrivalLocation = arrivalLocation;
+    }
+
+    public DateTime getArrivalDateTime() {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy HH:mm:ss");
+        return formatter.parseDateTime(arrivalDateTime);
     }
 }

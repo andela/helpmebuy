@@ -53,6 +53,8 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
 
     private DateTime departureTime;
 
+    private String departureDateTime;
+
     private Location departureLocation;
 
     @Override
@@ -85,18 +87,22 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
         DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy");
         dateValue.setText(String.format("%02d/%02d/%02d", day, month + 1, year));
 
-        TravelDepartureFragment.this.setDepartureDate(formatter.parseDateTime(dateValue.getText().toString()));
+        departureDateTime = dateValue.getText().toString();
+        TravelDepartureFragment.this.setDepartureDate(formatter.parseDateTime(departureDateTime));
         dateValue.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm:ss");
         int hour = Utils.getHourIn12HoursFormat(hourOfDay);
+        int second = 00;
 
         timeValue.setText(String.format("%02d:%02d %s", hour, minute, (hour < 12) ? "AM" : "PM"));
+        String timeFormat = String.format("%02d:%02d:%02d", hourOfDay, minute, second);
 
-        TravelDepartureFragment.this.setDepartureTime(formatter.parseDateTime(timeValue.getText().toString()));
+        departureDateTime += " "+ timeFormat;
+        TravelDepartureFragment.this.setDepartureTime(formatter.parseDateTime(timeFormat));
         timeValue.setVisibility(View.VISIBLE);
     }
 
@@ -164,8 +170,7 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
     }
 
     public DateTime getDepartureDateTime() {
-        System.out.println(getDepartureDate());
-        System.out.println(getDepartureTime());
-        return new DateTime();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy HH:mm:ss");
+        return formatter.parseDateTime(departureDateTime);
     }
 }
