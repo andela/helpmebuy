@@ -88,7 +88,7 @@ public class HomeActivity extends AppCompatActivity  {
 
         loadComponents();
 
-        saveTravels();
+//        saveTravels();
     }
 
     private void addActionBar() {
@@ -164,7 +164,7 @@ public class HomeActivity extends AppCompatActivity  {
     public void saveTravels() {
         User user = CurrentUser.get(this);
         Travel travel = new Travel();
-        travel.setId("150");
+        travel.setId("151");
         travel.setUserId(user.getId());
         Country country = new Country();
         country.setId("200");
@@ -203,7 +203,8 @@ public class HomeActivity extends AppCompatActivity  {
     private void loadTravelsByLocation(){
         travels = new ArrayList<>();
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
-        travelsCollection.query("departureAddress/location", userLocation.toFullString(), new DataCallback<List<Travel>>() {
+
+        travelsCollection.query("departureLocationCode", userLocation.toFullString(), new DataCallback<List<Travel>>() {
             @Override
             public void onSuccess(List<Travel> data) {
                 for (Travel travel : data) {
@@ -213,36 +214,6 @@ public class HomeActivity extends AppCompatActivity  {
                         travels.add(travel);
 
                         adapter.notifyItemInserted(travels.size() -1);
-                    } else {
-                        travels.set(index, travel);
-
-                        adapter.notifyItemChanged(index);
-                    }
-                }
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Log.d(TAG, errorMessage);
-            }
-        });
-    }
-
-    private void loadTravels() {
-        travels = new ArrayList<>();
-
-        travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
-
-        travelsCollection.getAll(new DataCallback<List<Travel>>() {
-            @Override
-            public void onSuccess(List<Travel> data) {
-                for (Travel travel : data) {
-                    int index = findIndex(travel);
-
-                    if (index <= 0) {
-                        travels.add(travel);
-
-                        adapter.notifyItemInserted(travels.size());
                     } else {
                         travels.set(index, travel);
 
@@ -339,22 +310,21 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     public void changeLocation(View view) {
+        travels.clear();
+
         final LocationPickerDialog dialog = new LocationPickerDialog(this);
         dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
             @Override
             public void onLocationSet(Location location) {
                 userLocationTextView.setText(location.toString());
                 userLocation = location;
+
                 loadTravelsByLocation();
+
                 dialog.dismiss();
             }
         });
 
         dialog.show();
-
-
-//        CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
-//        countryPickerDialog.show(HomeActivity.this.getSupportFragmentManager(), "countries_picker");
-//        userLocationTextView.setText(CityPickerDialog.userLocation);
     }
 }

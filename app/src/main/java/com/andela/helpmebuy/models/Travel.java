@@ -30,6 +30,8 @@ public class Travel extends Model {
      */
     private Address departureAddress;
 
+    private String departureLocationCode;
+
     /**
      * The date of arrival.
      */
@@ -41,6 +43,8 @@ public class Travel extends Model {
      * The arrival address.
      */
     private Address arrivalAddress;
+
+    private String arrivalLocationCode;
 
     /**
      * Creates a new travel.
@@ -78,6 +82,7 @@ public class Travel extends Model {
 
     public void setDepartureAddress(Address departureAddress) {
         this.departureAddress = departureAddress;
+        this.departureLocationCode = departureAddress.getLocation().toFullString();
     }
 
     public DateTime getArrivalDate() {
@@ -94,5 +99,22 @@ public class Travel extends Model {
 
     public void setArrivalAddress(Address arrivalAddress) {
         this.arrivalAddress = arrivalAddress;
+        this.arrivalLocationCode = arrivalAddress.getLocation().toFullString();
+    }
+
+    public String getDepartureLocationCode() {
+        return departureLocationCode;
+    }
+
+    public String getArrivalLocationCode() {
+        return arrivalLocationCode;
+    }
+
+    public void setDepartureLocationCode(String departureLocationCode) {
+        this.departureLocationCode = departureLocationCode;
+    }
+
+    public void setArrivalLocationCode(String arrivalLocationCode) {
+        this.arrivalLocationCode = arrivalLocationCode;
     }
 }

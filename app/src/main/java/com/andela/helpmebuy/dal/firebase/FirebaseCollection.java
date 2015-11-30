@@ -82,17 +82,25 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
 
     @Override
     public void query(String path, String arg, final DataCallback<List<T>> callback) {
-        Query query = firebase.orderByChild(path).equalTo(arg);
+        Query query = firebase.child(childName).orderByChild(path).equalTo(arg);
+
+        final List<T> data = new ArrayList<>();
+
         query.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                List<T> data = new ArrayList<>();
-
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    data.add(snapshot.getValue(type));
-                }
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                data.add(dataSnapshot.getValue(type));
 
                 callback.onSuccess(data);
+//                List<T> data = new ArrayList<>();
+//
+//                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+//                    data.add(snapshot.getValue(type));
+//                }
+//
+//                callback.onSuccess(data);
+
+                System.out.println(dataSnapshot);
             }
 
             @Override

@@ -10,23 +10,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 public class Address extends Model {
 
-//    /**
-//     * The city part of the address.
-//     */
-//    private String city;
-//
-//    /**
-//     * The state part of the address.
-//     */
-//    private String state;
-//
-//    /**
-//     * The country part of the address.
-//     */
-//    private String country;
-    @JsonSerialize(using = LocationSerializer.class)
-    @JsonDeserialize(using = LocationDeserializer.class)
+    @JsonSerialize(using=LocationSerializer.class)
+    @JsonDeserialize(using=LocationDeserializer.class)
     private Location location;
+
     /**
      * The street part of the address.
      */
