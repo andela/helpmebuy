@@ -20,6 +20,8 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
 import com.andela.helpmebuy.utilities.Utils;
 
+import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +46,8 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
     private Date arrivalDate;
 
     private Date arrivalTime;
+
+    private DateTime arrivalDateTime;
 
     private Location arrivalLocation;
 
@@ -76,7 +80,6 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
     public void onDateSet(DatePicker view, int year, int month, int day) {
         DateFormat dateFormat = new SimpleDateFormat("MM d, yyyy");
         dateValue.setText(String.format("%02d/%02d/%02d", day, month + 1, year));
-
 
         try {
             TravelArrivalFragment.this.setArrivalDate(dateFormat.parse(dateValue.getText().toString()));
@@ -163,5 +166,4 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
     public void setArrivalLocation(Location arrivalLocation) {
         this.arrivalLocation = arrivalLocation;
     }
-
 }

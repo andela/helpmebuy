@@ -24,6 +24,8 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
 import com.andela.helpmebuy.utilities.Utils;
 
+import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -168,5 +170,11 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
 
     public void setDepartureLocation(Location departureLocation) {
         this.departureLocation = departureLocation;
+    }
+
+    public DateTime getDepartureDateTime() {
+        System.out.println(getDepartureDate());
+        System.out.println(getDepartureTime());
+        return new DateTime();
     }
 }
