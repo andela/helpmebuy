@@ -44,12 +44,9 @@ public class CreateTravelActivity extends AppCompatActivity {
         travelArrivalFragment = new TravelArrivalFragment();
 
         displayDepartureDetails(parentLayout);
-
-
     }
 
     public void displayArrivalDetails(View view) {
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.create_travel_fragment_container,travelArrivalFragment)
@@ -97,7 +94,6 @@ public class CreateTravelActivity extends AppCompatActivity {
                         .setMessage("Travel Details Successfully saved").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 }).show();
             }

@@ -25,6 +25,8 @@ import com.andela.helpmebuy.utilities.LocationPickerDialog;
 import com.andela.helpmebuy.utilities.Utils;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -47,9 +49,9 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
 
     private TextView travelInfoView;
 
-    private Date departureDate;
+    private DateTime departureDate;
 
-    private Date departureTime;
+    private DateTime departureTime;
 
     private Location departureLocation;
 
@@ -80,32 +82,21 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-
-        DateFormat dateFormat = new SimpleDateFormat("MM/d/yyyy");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy");
         dateValue.setText(String.format("%02d/%02d/%02d", day, month + 1, year));
-        try {
-            TravelDepartureFragment.this.setDepartureDate(dateFormat.parse(dateValue.getText().toString()));
-        }
-        catch (ParseException parseException) {
-            parseException.printStackTrace();
-        }
+
+        TravelDepartureFragment.this.setDepartureDate(formatter.parseDateTime(dateValue.getText().toString()));
         dateValue.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onTimeSet(TimePicker view,int hourOfDay, int minute) {
-        DateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy");
         int hour = Utils.getHourIn12HoursFormat(hourOfDay);
 
         timeValue.setText(String.format("%02d:%02d %s", hour, minute, (hour < 12) ? "AM" : "PM"));
 
-        try {
-            TravelDepartureFragment.this.setDepartureTime(timeFormat.parse(dateValue.getText().toString()));
-        }
-        catch (ParseException parseException) {
-            parseException.printStackTrace();
-        }
-
+        TravelDepartureFragment.this.setDepartureTime(formatter.parseDateTime(timeValue.getText().toString()));
         timeValue.setVisibility(View.VISIBLE);
     }
 
@@ -148,19 +139,19 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    public Date getDepartureDate() {
+    public DateTime getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(DateTime departureDate) {
         this.departureDate = departureDate;
     }
 
-    public Date getDepartureTime() {
+    public DateTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(Date departureTime) {
+    public void setDepartureTime(DateTime departureTime) {
         this.departureTime = departureTime;
     }
 
