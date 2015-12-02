@@ -14,6 +14,7 @@ import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.fragments.TravelArrivalFragment;
 import com.andela.helpmebuy.fragments.TravelDepartureFragment;
+import com.andela.helpmebuy.fragments.TravelFragment;
 import com.andela.helpmebuy.models.Address;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
@@ -61,7 +62,7 @@ public class CreateTravelActivity extends AppCompatActivity {
 
     public void displayArrivalDetails(View view) {
         try {
-            if (isValidDepartureTravelDetails()) {
+            if (isValidTravelDetails(travelDepartureFragment)) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.create_travel_fragment_container, travelArrivalFragment)
@@ -86,23 +87,31 @@ public class CreateTravelActivity extends AppCompatActivity {
     }
 
     public void saveDetails(View view) {
-        if (isValidArrivalTravelDetails()) {
-            travel = new Travel();
-            Address departureAddress = new Address();
-            Address arrivalAddress = new Address();
+        try {
+            if (isValidTravelDetails(travelArrivalFragment)) {
+                travel = new Travel();
+                Address departureAddress = new Address();
+                Address arrivalAddress = new Address();
 
-            travel.setUserId("c655fd62-41e0-4ac1-8bbb-737c03666a42");
-            travel.setId("123456");
+                travel.setUserId("c655fd62-41e0-4ac1-8bbb-737c03666a42");
+                travel.setId("123456");
 
-            departureAddress.setLocation(departureLocation);
-            travel.setDepartureDate(departureDateTime);
-            travel.setDepartureAddress(departureAddress);
+                departureLocation = travelDepartureFragment.getLocation();
+                departureDateTime = travelDepartureFragment.getDateTime();
+                departureAddress.setLocation(departureLocation);
+                travel.setDepartureDate(departureDateTime);
+                travel.setDepartureAddress(departureAddress);
 
-            arrivalAddress.setLocation(arrivalLocation);
-            travel.setArrivalDate(arrivalDateTime);
-            travel.setArrivalAddress(arrivalAddress);
+                arrivalLocation = travelArrivalFragment.getLocation();
+                arrivalDateTime = travelArrivalFragment.getDateTime();
+                arrivalAddress.setLocation(arrivalLocation);
+                travel.setArrivalDate(arrivalDateTime);
+                travel.setArrivalAddress(arrivalAddress);
 
-            saveTravelDetails(travel);
+                saveTravelDetails(travel);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -127,36 +136,17 @@ public class CreateTravelActivity extends AppCompatActivity {
         });
     }
 
-    private boolean isValidDepartureTravelDetails() {
-        departureLocation = travelDepartureFragment.getDepartureLocation();
-        departureDateTime = travelDepartureFragment.getDepartureDateTime();
+    public boolean isValidTravelDetails(TravelFragment travelFragment) {
+        Location location = travelFragment.getLocation();
+        DateTime dateTime = travelFragment.getDateTime();
 
-        if (departureLocation == null) {
-            travelDepartureFragment.setLocationError();
+        if (location == null) {
+            travelFragment.setLocationError();
             return false;
         }
-
-        if (departureDateTime == null || departureDateTime.isBeforeNow()) {
-            travelDepartureFragment.setDepartureDateError();
-            travelDepartureFragment.setDepartureTimeError();
-            return false;
-        }
-
-        return true;
-    }
-
-    public boolean isValidArrivalTravelDetails() {
-        arrivalLocation = travelArrivalFragment.getArrivalLocation();
-        arrivalDateTime = travelArrivalFragment.getArrivalDateTime();
-
-        if (arrivalLocation == null) {
-            travelArrivalFragment.setLocationError();
-            return false;
-        }
-
-        if (arrivalDateTime == null || arrivalDateTime.isBeforeNow() || arrivalDateTime.isBefore(departureDateTime)) {
-            travelArrivalFragment.setDepartureDateError();
-            travelArrivalFragment.setDepartureTimeError();
+        else if (dateTime == null || dateTime.isBeforeNow()) {
+            travelFragment.setDateError();
+            travelFragment.setTimeError();
             return false;
         }
 
