@@ -45,10 +45,6 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
 
     private TextView travelInfoTitle;
 
-    private DateTime arrivalDate;
-
-    private DateTime arrivalTime;
-
     private String arrivalDateTime;
 
     private Location arrivalLocation;
@@ -80,26 +76,21 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy");
         dateValue.setText(String.format("%02d/%02d/%02d", day, month + 1, year));
-
+        clearError(dateValue);
         arrivalDateTime = dateValue.getText().toString();
-        TravelArrivalFragment.this.setArrivalDate(formatter.parseDateTime(arrivalDateTime));
-        dateValue.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onTimeSet(TimePicker view,int hourOfDay, int minute) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm:ss");
         int hour = Utils.getHourIn12HoursFormat(hourOfDay);
         int second = 00;
 
-        timeValue.setText(String.format("%02d:%02d %s", hour, minute, (hour < 12) ? "AM" : "PM"));
+        timeValue.setText(String.format("%02d:%02d %s", hour, minute, ((hourOfDay < 12) ? "AM" : "PM")));
+        clearError(timeValue);
         String timeFormat = String.format("%02d:%02d:%02d", hourOfDay, minute, second);
 
         arrivalDateTime += " "+ timeFormat;
-        TravelArrivalFragment.this.setArrivalTime(formatter.parseDateTime(timeFormat));
-        timeValue.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -112,7 +103,7 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
                     @Override
                     public void onLocationSet(Location location) {
                         locationValue.setText(location.toString());
-                        locationValue.setVisibility(View.VISIBLE);
+                        clearError(locationValue);
                         TravelArrivalFragment.this.setArrivalLocation(location);
                         dialog.dismiss();
                     }
@@ -134,23 +125,24 @@ public class TravelArrivalFragment extends Fragment implements View.OnClickListe
                 timeDialog.setTimeSetListener(TravelArrivalFragment.this);
                 timeDialog.show(getActivity().getFragmentManager(), TimePickerFragment.TAG);
                 break;
+
         }
     }
 
-    public DateTime getArrivalDate() {
-        return arrivalDate;
+    public void setLocationError() {
+        locationValue.setError("Please select a Location");
     }
 
-    public void setArrivalDate(DateTime arrivalDate) {
-        this.arrivalDate = arrivalDate;
+    public void setDepartureDateError() {
+        dateValue.setError("Please select a valid departure date");
     }
 
-    public DateTime getArrivalTime() {
-        return arrivalTime;
+    public void setDepartureTimeError() {
+        timeValue.setError("Please select a valid departure time");
     }
 
-    public void setArrivalTime(DateTime arrivalTime) {
-        this.arrivalTime = arrivalTime;
+    public void clearError(TextView v) {
+        v.setError(null);
     }
 
     public Location getArrivalLocation() {

@@ -4,12 +4,16 @@ package com.andela.helpmebuy.fragments;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,17 +53,17 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
 
     private TextView travelInfoView;
 
-    private DateTime departureDate;
-
-    private DateTime departureTime;
-
     private String departureDateTime;
 
     private Location departureLocation;
 
+    private View parentLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_departure_infos, container, false);
+
+        parentLayout = (LinearLayout) view.findViewById(R.id.departure_layout);
 
         travelInfoView = (TextView)view.findViewById(R.id.travel_info_title);
         travelInfoView.setText(R.string.departure);
@@ -79,31 +83,28 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
         timeValue = (TextView) view.findViewById(R.id.time_value);
         timeValue.setText(R.string.departure_time_value_summary);
 
+        departureDateTime = null;
+
         return view;
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy");
         dateValue.setText(String.format("%02d/%02d/%02d", day, month + 1, year));
-
+        clearError(dateValue);
         departureDateTime = dateValue.getText().toString();
-        TravelDepartureFragment.this.setDepartureDate(formatter.parseDateTime(departureDateTime));
-        dateValue.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm:ss");
         int hour = Utils.getHourIn12HoursFormat(hourOfDay);
         int second = 00;
 
-        timeValue.setText(String.format("%02d:%02d %s", hour, minute, (hour < 12) ? "AM" : "PM"));
+        timeValue.setText(String.format("%02d:%02d %s", hour, minute, (hourOfDay < 12) ? "AM" : "PM"));
+        clearError(timeValue);
         String timeFormat = String.format("%02d:%02d:%02d", hourOfDay, minute, second);
 
         departureDateTime += " "+ timeFormat;
-        TravelDepartureFragment.this.setDepartureTime(formatter.parseDateTime(timeFormat));
-        timeValue.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -116,9 +117,8 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
                     @Override
                     public void onLocationSet(Location location) {
                         locationValue.setText(location.toString());
+                        clearError(locationValue);
                         TravelDepartureFragment.this.setDepartureLocation(location);
-                        locationValue.setVisibility(View.VISIBLE);
-
                         dialog.dismiss();
                     }
                 });
@@ -145,20 +145,20 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    public DateTime getDepartureDate() {
-        return departureDate;
+    public void setLocationError() {
+        locationValue.setError("Please select a Location");
     }
 
-    public void setDepartureDate(DateTime departureDate) {
-        this.departureDate = departureDate;
+    public void setDepartureDateError() {
+        dateValue.setError("Please select a valid departure date");
     }
 
-    public DateTime getDepartureTime() {
-        return departureTime;
+    public void setDepartureTimeError() {
+        timeValue.setError("Please select a valid departure time");
     }
 
-    public void setDepartureTime(DateTime departureTime) {
-        this.departureTime = departureTime;
+    public void clearError(TextView v) {
+        v.setError(null);
     }
 
     public Location getDepartureLocation() {
@@ -170,7 +170,10 @@ public class TravelDepartureFragment extends Fragment implements View.OnClickLis
     }
 
     public DateTime getDepartureDateTime() {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy HH:mm:ss");
-        return formatter.parseDateTime(departureDateTime);
+        if (departureDateTime != null) {
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy HH:mm:ss");
+            return formatter.parseDateTime(departureDateTime);
+        }
+        return null;
     }
 }
