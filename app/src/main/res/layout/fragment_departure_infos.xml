@@ -47,6 +47,7 @@
                 android:background="@color/primary_color">
 
                 <ImageView
+                    android:id="@+id/next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/icon_padding"
@@ -55,8 +56,6 @@
                     android:src="@drawable/ic_navigate_next_white_48dp"
                     android:background="@drawable/white_view_state_list"
                     android:onClick="displayArrivalDetails"/>
-
-
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>
