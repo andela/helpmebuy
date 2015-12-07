@@ -23,6 +23,9 @@ import com.andela.helpmebuy.utilities.Constants;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CreateTravelActivity extends AppCompatActivity {
 
     public static final String TAG = "Save Status";
@@ -43,9 +46,9 @@ public class CreateTravelActivity extends AppCompatActivity {
 
     private Location arrivalLocation;
 
-    private TextView departureTime;
+    private List departureDetails;
 
-    private LinearLayout arrivalFragment;
+    private List arrivalDetails;
 
 
     @Override
@@ -53,20 +56,21 @@ public class CreateTravelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_travel);
 
-        departureTime = (TextView) findViewById(R.id.time_value);
-
         parentLayout = (LinearLayout)findViewById(R.id.departure_layout);
-        arrivalFragment = (LinearLayout) findViewById(R.id.arrival_fragment);
 
         travelDepartureFragment = new TravelDepartureFragment();
         travelArrivalFragment = new TravelArrivalFragment();
+
+        departureDetails = new ArrayList<>();
+        arrivalDetails = new ArrayList<>();
 
         displayDepartureDetails(parentLayout);
     }
 
     public void displayArrivalDetails(View view) {
         try {
-            if (isValidTravelDetails(travelDepartureFragment)) {
+            departureDetails = getDetailsFromFragment(travelDepartureFragment);
+            if (isValidTravelDetails(departureDetails)) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.create_travel_fragment_container, travelArrivalFragment)
@@ -91,34 +95,25 @@ public class CreateTravelActivity extends AppCompatActivity {
     }
 
     public void saveDetails(View view) {
+        arrivalDetails = getDetailsFromFragment(travelArrivalFragment);
+
         try {
-            if (isValidTravelDetails(travelArrivalFragment)) {
-                travel = new Travel();
-                Address departureAddress = new Address();
-                Address arrivalAddress = new Address();
+            setDetails(departureDetails, "departure");
+            setDetails(arrivalDetails, "arrival");
 
-                travel.setUserId("c655fd62-41e0-4ac1-8bbb-737c03666a42");
-                travel.setId("123456");
-
-                departureLocation = travelDepartureFragment.getLocation();
-                departureDateTime = travelDepartureFragment.getDateTime();
-                departureAddress.setLocation(departureLocation);
-                travel.setDepartureDate(departureDateTime);
-                travel.setDepartureAddress(departureAddress);
-
-                arrivalLocation = travelArrivalFragment.getLocation();
-                arrivalDateTime = travelArrivalFragment.getDateTime();
-                arrivalAddress.setLocation(arrivalLocation);
-                travel.setArrivalDate(arrivalDateTime);
-                travel.setArrivalAddress(arrivalAddress);
+            if (isValidTravelDetails(arrivalDetails)) {
 
                 if (arrivalDateTime.isBefore(departureDateTime)) {
                     travelArrivalFragment.setDateError();
                     travelArrivalFragment.setTimeError();
-                    Snackbar.make(arrivalFragment, "Arrival date should not be before departure date",
+
+                    Snackbar.make(view.getRootView(), "Arrival date should not be before departure date",
                             Snackbar.LENGTH_LONG).show();
                     return;
                 }
+                travel = new Travel();
+
+                setTravelDetails();
 
                 saveTravelDetails(travel);
             }
@@ -127,18 +122,55 @@ public class CreateTravelActivity extends AppCompatActivity {
         }
     }
 
+    public List getDetailsFromFragment(TravelFragment fragment) {
+        List list = new ArrayList<>();
+        list.add(0, fragment);
+        list.add(1,fragment.getLocation());
+        list.add(2,fragment.getDateTime());
+
+        return list;
+    }
+
+    public void setDetails(List details, String tag) {
+        if (tag.equals("departure")) {
+            departureLocation = (Location) details.get(1);
+            departureDateTime = (DateTime) details.get(2);
+            return;
+        }
+
+        arrivalLocation = (Location) details.get(1);
+        arrivalDateTime = (DateTime) details.get(2);
+    }
+
+    public void setTravelDetails() {
+        Address departureAddress = new Address();
+        Address arrivalAddress = new Address();
+
+        travel.setUserId("c655fd62-41e0-4ac1-8bbb-737c03666a42");
+        travel.setId("123456");
+
+        departureAddress.setLocation(departureLocation);
+        arrivalAddress.setLocation(arrivalLocation);
+
+        travel.setDepartureDate(departureDateTime);
+        travel.setDepartureAddress(departureAddress);
+        travel.setArrivalDate(arrivalDateTime);
+        travel.setArrivalAddress(arrivalAddress);
+    }
+
     public void saveTravelDetails(Travel travel) {
         FirebaseCollection<Travel> firebaseCollection = new FirebaseCollection<Travel>(Constants.TRAVELS, Travel.class);
         firebaseCollection.save(travel, new DataCallback<Travel>() {
             @Override
             public void onSuccess(Travel data) {
-                Log.d(TAG, "SUCCESS");
                 new AlertDialog.Builder(CreateTravelActivity.this).setTitle("Travel Details")
-                        .setMessage("Travel Details Successfully saved").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                }).show();
+                        .setMessage("Travel Details Successfully saved")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                             @Override
+                             public void onClick(DialogInterface dialog, int which) {
+                             }
+
+                        }).show();
             }
 
             @Override
@@ -148,18 +180,19 @@ public class CreateTravelActivity extends AppCompatActivity {
         });
     }
 
-    public boolean isValidTravelDetails(TravelFragment travelFragment) {
-        Location location = travelFragment.getLocation();
-        DateTime dateTime = travelFragment.getDateTime();
+    public boolean isValidTravelDetails(List details) {
+        TravelFragment fragment = (TravelFragment) details.get(0);
+        Location location = (Location) details.get(1);
+        DateTime dateTime = (DateTime) details.get(2);
 
         if (location == null) {
-            travelFragment.setLocationError();
+            fragment.setLocationError();
             return false;
         }
 
         if (dateTime == null || dateTime.isBeforeNow()) {
-            travelFragment.setDateError();
-            travelFragment.setTimeError();
+            fragment.setDateError();
+            fragment.setTimeError();
             return false;
         }
 
