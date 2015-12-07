@@ -3,6 +3,7 @@ package com.andela.helpmebuy.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +45,8 @@ public class CreateTravelActivity extends AppCompatActivity {
 
     private TextView departureTime;
 
+    private LinearLayout arrivalFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class CreateTravelActivity extends AppCompatActivity {
         departureTime = (TextView) findViewById(R.id.time_value);
 
         parentLayout = (LinearLayout)findViewById(R.id.departure_layout);
+        arrivalFragment = (LinearLayout) findViewById(R.id.arrival_fragment);
 
         travelDepartureFragment = new TravelDepartureFragment();
         travelArrivalFragment = new TravelArrivalFragment();
@@ -108,6 +112,14 @@ public class CreateTravelActivity extends AppCompatActivity {
                 travel.setArrivalDate(arrivalDateTime);
                 travel.setArrivalAddress(arrivalAddress);
 
+                if (arrivalDateTime.isBefore(departureDateTime)) {
+                    travelArrivalFragment.setDateError();
+                    travelArrivalFragment.setTimeError();
+                    Snackbar.make(arrivalFragment, "Arrival date should not be before departure date",
+                            Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
                 saveTravelDetails(travel);
             }
         } catch (Exception e) {
@@ -144,7 +156,8 @@ public class CreateTravelActivity extends AppCompatActivity {
             travelFragment.setLocationError();
             return false;
         }
-        else if (dateTime == null || dateTime.isBeforeNow()) {
+
+        if (dateTime == null || dateTime.isBeforeNow()) {
             travelFragment.setDateError();
             travelFragment.setTimeError();
             return false;

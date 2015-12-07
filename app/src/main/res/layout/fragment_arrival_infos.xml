@@ -3,7 +3,8 @@
     tools:context="com.andela.helpmebuy.activities.CreateTravelActivityFragment"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/arrival_fragment">
 
 
     <include layout="@layout/travel_infos"

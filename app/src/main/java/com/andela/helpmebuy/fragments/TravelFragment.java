@@ -92,6 +92,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         dateValue.setText(String.format("%02d/%02d/%02d", day, month + 1, year));
+        clearError(dateValue);
         dateTime = dateValue.getText().toString();
     }
 
@@ -102,6 +103,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
 
         timeValue.setText(String.format("%02d:%02d %s", hour, minute, ((hourOfDay < 12) ? "AM" : "PM")));
         String timeFormat = String.format("%02d:%02d:%02d", hourOfDay, minute, second);
+        clearError(timeValue);
 
         dateTime += " " + timeFormat;
     }
@@ -130,6 +132,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
             @Override
             public void onLocationSet(Location location) {
                 locationValue.setText(location.toString());
+                clearError(locationValue);
                 setLocation(location);
                 dialog.dismiss();
             }
@@ -166,7 +169,12 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
 
     public DateTime getDateTime() {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy HH:mm:ss");
-        return formatter.parseDateTime(dateTime);
+
+        if (dateTime != null) {
+            return formatter.parseDateTime(dateTime);
+        }
+
+        return null;
     }
 
     public void setTitleId(int id) {
