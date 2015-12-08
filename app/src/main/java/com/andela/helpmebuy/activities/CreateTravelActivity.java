@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +31,12 @@ public class CreateTravelActivity extends AppCompatActivity {
 
     public static final String TAG = "Save Status";
 
+    public static final String KEY_LOCATION = "location";
+
+    public static final String KEY_DATE = "date";
+
+    public static final String KEY_TIME = "time";
+
     private TravelDepartureFragment travelDepartureFragment;
 
     private TravelArrivalFragment travelArrivalFragment;
@@ -50,11 +57,29 @@ public class CreateTravelActivity extends AppCompatActivity {
 
     private List arrivalDetails;
 
+    private TextView location;
+
+    private TextView date;
+
+    private TextView time;
+
+    private Fragment mcontent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+
+          mcontent  = getSupportFragmentManager().getFragment(savedInstanceState,"mcontent");
+        }
+
         setContentView(R.layout.activity_create_travel);
+
+        location = (TextView)findViewById(R.id.location_value);
+        date = (TextView)findViewById(R.id.date_value);
+        time = (TextView)findViewById(R.id.time_value);
 
         parentLayout = (LinearLayout)findViewById(R.id.departure_layout);
 
@@ -65,9 +90,12 @@ public class CreateTravelActivity extends AppCompatActivity {
         arrivalDetails = new ArrayList<>();
 
         displayDepartureDetails(parentLayout);
+
     }
 
     public void displayArrivalDetails(View view) {
+
+
         try {
             departureDetails = getDetailsFromFragment(travelDepartureFragment);
             if (isValidTravelDetails(departureDetails, view)) {
@@ -101,16 +129,8 @@ public class CreateTravelActivity extends AppCompatActivity {
             setDetails(departureDetails, "departure");
             setDetails(arrivalDetails, "arrival");
 
-
             if (isValidTravelDetails(arrivalDetails, view)) {
 
-               // if (arrivalDateTime.isBefore(departureDateTime)) {
-                    //travelArrivalFragment.setDateErrorArrival(view);
-                    //travelArrivalFragment.setTimeError(view);
-
-                    //Snackbar.make(view.getRootView(), "Arrival date should not be before departure date",
-                            //Snackbar.LENGTH_LONG).show();;
-                //}
                 travel = new Travel();
 
                 setTravelDetails();
@@ -118,6 +138,7 @@ public class CreateTravelActivity extends AppCompatActivity {
                 saveTravelDetails(travel);
             }
             else {
+
                 if (arrivalDateTime.isBefore(departureDateTime)) {
                     Snackbar.make(view, "Arrival date should not be before departure date",
                             Snackbar.LENGTH_LONG).show();;
@@ -206,4 +227,13 @@ public class CreateTravelActivity extends AppCompatActivity {
 
         return true;
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        getSupportFragmentManager().putFragment(savedInstanceState, "mcontent",mcontent );
+
+    }
+
+
 }

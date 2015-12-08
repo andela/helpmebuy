@@ -23,7 +23,10 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+
+
 public class TravelFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+
     private View locationView;
 
     private TextView locationValue;
@@ -63,6 +66,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
         setViewText();
 
         setOnClickListeners();
+
 
         return view;
     }
@@ -224,9 +228,6 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
         v.setError(null);
     }
 
-    public void setDateErrorArrival(View view) {
-        dateValue.setError("Please select a valid date");
-        Snackbar.make(view.getRootView(), "Arrival date should not be before departure date",
-                Snackbar.LENGTH_LONG).show();
-    }
+
+
 }
