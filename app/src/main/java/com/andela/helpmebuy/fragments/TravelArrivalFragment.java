@@ -20,4 +20,6 @@ public class TravelArrivalFragment extends TravelFragment {
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
+
 }

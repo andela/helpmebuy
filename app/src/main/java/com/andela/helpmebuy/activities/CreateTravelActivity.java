@@ -70,7 +70,7 @@ public class CreateTravelActivity extends AppCompatActivity {
     public void displayArrivalDetails(View view) {
         try {
             departureDetails = getDetailsFromFragment(travelDepartureFragment);
-            if (isValidTravelDetails(departureDetails)) {
+            if (isValidTravelDetails(departureDetails, view)) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.create_travel_fragment_container, travelArrivalFragment)
@@ -101,21 +101,27 @@ public class CreateTravelActivity extends AppCompatActivity {
             setDetails(departureDetails, "departure");
             setDetails(arrivalDetails, "arrival");
 
-            if (isValidTravelDetails(arrivalDetails)) {
 
-                if (arrivalDateTime.isBefore(departureDateTime)) {
-                    travelArrivalFragment.setDateError();
-                    travelArrivalFragment.setTimeError();
+            if (isValidTravelDetails(arrivalDetails, view)) {
 
-                    Snackbar.make(view.getRootView(), "Arrival date should not be before departure date",
-                            Snackbar.LENGTH_LONG).show();
-                    return;
-                }
+               // if (arrivalDateTime.isBefore(departureDateTime)) {
+                    //travelArrivalFragment.setDateErrorArrival(view);
+                    //travelArrivalFragment.setTimeError(view);
+
+                    //Snackbar.make(view.getRootView(), "Arrival date should not be before departure date",
+                            //Snackbar.LENGTH_LONG).show();;
+                //}
                 travel = new Travel();
 
                 setTravelDetails();
 
                 saveTravelDetails(travel);
+            }
+            else {
+                if (arrivalDateTime.isBefore(departureDateTime)) {
+                    Snackbar.make(view, "Arrival date should not be before departure date",
+                            Snackbar.LENGTH_LONG).show();;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +132,8 @@ public class CreateTravelActivity extends AppCompatActivity {
         List list = new ArrayList<>();
         list.add(0, fragment);
         list.add(1,fragment.getLocation());
-        list.add(2,fragment.getDateTime());
+        list.add(2, fragment.getDateTime());
+
 
         return list;
     }
@@ -166,9 +173,9 @@ public class CreateTravelActivity extends AppCompatActivity {
                 new AlertDialog.Builder(CreateTravelActivity.this).setTitle("Travel Details")
                         .setMessage("Travel Details Successfully saved")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                             @Override
-                             public void onClick(DialogInterface dialog, int which) {
-                             }
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
 
                         }).show();
             }
@@ -180,19 +187,20 @@ public class CreateTravelActivity extends AppCompatActivity {
         });
     }
 
-    public boolean isValidTravelDetails(List details) {
+    public boolean isValidTravelDetails(List details, View view) {
         TravelFragment fragment = (TravelFragment) details.get(0);
         Location location = (Location) details.get(1);
         DateTime dateTime = (DateTime) details.get(2);
 
         if (location == null) {
-            fragment.setLocationError();
+            fragment.setLocationError(view);
+
             return false;
         }
 
-        if (dateTime == null || dateTime.isBeforeNow()) {
-            fragment.setDateError();
-            fragment.setTimeError();
+       else if (dateTime == null || dateTime.isBeforeNow() ) {
+           fragment.setTimeError(view);
+           fragment.setDateError(view);
             return false;
         }
 

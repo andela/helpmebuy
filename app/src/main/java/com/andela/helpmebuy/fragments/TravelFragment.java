@@ -3,6 +3,7 @@ package com.andela.helpmebuy.fragments;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -177,6 +178,14 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
         return null;
     }
 
+    public String getDate() {
+        return dateValue.getText().toString();
+    }
+
+    public String getTime() {
+        return timeValue.getText().toString();
+    }
+
     public void setTitleId(int id) {
         titleId = id;
     }
@@ -197,19 +206,27 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
         timeValueHint = hint;
     }
 
-    public void setLocationError() {
-        locationValue.setError("Please select a Location");
+    public void setLocationError( View view) {
+        locationValue.setError("Please select a location");
+        Snackbar.make(view.getRootView(), "Please select a valid location", Snackbar.LENGTH_SHORT).show();
     }
 
-    public void setDateError() {
+    public void setDateError(View view) {
         dateValue.setError("Please select a valid Date");
+        Snackbar.make(view.getRootView(), "Please select a valid Date", Snackbar.LENGTH_SHORT).show();
     }
-
-    public void setTimeError() {
+    public void setTimeError(View view) {
         timeValue.setError("Please select a valid Time");
+        Snackbar.make(view.getRootView(), "Please select a valid Time", Snackbar.LENGTH_SHORT).show();
     }
 
     public void clearError(TextView v) {
         v.setError(null);
+    }
+
+    public void setDateErrorArrival(View view) {
+        dateValue.setError("Please select a valid date");
+        Snackbar.make(view.getRootView(), "Arrival date should not be before departure date",
+                Snackbar.LENGTH_LONG).show();
     }
 }
