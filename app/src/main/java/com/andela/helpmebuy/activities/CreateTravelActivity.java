@@ -37,6 +37,8 @@ public class CreateTravelActivity extends AppCompatActivity {
 
     public static final String KEY_TIME = "time";
 
+    public  String locationBundle = "";
+
     private TravelDepartureFragment travelDepartureFragment;
 
     private TravelArrivalFragment travelArrivalFragment;
@@ -77,14 +79,17 @@ public class CreateTravelActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_create_travel);
 
-        location = (TextView)findViewById(R.id.location_value);
+        /*location = (TextView)findViewById(R.id.location_value);
         date = (TextView)findViewById(R.id.date_value);
-        time = (TextView)findViewById(R.id.time_value);
+        time = (TextView)findViewById(R.id.time_value);*/
 
         parentLayout = (LinearLayout)findViewById(R.id.departure_layout);
 
         travelDepartureFragment = new TravelDepartureFragment();
+        travelDepartureFragment.setArguments(new Bundle());
         travelArrivalFragment = new TravelArrivalFragment();
+
+
 
         departureDetails = new ArrayList<>();
         arrivalDetails = new ArrayList<>();
@@ -99,6 +104,7 @@ public class CreateTravelActivity extends AppCompatActivity {
         try {
             departureDetails = getDetailsFromFragment(travelDepartureFragment);
             if (isValidTravelDetails(departureDetails, view)) {
+
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.create_travel_fragment_container, travelArrivalFragment)
@@ -110,6 +116,16 @@ public class CreateTravelActivity extends AppCompatActivity {
     }
 
     public void displayDepartureDetails(View view) {
+
+//        if(departureDetails.size() != 0){
+//
+//            String location = departureDetails.get(1).toString();
+//
+//            Bundle bundle = new Bundle();
+//            bundle.putString(KEY_LOCATION, location);
+//            travelDepartureFragment.getArguments().putAll(bundle);
+//        }
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.create_travel_fragment_container, travelDepartureFragment)
@@ -152,11 +168,22 @@ public class CreateTravelActivity extends AppCompatActivity {
     public List getDetailsFromFragment(TravelFragment fragment) {
         List list = new ArrayList<>();
         list.add(0, fragment);
-        list.add(1,fragment.getLocation());
+        list.add(1, fragment.getLocation());
         list.add(2, fragment.getDateTime());
-
-
+        saveDepartureInABundle(list);
         return list;
+    }
+
+    public String saveDepartureInABundle(List details) {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_LOCATION, details.get(1).toString());
+        travelDepartureFragment.getArguments().putAll(bundle);
+        locationBundle = bundle.getString(KEY_LOCATION);
+        return bundle.getString(KEY_LOCATION);
+    }
+
+    public  String getBundle() {
+        return locationBundle;
     }
 
     public void setDetails(List details, String tag) {

@@ -21,5 +21,10 @@ public class TravelArrivalFragment extends TravelFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    @Override
+    public String setLocationValue() {
+        return "";
+    }
+
 
 }

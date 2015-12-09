@@ -2,6 +2,7 @@ package com.andela.helpmebuy.fragments;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,19 @@ public class TravelDepartureFragment extends TravelFragment {
         super.setDateValueHint(R.string.departure_date_value_summary);
         super.setTimeValueHint(R.string.departure_time_value_summary);
 
+
+
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public String setLocationValue() {
+        String bundleLocation = "";
+        if(!(getArguments().getString(KEY_LOCATION, "").isEmpty())){
+            bundleLocation = getArguments().getString(KEY_LOCATION,"");
+            Log.d("HMB", " THE BUNDLE: " + bundleLocation);
+        }
+        return bundleLocation;
     }
 
     @Override

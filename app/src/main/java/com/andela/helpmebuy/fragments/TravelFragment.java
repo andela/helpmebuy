@@ -25,7 +25,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 
 
-public class TravelFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public abstract class TravelFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private View locationView;
 
@@ -67,7 +67,6 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
 
         setOnClickListeners();
 
-
         return view;
     }
 
@@ -89,7 +88,12 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
 
     public void setViewText() {
         travelInfoTitle.setText(title);
-        locationValue.setText(locationValueHint);
+
+        if(setLocationValue().isEmpty())
+            locationValue.setText( locationValueHint );
+        else
+            locationValue.setText( setLocationValue() );
+
         dateValue.setText(dateValueHint);
         timeValue.setText(timeValueHint);
     }
@@ -209,6 +213,8 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
     public void setTimeValueHint(int hint) {
         timeValueHint = hint;
     }
+
+    public abstract String setLocationValue();
 
     public void setLocationError( View view) {
         locationValue.setError("Please select a location");
