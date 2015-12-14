@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -30,9 +32,19 @@ import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.dialogs.CityPickerDialog;
 import com.andela.helpmebuy.dialogs.CountryPickerDialog;
+import com.andela.helpmebuy.models.Address;
+import com.andela.helpmebuy.models.City;
+import com.andela.helpmebuy.models.Country;
+import com.andela.helpmebuy.models.Location;
+import com.andela.helpmebuy.models.Region;
 import com.andela.helpmebuy.models.Travel;
+import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.ItemDivider;
+import com.andela.helpmebuy.utilities.LocationPickerDialog;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +72,8 @@ public class HomeActivity extends AppCompatActivity  {
 
     private FirebaseCollection<Travel> travelsCollection;
 
+    private Location userLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +82,13 @@ public class HomeActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_home);
 
         addActionBar();
+        initializeUserLocation();
 
-        loadTravels();
+        loadTravelsByLocation();
 
         loadComponents();
 
-        initializeUserLocation();
+//        saveTravels();
     }
 
     private void addActionBar() {
@@ -146,21 +161,59 @@ public class HomeActivity extends AppCompatActivity  {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    private void loadTravels() {
-        travels = new ArrayList<>();
+    public void saveTravels() {
+        User user = CurrentUser.get(this);
+        Travel travel = new Travel();
+        travel.setId("151");
+        travel.setUserId(user.getId());
+        Country country = new Country();
+        country.setId("200");
+        country.setName("Nigeria");
+        Region region = new Region();
+        region.setId("100");
+        region.setName("Lagos");
+        region.setCountryId("200");
+        City city = new City();
+        city.setId("500");
+        city.setCountryId("200");
+        city.setName("Yaba");
+        city.setRegionId("100");
+        Location location = new Location(country, region, city);
+        Address depature = new Address();
+        depature.setLocation(location);
+        travel.setDepartureAddress(depature);
+        travel.setArrivalAddress(depature);
+        travel.setArrivalDate(DateTime.now());
+        travel.setDepartureDate(DateTime.now());
+        FirebaseCollection<Travel> firebaseCollection =new FirebaseCollection<Travel>(Constants.TRAVELS, Travel.class);
+        firebaseCollection.save(travel, new DataCallback<Travel>() {
+            @Override
+            public void onSuccess(Travel data) {
+                Log.d(TAG, "SUCCESS");
+            }
 
+            @Override
+            public void onError(String errorMessage) {
+                Log.d(TAG, errorMessage);
+            }
+        });
+
+    }
+
+    private void loadTravelsByLocation(){
+        travels = new ArrayList<>();
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
 
-        travelsCollection.getAll(new DataCallback<List<Travel>>() {
+        travelsCollection.query("departureLocationCode", userLocation.toFullString(), new DataCallback<List<Travel>>() {
             @Override
             public void onSuccess(List<Travel> data) {
                 for (Travel travel : data) {
                     int index = findIndex(travel);
 
-                    if (index < 0) {
+                    if (index <= 0) {
                         travels.add(travel);
 
-                        adapter.notifyItemInserted(travels.size() - 1);
+                        adapter.notifyItemInserted(travels.size() -1);
                     } else {
                         travels.set(index, travel);
 
@@ -230,6 +283,20 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     private void initializeUserLocation() {
+        Country country = new Country();
+        country.setId("200");
+        country.setName("Nigeria");
+        Region region = new Region();
+        region.setId("100");
+        region.setName("Lagos");
+        region.setCountryId("200");
+        City city = new City();
+        city.setId("500");
+        city.setCountryId("200");
+        city.setName("Yaba");
+        city.setRegionId("100");
+        Location location = new  Location(country, region, city);
+        userLocation = location;
         LayoutInflater inflater = getLayoutInflater();
 
         final View view = inflater.inflate(R.layout.user_location, null, false);
@@ -237,15 +304,27 @@ public class HomeActivity extends AppCompatActivity  {
 
         userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
         userLocationTextView.setText("Lagos, Nigeria");
-
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
 
         toolbar.addView(view);
     }
 
     public void changeLocation(View view) {
-        CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
-        countryPickerDialog.show(HomeActivity.this.getSupportFragmentManager(), "countries_picker");
-        userLocationTextView.setText(CityPickerDialog.userLocation);
+        travels.clear();
+
+        final LocationPickerDialog dialog = new LocationPickerDialog(this);
+        dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
+            @Override
+            public void onLocationSet(Location location) {
+                userLocationTextView.setText(location.toString());
+                userLocation = location;
+
+                loadTravelsByLocation();
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }

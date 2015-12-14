@@ -84,7 +84,11 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
                 name.setText(user.getFullName());
 
+<<<<<<< HEAD
                 String address = travel.getDepartureAddress().getLocation().getCity().getName()+ ", "+ travel.getDepartureAddress().getLocation().getCountry().getName();
+=======
+                String address = travel.getDepartureAddress().getLocation().getCity().getName() + ", " + travel.getDepartureAddress().getLocation().getCountry().getName();
+>>>>>>> a08636e8e448249ecfcccac2b3a932a05523e9ff
                 departureLocation.setText(address);
 
                 if (travel.getArrivalDate() != null) {

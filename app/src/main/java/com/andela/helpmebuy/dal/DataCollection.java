@@ -12,7 +12,5 @@ public interface DataCollection<T> {
 
     void getAll(DataCallback<List<T>> callback);
 
-    void getMap(DataCallback<LinkedHashMap<String, LinkedHashMap<String, List<String>>>> callback);
-
-    void query(String[] selection, String[] selectionArgs, DataCallback<List<T>> callback);
+    void query(String path, String arg, DataCallback<List<T>> callback);
 }

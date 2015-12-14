@@ -1,10 +1,18 @@
 package com.andela.helpmebuy.models;
 
+import com.andela.helpmebuy.serializers.LocationDeserializer;
+import com.andela.helpmebuy.serializers.LocationSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /**
  * Represents a simple address.
  */
 public class Address extends Model {
 
+
+    @JsonSerialize(using=LocationSerializer.class)
+    @JsonDeserialize(using=LocationDeserializer.class)
     private Location location;
     /**
      * The street part of the address.
@@ -26,6 +34,16 @@ public class Address extends Model {
      */
     public Address(){
     }
+
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
 
     public String getStreet() {
         return street;
@@ -51,11 +69,5 @@ public class Address extends Model {
         this.phoneNumber = phoneNumber;
     }
 
-    public Location getLocation() {
-        return location;
-    }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
 }

@@ -5,6 +5,8 @@ package com.andela.helpmebuy.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +32,7 @@ public class CountryPickerDialog extends DialogFragment {
 
     public CountryPickerDialog() {
     }
+
 
     @Override
     public void onAttach(Activity activity) {

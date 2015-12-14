@@ -4,13 +4,14 @@ import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.models.Model;
 import com.andela.helpmebuy.utilities.Constants;
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class FirebaseCollection<T extends Model> implements DataCollection<T> {
@@ -80,27 +81,44 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
     }
 
     @Override
-    public void getMap(final DataCallback<LinkedHashMap<String, LinkedHashMap<String, List<String>>>> callback) {
-        firebase.child(childName)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        LinkedHashMap<String, LinkedHashMap<String, List<String>>> countries = new LinkedHashMap<String, LinkedHashMap<String, List<String>>>();
-                        for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                            countries.put("countries", new LinkedHashMap<String, List<String>>());
-                        }
-                        callback.onSuccess(countries);
-                    }
+    public void query(String path, String arg, final DataCallback<List<T>> callback) {
+        Query query = firebase.child(childName).orderByChild(path).equalTo(arg);
 
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                        callback.onError(firebaseError.getMessage());
-                    }
-                });
-    }
+        final List<T> data = new ArrayList<>();
 
-    @Override
-    public void query(String[] selection, String[] selectionArgs, final DataCallback<List<T>> callback) {
-        callback.onSuccess(new ArrayList<T>());
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                data.add(dataSnapshot.getValue(type));
+
+                callback.onSuccess(data);
+//                List<T> data = new ArrayList<>();
+//
+//                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+//                    data.add(snapshot.getValue(type));
+//                }
+//
+//                callback.onSuccess(data);
+
+                System.out.println(dataSnapshot);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                callback.onError(firebaseError.getMessage());
+            }
+        });
     }
 }
