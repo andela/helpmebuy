@@ -5,10 +5,12 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -19,47 +21,42 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
 import com.andela.helpmebuy.utilities.Utils;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 
+public class TravelFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-public abstract class TravelFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+    private View locationView, date, time;
 
-    private View locationView;
+    private TextView locationValue, dateValue, timeValue, travelInfoTitle;
 
-    private TextView locationValue;
+    ImageView nextButton, previousButton, saveButton;
 
-    private View date;
+    ArrayList<String> travelDetails;
 
-    private TextView dateValue;
+    OnTravelActivityListener mActivityListener;
 
-    private View time;
+    public OnTravelFragmentListener mFragmentListener;
 
-    private TextView timeValue;
+    public TravelFragment(){
 
-    private TextView travelInfoTitle;
+        travelDetails = new ArrayList<>();
+        travelDetails.add(0, "");
+        travelDetails.add(1, "");
+        travelDetails.add(2, "");
 
-    private Location location;
+    }
 
-    private String dateTime;
+    public void setmActivityListener(OnTravelActivityListener onTravelActivityListener){
 
-    private int locationValueHint;
+        this.mActivityListener = onTravelActivityListener;
 
-    private int dateValueHint;
-
-    private int timeValueHint;
-
-    private int title;
-
-    private int layout;
-
-    private int titleId;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(layout, container, false);
+
+        View view = inflater.inflate(mFragmentListener.viewLayout(), container, false);
 
         initializeComponents(view);
 
@@ -68,16 +65,59 @@ public abstract class TravelFragment extends Fragment implements View.OnClickLis
         setOnClickListeners();
 
         return view;
+
     }
 
     public void initializeComponents(View v) {
+
         locationView = v.findViewById(R.id.location);
         date = v.findViewById(R.id.date);
         time = v.findViewById(R.id.time);
+
         locationValue = (TextView) v.findViewById(R.id.location_value);
         dateValue = (TextView) v.findViewById(R.id.date_value);
         timeValue = (TextView) v.findViewById(R.id.time_value);
-        travelInfoTitle = (TextView) v.findViewById(titleId);
+        travelInfoTitle = (TextView) v.findViewById(mFragmentListener.titleId());
+
+        if (v.findViewById(R.id.next) != null) {
+            nextButton = (ImageView) v.findViewById(R.id.next);
+
+            nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    if (verifyDetails(travelDetails)) {
+                        mActivityListener.onNextButtonClicked(travelDetails);
+                    }
+                }
+            });
+
+        }
+
+        if(v.findViewById(R.id.previous) != null) {
+            previousButton = (ImageView) v.findViewById(R.id.previous);
+
+            previousButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mActivityListener.onPreviousButtonClicked(travelDetails);
+                }
+            });
+        }
+
+        if(v.findViewById(R.id.save) != null) {
+            saveButton = (ImageView) v.findViewById(R.id.save);
+
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (verifyDetails(travelDetails)) {
+                        mActivityListener.onSaveButtonClicked(travelDetails);
+                    }
+                }
+            });
+        }
+
     }
 
     public void setOnClickListeners() {
@@ -87,34 +127,61 @@ public abstract class TravelFragment extends Fragment implements View.OnClickLis
     }
 
     public void setViewText() {
-        travelInfoTitle.setText(title);
+        travelInfoTitle.setText( mFragmentListener.titleValue() );
+        locationValue.setText(mFragmentListener.locationValue());
+        dateValue.setText(mFragmentListener.dateValue());
+        timeValue.setText(mFragmentListener.timeValue());
+    }
 
-        if(setLocationValue().isEmpty())
-            locationValue.setText( locationValueHint );
-        else
-            locationValue.setText( setLocationValue() );
+    public boolean verifyDetails(ArrayList<String> details){
 
-        dateValue.setText(dateValueHint);
-        timeValue.setText(timeValueHint);
+        boolean proceed = true;
+
+        if (details.get(0).isEmpty()){
+            setLocationError(getView());
+            proceed = false;
+        }
+
+        if (details.get(1).isEmpty()){
+            setDateError(getView());
+            proceed = false;
+        }
+
+        if (details.get(2).isEmpty()){
+            setTimeError(getView());
+            proceed = false;
+        }
+
+        Log.d("HMB", "HELPMEBUY Location: " + details.get(0) + ", Date: " + details.get(1) + ", Time: " + details.get(2) + ", PROCEED: " + proceed);
+
+        return proceed;
+
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        dateValue.setText(String.format("%02d/%02d/%02d", day, month + 1, year));
+
+        String dateVal = String.format("%02d/%02d/%02d", day, month + 1, year);
+
+        dateValue.setText(dateVal);
         clearError(dateValue);
-        dateTime = dateValue.getText().toString();
+        travelDetails.set(1, dateVal);
+
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         int hour = Utils.getHourIn12HoursFormat(hourOfDay);
-        int second = 0;
+        //int second = 0;
+        String timeVal = String.format("%02d:%02d %s", hour, minute, ((hourOfDay < 12) ? "AM" : "PM"));
 
-        timeValue.setText(String.format("%02d:%02d %s", hour, minute, ((hourOfDay < 12) ? "AM" : "PM")));
-        String timeFormat = String.format("%02d:%02d:%02d", hourOfDay, minute, second);
+        timeValue.setText(timeVal);
+
+        //String timeFormat = String.format("%02d:%02d:%02d", hourOfDay, minute, second);
+
         clearError(timeValue);
+        travelDetails.set(2, timeVal);
 
-        dateTime += " " + timeFormat;
     }
 
     @Override
@@ -140,9 +207,12 @@ public abstract class TravelFragment extends Fragment implements View.OnClickLis
         dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
             @Override
             public void onLocationSet(Location location) {
-                locationValue.setText(location.toString());
+                String locationVal = location.toString();
+
+                locationValue.setText(locationVal);
                 clearError(locationValue);
-                setLocation(location);
+                travelDetails.set(0, location.toString());
+
                 dialog.dismiss();
             }
         });
@@ -164,57 +234,6 @@ public abstract class TravelFragment extends Fragment implements View.OnClickLis
         timeDialog.show(getActivity().getFragmentManager(), TimePickerFragment.TAG);
     }
 
-    protected void setViewId(int layout) {
-        this.layout = layout;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public DateTime getDateTime() {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("d/MM/yyyy HH:mm:ss");
-
-        if (dateTime != null) {
-            return formatter.parseDateTime(dateTime);
-        }
-
-        return null;
-    }
-
-    public String getDate() {
-        return dateValue.getText().toString();
-    }
-
-    public String getTime() {
-        return timeValue.getText().toString();
-    }
-
-    public void setTitleId(int id) {
-        titleId = id;
-    }
-
-    public void setTitle(int title) {
-        this.title = title;
-    }
-
-    public void setLocationValueHint(int hint) {
-        locationValueHint = hint;
-    }
-
-    public void setDateValueHint(int hint) {
-        dateValueHint = hint;
-    }
-
-    public void setTimeValueHint(int hint) {
-        timeValueHint = hint;
-    }
-
-    public abstract String setLocationValue();
 
     public void setLocationError( View view) {
         locationValue.setError("Please select a location");
@@ -234,6 +253,24 @@ public abstract class TravelFragment extends Fragment implements View.OnClickLis
         v.setError(null);
     }
 
+    private ArrayList<String> getTravelBundle(Bundle bundle, String key){
+        ArrayList<String> details = new ArrayList<>();
 
+        if (bundle.getStringArrayList(key) != null){
+            details = bundle.getStringArrayList(key);
+            assert details != null;
+            Log.d("HMB", " THE BUNDLE: " + details.get(0));
+        }
+
+        return details;
+    }
+
+    public String getTravelItem(Bundle bundle, String key, int position, String hint){
+        ArrayList<String> details = getTravelBundle(bundle, key);
+        if (details.size() > 0 && !(details.get(position).isEmpty()))
+            return details.get(position);
+        else
+            return hint;
+    }
 
 }

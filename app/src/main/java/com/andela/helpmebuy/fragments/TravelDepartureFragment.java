@@ -1,74 +1,85 @@
 package com.andela.helpmebuy.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 
-public class TravelDepartureFragment extends TravelFragment {
+import java.util.ArrayList;
 
-    public static final String KEY_LOCATION = "location";
+public class TravelDepartureFragment extends TravelFragment implements OnTravelFragmentListener {
 
-    public static final String KEY_DATE = "date";
+    public static final String TRAVEL_DEPARTURE_KEY = "TRAVEL_DEPARTURE_KEY";
 
-    public static final String KEY_TIME = "time";
-
-    private TextView location;
-
-    private TextView date;
-
-    private TextView time;
+    public TravelDepartureFragment(){
+        mFragmentListener = this;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        location = (TextView)container.findViewById(R.id.location_value);
-        date = (TextView)container.findViewById(R.id.date_value);
-        time = (TextView)container.findViewById(R.id.time_value);
-
-        super.setViewId(R.layout.fragment_departure_infos);
-        super.setTitleId(R.id.travel_info_title);
-        super.setTitle(R.string.departure);
-        super.setLocationValueHint(R.string.departure_location_value_summary);
-        super.setDateValueHint(R.string.departure_date_value_summary);
-        super.setTimeValueHint(R.string.departure_time_value_summary);
-
-
-
         return super.onCreateView(inflater, container, savedInstanceState);
+
     }
 
-    @Override
-    public String setLocationValue() {
-        String bundleLocation = "";
-        if(!(getArguments().getString(KEY_LOCATION, "").isEmpty())){
-            bundleLocation = getArguments().getString(KEY_LOCATION,"");
-            Log.d("HMB", " THE BUNDLE: " + bundleLocation);
+/*    public ArrayList<String> getDepatureDetails(String key){
+        ArrayList<String> details = new ArrayList<>();
+
+        if (getArguments().getStringArrayList(key) != null){
+            details = getArguments().getStringArrayList(key);
+            assert details != null;
+            Log.d("HMB", " THE BUNDLE: " + details.get(0));
         }
-        return bundleLocation;
+
+        return details;
+    }*/
+
+
+
+    /*public String getTravelItem(int position, String hint){
+        ArrayList<String> details = getDepatureDetails(TRAVEL_DEPARTURE_KEY);
+        if (details.size() > 0)
+            return details.get(position);
+        else
+            return hint;
+    }*/
+
+
+    @Override
+    public int viewLayout() {
+        return R.layout.fragment_departure_infos;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-            if (savedInstanceState != null) {
-                location.setText(savedInstanceState.getString(KEY_LOCATION, "location"));
-                date.setText(savedInstanceState.getString(KEY_DATE, "date"));
-                time.setText(savedInstanceState.getString(KEY_TIME, "time"));
-            }
+    public int titleId() {
+        return R.id.travel_info_title;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString(KEY_LOCATION, location.toString());
-        savedInstanceState.putString(KEY_DATE, date.toString());
-        savedInstanceState.putString(KEY_TIME, time.toString());
+    public String titleValue() {
+        return getResources().getString(R.string.departure);
+    }
+
+    @Override
+    public String locationValue() {
+        return super.getTravelItem(getArguments(), TRAVEL_DEPARTURE_KEY, 0, getResources().getString(R.string.departure_location_value_summary));
+    }
+
+    @Override
+    public String dateValue() {
+        return super.getTravelItem(getArguments(), TRAVEL_DEPARTURE_KEY, 1, getResources().getString(R.string.departure_date_value_summary));
+    }
+
+    @Override
+    public String timeValue() {
+        return super.getTravelItem(getArguments(), TRAVEL_DEPARTURE_KEY, 2, getResources().getString(R.string.departure_time_value_summary));
     }
 }

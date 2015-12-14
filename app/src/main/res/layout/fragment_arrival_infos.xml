@@ -49,6 +49,7 @@
             android:background="@color/primary_color">
 
             <ImageView
+                android:id="@+id/previous"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/icon_padding"
@@ -56,10 +57,10 @@
                 android:clickable="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_navigate_before_white_48dp"
-                android:background="@drawable/white_view_state_list"
-                android:onClick="displayDepartureDetails"/>
+                android:background="@drawable/white_view_state_list" />
 
             <ImageView
+                android:id="@+id/save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -69,8 +70,7 @@
                 android:src="@drawable/ic_done_white_48dp"
                 android:padding="@dimen/icon_padding"
                 android:clickable="true"
-                android:background="@drawable/white_view_state_list"
-                android:onClick="saveDetails"/>
+                android:background="@drawable/white_view_state_list" />
         </RelativeLayout>
         </LinearLayout>
     </FrameLayout>
