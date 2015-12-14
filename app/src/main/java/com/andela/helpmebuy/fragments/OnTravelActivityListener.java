@@ -7,7 +7,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 public interface OnTravelActivityListener {
-    void onNextButtonClicked(ArrayList<String> detartureDetails);
-    void onPreviousButtonClicked(ArrayList<String> detartureDetails);
-    void onSaveButtonClicked(ArrayList<String> detartureDetails);
+    void onNextButtonClicked(View view, ArrayList<String> departureDetails);
+    void onPreviousButtonClicked(ArrayList<String> departureDetails);
+    void onSaveButtonClicked(View view, ArrayList<String> arrivalDetails);
 }

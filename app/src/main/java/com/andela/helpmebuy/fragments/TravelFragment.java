@@ -21,6 +21,10 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
 import com.andela.helpmebuy.utilities.Utils;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 
 
@@ -87,7 +91,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
             public void onClick(View v) {
 
                     if (verifyDetails(travelDetails)) {
-                        mActivityListener.onNextButtonClicked(travelDetails);
+                        mActivityListener.onNextButtonClicked(v, travelDetails);
                     }
                 }
             });
@@ -112,7 +116,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
                 @Override
                 public void onClick(View v) {
                     if (verifyDetails(travelDetails)) {
-                        mActivityListener.onSaveButtonClicked(travelDetails);
+                        mActivityListener.onSaveButtonClicked(v, travelDetails);
                     }
                 }
             });
@@ -244,6 +248,12 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
         dateValue.setError("Please select a valid Date");
         Snackbar.make(view.getRootView(), "Please select a valid Date", Snackbar.LENGTH_SHORT).show();
     }
+
+    public void setDateError(View view,String message) {
+        dateValue.setError("Please select a valid Date");
+        Snackbar.make(view.getRootView(), message, Snackbar.LENGTH_SHORT).show();
+    }
+
     public void setTimeError(View view) {
         timeValue.setError("Please select a valid Time");
         Snackbar.make(view.getRootView(), "Please select a valid Time", Snackbar.LENGTH_SHORT).show();

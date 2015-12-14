@@ -1,6 +1,7 @@
 package com.andela.helpmebuy.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,12 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.fragments.OnTravelActivityListener;
 import com.andela.helpmebuy.fragments.TravelArrivalFragment;
 import com.andela.helpmebuy.fragments.TravelDepartureFragment;
+import com.andela.helpmebuy.fragments.TravelFragment;
+import com.andela.helpmebuy.models.Address;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 
@@ -129,17 +136,20 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     }
 
     @Override
-      public void onNextButtonClicked(ArrayList<String> depatureVal) {
+      public void onNextButtonClicked(View view,ArrayList<String> depatureVal) {
 
         departureDetails = depatureVal;
+        String message = "Departure date cannot be before current date";
+        if (validateDateTime(view, departureDetails,message)) {
 
-        if (arrivalDetails.size() > 0) {
-            Bundle bundle = new Bundle();
-            bundle.putStringArrayList(TravelArrivalFragment.TRAVEL_ARRIVAL_KEY, arrivalDetails);
-            travelArrivalFragment.getArguments().putAll(bundle);
+            if (arrivalDetails.size() > 0) {
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList(TravelArrivalFragment.TRAVEL_ARRIVAL_KEY, arrivalDetails);
+                travelArrivalFragment.getArguments().putAll(bundle);
+            }
+
+            replaceTravelFragment(parentLayout.getId(), travelArrivalFragment, TRANSIT_FORWARD);
         }
-
-        replaceTravelFragment(parentLayout.getId(), travelArrivalFragment, TRANSIT_FORWARD);
 
     }
 
@@ -159,8 +169,37 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     }
 
     @Override
-    public void onSaveButtonClicked(ArrayList<String> detartureDetails) {
+    public void onSaveButtonClicked(View view, ArrayList<String> arrivalDetails) {
+        String message = "Arrival date cannot be before departure date";
+        if(validateDateTime(view, departureDetails, arrivalDetails, message)){
 
+        }
+    }
+
+    private boolean validateDateTime(View view, ArrayList<String> details,String message) {
+        boolean proceed = true;
+        if(getDateTimeValue(details.get(1),details.get(2)).isBeforeNow()) {
+            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+            proceed = false;
+        }
+        return proceed;
+    }
+
+    private boolean validateDateTime(View view, ArrayList<String> departureDetails, ArrayList<String> arrivalDetails, String message) {
+        boolean proceed = true;
+        DateTime departureDateTime =  getDateTimeValue(departureDetails.get(1),departureDetails.get(2));
+        DateTime arrivalDateTime = getDateTimeValue(arrivalDetails.get(1),departureDetails.get(2));
+        if(arrivalDateTime.isBefore(departureDateTime)) {
+            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+            proceed = false;
+        }
+        return proceed;
+    }
+
+    private DateTime getDateTimeValue(String date, String time){
+        String dateTimeValue = date + " " + time;
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm a");
+        return formatter.parseDateTime(dateTimeValue);
     }
 
     public void closeWindow(View view) {
@@ -176,9 +215,6 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 //    public void setTravelDetails() {
 //        Address departureAddress = new Address();
 //        Address arrivalAddress = new Address();
-//
-//        travel.setUserId("c655fd62-41e0-4ac1-8bbb-737c03666a42");
-//        travel.setId("123456");
 //
 //        departureAddress.setLocation(departureLocation);
 //        arrivalAddress.setLocation(arrivalLocation);
