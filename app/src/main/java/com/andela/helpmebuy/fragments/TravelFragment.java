@@ -37,6 +37,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
     ImageView nextButton, previousButton, saveButton;
 
     ArrayList<String> travelDetails;
+    Location travelLocation;
 
     OnTravelActivityListener mActivityListener;
 
@@ -91,7 +92,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
             public void onClick(View v) {
 
                     if (verifyDetails(travelDetails)) {
-                        mActivityListener.onNextButtonClicked(v, travelDetails);
+                        mActivityListener.onNextButtonClicked(v, travelDetails, travelLocation);
                     }
                 }
             });
@@ -104,7 +105,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
             previousButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mActivityListener.onPreviousButtonClicked(travelDetails);
+                    mActivityListener.onPreviousButtonClicked(travelDetails, travelLocation);
                 }
             });
         }
@@ -116,7 +117,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
                 @Override
                 public void onClick(View v) {
                     if (verifyDetails(travelDetails)) {
-                        mActivityListener.onSaveButtonClicked(v, travelDetails);
+                        mActivityListener.onSaveButtonClicked(v, travelDetails, travelLocation);
                     }
                 }
             });
@@ -211,6 +212,8 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
         dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
             @Override
             public void onLocationSet(Location location) {
+                //getArguments().putParcelable(TravelDepartureFragment.TRAVEL_DEPARTURE_KEY, location);
+                travelLocation = location;
                 String locationVal = location.toString();
 
                 locationValue.setText(locationVal);

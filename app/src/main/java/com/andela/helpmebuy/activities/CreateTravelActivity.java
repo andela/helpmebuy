@@ -1,25 +1,35 @@
 package com.andela.helpmebuy.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.dal.DataCallback;
+import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.fragments.OnTravelActivityListener;
 import com.andela.helpmebuy.fragments.TravelArrivalFragment;
 import com.andela.helpmebuy.fragments.TravelDepartureFragment;
 import com.andela.helpmebuy.fragments.TravelFragment;
 import com.andela.helpmebuy.models.Address;
+import com.andela.helpmebuy.models.Location;
+import com.andela.helpmebuy.models.Travel;
+import com.andela.helpmebuy.utilities.Constants;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 
 public class CreateTravelActivity extends AppCompatActivity implements OnTravelActivityListener {
 
@@ -27,13 +37,18 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 
     private static final int TRANSIT_BACKWARD = 1;
 
+    private static final String TAG = "Error";
+
     private TravelDepartureFragment travelDepartureFragment;
 
     private TravelArrivalFragment travelArrivalFragment;
 
+
+
     FrameLayout parentLayout;
 
     ArrayList<String> departureDetails;
+    Location departureLocation;
 
     ArrayList<String> arrivalDetails;
 
@@ -44,20 +59,21 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 
         setContentView(R.layout.activity_create_travel);
 
-        initializeComponents();
+        if (travelDepartureFragment == null) {
 
-        initializeTravelFragments();
+            initializeComponents();
 
-        initializeTravelDetails();
+            initializeTravelFragments();
 
-        addTravelFragment(parentLayout.getId(), travelDepartureFragment);
+            initializeTravelDetails();
 
+            addTravelFragment(parentLayout.getId(), travelDepartureFragment);
+        }
     }
 
     private void initializeComponents(){
 
         parentLayout = (FrameLayout) findViewById(R.id.create_travel_fragment_container);
-
     }
 
     private void initializeTravelFragments(){
@@ -132,15 +148,16 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         }
 
         return fragmentTransaction;
-
     }
 
     @Override
-      public void onNextButtonClicked(View view,ArrayList<String> depatureVal) {
+      public void onNextButtonClicked(View view, ArrayList<String> departureDetails, Location travelLocation) {
 
-        departureDetails = depatureVal;
+        this.departureDetails = departureDetails;
+        departureLocation = travelLocation;
+
         String message = "Departure date cannot be before current date";
-        if (validateDateTime(view, departureDetails,message)) {
+        if (validateDateTime(view, this.departureDetails,message)) {
 
             if (arrivalDetails.size() > 0) {
                 Bundle bundle = new Bundle();
@@ -154,7 +171,7 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     }
 
     @Override
-    public void onPreviousButtonClicked(ArrayList<String> arrivalVal) {
+    public void onPreviousButtonClicked(ArrayList<String> arrivalVal, Location travelLocation) {
 
         arrivalDetails = arrivalVal;
 
@@ -169,11 +186,22 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     }
 
     @Override
-    public void onSaveButtonClicked(View view, ArrayList<String> arrivalDetails) {
+    public void onSaveButtonClicked(View view, ArrayList<String> arrivalDetails, Location travelLocation) {
+
+        ArrayList<Location>travelLocations = new ArrayList<>();
+        ArrayList<DateTime>travelDates = new ArrayList<>();
+
         String message = "Arrival date cannot be before departure date";
         if(validateDateTime(view, departureDetails, arrivalDetails, message)){
-
+            travelLocations.add(departureLocation);
+            travelLocations.add(travelLocation);
+            travelDates.add(getDateTimeValue(departureDetails.get(1),departureDetails.get(2)));
+            travelDates.add(getDateTimeValue(arrivalDetails.get(1),arrivalDetails.get(2)));
+            setTravelDetails(travelLocations,travelDates);
+//            Log.d(TravelDepartureFragment.TRAVEL_DEPARTURE_KEY, travelLocation.toFullString());
+//            Log.d(TravelDepartureFragment.TRAVEL_DEPARTURE_KEY, departureLocation.toFullString());
         }
+
     }
 
     private boolean validateDateTime(View view, ArrayList<String> details,String message) {
@@ -208,11 +236,27 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     }
 
 
+    public void setTravelDetails(ArrayList<Location> travelLocation, ArrayList<DateTime> travelDateTime) {
+        Travel travel = new Travel();
+        Address departureAddress = new Address();
+        Address arrivalAddress = new Address();
+
+        travel.setUserId("c655fd62-41e0-4ac1-8bbb-737c03666a42");
+        travel.setId("123456");
+
+        departureAddress.setLocation(travelLocation.get(0));
+        arrivalAddress.setLocation(travelLocation.get(1));
+
+        travel.setDepartureDate(travelDateTime.get(0));
+        travel.setDepartureAddress(departureAddress);
+        travel.setArrivalDate(travelDateTime.get(1));
+        travel.setArrivalAddress(arrivalAddress);
+        saveTravelDetails(travel);
+    }
 
 
-
-
-//    public void setTravelDetails() {
+//    public void setTravelDetails(ArrayList<Location> travelLocation, ArrayList<DateTime> travelDateTime) {
+//        Travel travel = new Travel();
 //        Address departureAddress = new Address();
 //        Address arrivalAddress = new Address();
 //
@@ -225,27 +269,27 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 //        travel.setArrivalAddress(arrivalAddress);
 //    }
 
-//    public void saveTravelDetails(Travel travel) {
-//        FirebaseCollection<Travel> firebaseCollection = new FirebaseCollection<Travel>(Constants.TRAVELS, Travel.class);
-//        firebaseCollection.save(travel, new DataCallback<Travel>() {
-//            @Override
-//            public void onSuccess(Travel data) {
-//                new AlertDialog.Builder(CreateTravelActivity.this).setTitle("Travel Details")
-//                        .setMessage("Travel Details Successfully saved")
-//                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                            }
-//
-//                        }).show();
-//            }
-//
-//            @Override
-//            public void onError(String errorMessage) {
-//                Log.d(TAG, errorMessage);
-//            }
-//        });
-//    }
+    public void saveTravelDetails(Travel travel) {
+        FirebaseCollection<Travel> firebaseCollection = new FirebaseCollection<Travel>(Constants.TRAVELS, Travel.class);
+        firebaseCollection.save(travel, new DataCallback<Travel>() {
+            @Override
+            public void onSuccess(Travel data) {
+                new AlertDialog.Builder(CreateTravelActivity.this).setTitle("Travel Details")
+                        .setMessage("Travel Details Successfully saved")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+
+                        }).show();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.d(TAG, errorMessage);
+            }
+        });
+    }
 
 //    public boolean isValidTravelDeuytails(List details, View view) {
 //        TravelFragment fragment = (TravelFragment) details.get(0);
@@ -266,7 +310,5 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 //
 //        return true;
 //    }
-
-
 
 }

@@ -82,7 +82,6 @@ public class Travel extends Model {
 
     public void setDepartureAddress(Address departureAddress) {
         this.departureAddress = departureAddress;
-        this.departureLocationCode = departureAddress.getLocation().toFullString();
     }
 
     public DateTime getArrivalDate() {
@@ -99,7 +98,6 @@ public class Travel extends Model {
 
     public void setArrivalAddress(Address arrivalAddress) {
         this.arrivalAddress = arrivalAddress;
-        this.arrivalLocationCode = arrivalAddress.getLocation().toFullString();
     }
 
     public String getDepartureLocationCode() {
