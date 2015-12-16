@@ -21,10 +21,6 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
 import com.andela.helpmebuy.utilities.Utils;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.util.ArrayList;
 
 
@@ -49,13 +45,10 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
         travelDetails.add(0, "");
         travelDetails.add(1, "");
         travelDetails.add(2, "");
-
     }
 
     public void setmActivityListener(OnTravelActivityListener onTravelActivityListener){
-
         this.mActivityListener = onTravelActivityListener;
-
     }
 
     @Override
@@ -177,12 +170,9 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         int hour = Utils.getHourIn12HoursFormat(hourOfDay);
-        //int second = 0;
         String timeVal = String.format("%02d:%02d %s", hour, minute, ((hourOfDay < 12) ? "AM" : "PM"));
 
         timeValue.setText(timeVal);
-
-        //String timeFormat = String.format("%02d:%02d:%02d", hourOfDay, minute, second);
 
         clearError(timeValue);
         travelDetails.set(2, timeVal);
@@ -250,11 +240,6 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
     public void setDateError(View view) {
         dateValue.setError("Please select a valid Date");
         Snackbar.make(view.getRootView(), "Please select a valid Date", Snackbar.LENGTH_SHORT).show();
-    }
-
-    public void setDateError(View view,String message) {
-        dateValue.setError("Please select a valid Date");
-        Snackbar.make(view.getRootView(), message, Snackbar.LENGTH_SHORT).show();
     }
 
     public void setTimeError(View view) {

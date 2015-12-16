@@ -43,8 +43,6 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 
     private TravelArrivalFragment travelArrivalFragment;
 
-
-
     FrameLayout parentLayout;
 
     ArrayList<String> departureDetails;
@@ -106,33 +104,15 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 
     }
 
-    public void replaceTravelFragment(int layout, Fragment fragment){
-
-        try {
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(layout, fragment)
-                    .commit();
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
     public void replaceTravelFragment(int layout, Fragment fragment, int TRANSITION){
 
         try {
-
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction = animateFragment(fragmentTransaction, TRANSITION);
             fragmentTransaction.replace(layout, fragment).commit();
-
         } catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     private FragmentTransaction animateFragment(FragmentTransaction fragmentTransaction, int TRANSITION){
@@ -152,7 +132,6 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 
     @Override
       public void onNextButtonClicked(View view, ArrayList<String> departureDetails, Location travelLocation) {
-
         this.departureDetails = departureDetails;
         departureLocation = travelLocation;
 
@@ -164,15 +143,12 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
                 bundle.putStringArrayList(TravelArrivalFragment.TRAVEL_ARRIVAL_KEY, arrivalDetails);
                 travelArrivalFragment.getArguments().putAll(bundle);
             }
-
             replaceTravelFragment(parentLayout.getId(), travelArrivalFragment, TRANSIT_FORWARD);
         }
-
     }
 
     @Override
     public void onPreviousButtonClicked(ArrayList<String> arrivalVal, Location travelLocation) {
-
         arrivalDetails = arrivalVal;
 
         if (departureDetails.size() > 0) {
@@ -187,7 +163,6 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 
     @Override
     public void onSaveButtonClicked(View view, ArrayList<String> arrivalDetails, Location travelLocation) {
-
         ArrayList<Location>travelLocations = new ArrayList<>();
         ArrayList<DateTime>travelDates = new ArrayList<>();
 
@@ -198,10 +173,7 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
             travelDates.add(getDateTimeValue(departureDetails.get(1),departureDetails.get(2)));
             travelDates.add(getDateTimeValue(arrivalDetails.get(1),arrivalDetails.get(2)));
             setTravelDetails(travelLocations,travelDates);
-//            Log.d(TravelDepartureFragment.TRAVEL_DEPARTURE_KEY, travelLocation.toFullString());
-//            Log.d(TravelDepartureFragment.TRAVEL_DEPARTURE_KEY, departureLocation.toFullString());
         }
-
     }
 
     private boolean validateDateTime(View view, ArrayList<String> details,String message) {
@@ -253,22 +225,6 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         travel.setArrivalAddress(arrivalAddress);
         saveTravelDetails(travel);
     }
-
-
-//    public void setTravelDetails(ArrayList<Location> travelLocation, ArrayList<DateTime> travelDateTime) {
-//        Travel travel = new Travel();
-//        Address departureAddress = new Address();
-//        Address arrivalAddress = new Address();
-//
-//        departureAddress.setLocation(departureLocation);
-//        arrivalAddress.setLocation(arrivalLocation);
-//
-//        travel.setDepartureDate(departureDateTime);
-//        travel.setDepartureAddress(departureAddress);
-//        travel.setArrivalDate(arrivalDateTime);
-//        travel.setArrivalAddress(arrivalAddress);
-//    }
-
     public void saveTravelDetails(Travel travel) {
         FirebaseCollection<Travel> firebaseCollection = new FirebaseCollection<Travel>(Constants.TRAVELS, Travel.class);
         firebaseCollection.save(travel, new DataCallback<Travel>() {
@@ -283,32 +239,10 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 
                         }).show();
             }
-
             @Override
             public void onError(String errorMessage) {
                 Log.d(TAG, errorMessage);
             }
         });
     }
-
-//    public boolean isValidTravelDeuytails(List details, View view) {
-//        TravelFragment fragment = (TravelFragment) details.get(0);
-//        Location location = (Location) details.get(1);
-//        DateTime dateTime = (DateTime) details.get(2);
-//
-//        if (location == null) {
-//            fragment.setLocationError(view);
-//
-//            return false;
-//        }
-//
-//       else if (dateTime == null || dateTime.isBeforeNow() ) {
-//           fragment.setTimeError(view);
-//           fragment.setDateError(view);
-//            return false;
-//        }
-//
-//        return true;
-//    }
-
 }

@@ -30,29 +30,6 @@ public class TravelDepartureFragment extends TravelFragment implements OnTravelF
 
     }
 
-/*    public ArrayList<String> getDepatureDetails(String key){
-        ArrayList<String> details = new ArrayList<>();
-
-        if (getArguments().getStringArrayList(key) != null){
-            details = getArguments().getStringArrayList(key);
-            assert details != null;
-            Log.d("HMB", " THE BUNDLE: " + details.get(0));
-        }
-
-        return details;
-    }*/
-
-
-
-    /*public String getTravelItem(int position, String hint){
-        ArrayList<String> details = getDepatureDetails(TRAVEL_DEPARTURE_KEY);
-        if (details.size() > 0)
-            return details.get(position);
-        else
-            return hint;
-    }*/
-
-
     @Override
     public int viewLayout() {
         return R.layout.fragment_departure_infos;
