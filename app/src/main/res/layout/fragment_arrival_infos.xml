@@ -3,7 +3,8 @@
     tools:context="com.andela.helpmebuy.activities.CreateTravelActivityFragment"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/arrival_fragment">
 
 
     <include layout="@layout/travel_infos"
@@ -41,21 +42,36 @@
                 android:src="@drawable/ic_panorama_fish_eye_black_48dp"
                 android:alpha="0.5"/>
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:orientation="horizontal"
             android:background="@color/primary_color">
 
             <ImageView
+                android:id="@+id/previous"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/icon_padding"
+                android:layout_alignParentLeft="true"
                 android:clickable="true"
                 android:scaleType="centerInside"
+                android:src="@drawable/ic_navigate_before_white_48dp"
+                android:background="@drawable/white_view_state_list" />
+
+            <ImageView
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/done_text_arrival_details"
+                android:textSize="24sp"
+                android:layout_weight="0"
                 android:src="@drawable/ic_done_white_48dp"
-                android:background="@drawable/white_view_state_list"/>
-        </LinearLayout>
+                android:padding="@dimen/icon_padding"
+                android:clickable="true"
+                android:background="@drawable/white_view_state_list" />
+        </RelativeLayout>
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

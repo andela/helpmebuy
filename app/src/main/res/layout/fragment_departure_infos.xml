@@ -1,4 +1,7 @@
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/departure_layout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,14 +47,14 @@
                 android:background="@color/primary_color">
 
                 <ImageView
+                    android:id="@+id/next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/icon_padding"
                     android:clickable="true"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_navigate_next_white_48dp"
-                    android:background="@drawable/white_view_state_list"
-                    android:onClick="displayArrivalDetails"/>
+                    android:background="@drawable/white_view_state_list" />
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

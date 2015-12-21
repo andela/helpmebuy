@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
+import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
@@ -33,6 +34,8 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
     private List<Travel> travels;
 
     private FirebaseCollection<User> users;
+
+    private Location location;
 
     public TravellersAdapter(Context context) {
         this.context = context;
@@ -80,6 +83,7 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
                 }
 
                 name.setText(user.getFullName());
+
 
                 String address = travel.getDepartureAddress().getLocation().getCity().getName() + ", " + travel.getDepartureAddress().getLocation().getCountry().getName();
                 departureLocation.setText(address);

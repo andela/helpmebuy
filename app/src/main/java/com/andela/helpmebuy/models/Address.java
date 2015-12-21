@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 public class Address extends Model {
 
+
     @JsonSerialize(using=LocationSerializer.class)
     @JsonDeserialize(using=LocationDeserializer.class)
     private Location location;
@@ -34,6 +35,7 @@ public class Address extends Model {
     public Address(){
     }
 
+
     public Location getLocation() {
         return location;
     }
@@ -41,6 +43,7 @@ public class Address extends Model {
     public void setLocation(Location location) {
         this.location = location;
     }
+
 
     public String getStreet() {
         return street;
@@ -65,4 +68,6 @@ public class Address extends Model {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+
 }
