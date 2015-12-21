@@ -4,16 +4,17 @@
     <color name="primary_color_dark">#004d40</color>
     <color name="accent_color">#f44336</color>
     <color name="divider_color">#eeeeee</color>
-    <color name="traveller_item_pressed_color">#e0e0e0</color>
-    <color name="traveller_name_text_color">#de000000</color>
-    <color name="traveller_details_text_color">#8a000000</color>
-    <color name="traveller_details_hint_text_color">#61000000</color>
+    <color name="item_pressed_background_color">#e0e0e0</color>
+    <color name="primary_text_color">#de000000</color>
+    <color name="secondary_text_color">#8a000000</color>
+    <color name="hint_text_color">#61000000</color>
 
     <color name="user_location_background_color">#deffffff</color>
     <color name="user_location_pressed_background_color">#ffffff</color>
+    <color name="done_text_arrival_details">#ffffff</color>
 
-    <color name="toggle_password_visibility_color">@android:color/transparent</color>
-    <color name="toggle_password_visibility_pressed_color">#61ffffff</color>
+    <color name="white_view_color">@android:color/transparent</color>
+    <color name="white_view_pressed_color">#61ffffff</color>
     <color name="border_background">#F5F5F5</color>
     <color name="border_stroke">#BDBDBD</color>
 </resources>

@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="@dimen/toggle_password_visibility_padding"
-            android:background="@drawable/toggle_password_visibility_state_list"
+            android:background="@drawable/white_view_state_list"
             app:passwordEditText="@id/password_text"
             app:passwordInvisibleImageResource="@drawable/ic_visibility_white_18dp"
             app:passwordVisibleImageResource="@drawable/ic_visibility_off_white_18dp" />

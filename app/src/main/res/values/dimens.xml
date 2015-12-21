@@ -10,4 +10,14 @@
     <dimen name="home_activity_drawer_header_height">220dp</dimen>
     <dimen name="user_location_layout_padding">5dp</dimen>
     <dimen name="toggle_password_visibility_padding">10dp</dimen>
+    <dimen name="header_height">180dp</dimen>
+    <dimen name="header_padding">10dp</dimen>
+    <dimen name="title_text_size">36sp</dimen>
+    <dimen name="edit_location_icon_margin_right">10dp</dimen>
+    <dimen name="close_bar_height">36dp</dimen>
+    <dimen name="item_padding">10dp</dimen>
+    <dimen name="item_margin_top">20dp</dimen>
+    <dimen name="sub_item_margin_top">5dp</dimen>
+    <dimen name="page_indicator_size">20dp</dimen>
+    <dimen name="icon_padding">5dp</dimen>
 </resources>

@@ -5,6 +5,8 @@ package com.andela.helpmebuy.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +20,7 @@ import com.andela.helpmebuy.views.LocationView;
 import java.util.List;
 
 public class CountryPickerDialog extends DialogFragment {
+    public static final String TAG = "CountryPickerDialog";
 
     public static final String COUNTRY = "Country";
 
@@ -25,8 +28,11 @@ public class CountryPickerDialog extends DialogFragment {
 
     private LocationView<Country> countriesView;
 
+    private OnCountrySetListener listener;
+
     public CountryPickerDialog() {
     }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -43,11 +49,21 @@ public class CountryPickerDialog extends DialogFragment {
         return builder.create();
     }
 
+    public void setOnCountrySetListener(OnCountrySetListener listener) {
+        this.listener = listener;
+    }
+
     private void initializeCountriesView() {
         countriesView = new LocationView<>(getActivity());
         countriesView.setOnLocationClickedListener(new LocationView.OnLocationClickedListener<Country>() {
             @Override
             public void onLocationClicked(Country country) {
+                if (listener != null) {
+                    listener.onCountrySet(country);
+
+                    return;
+                }
+
                 RegionPickerDialog dialog = new RegionPickerDialog();
 
                 Bundle arguments = new Bundle();
@@ -56,7 +72,7 @@ public class CountryPickerDialog extends DialogFragment {
 
                 dialog.setArguments(arguments);
 
-                dialog.show(getActivity().getSupportFragmentManager(), "regionpickerdialog");
+                dialog.show(getActivity().getSupportFragmentManager(), RegionPickerDialog.TAG);
             }
         });
 
@@ -72,6 +88,10 @@ public class CountryPickerDialog extends DialogFragment {
 
             }
         });
+    }
+
+    public interface OnCountrySetListener {
+        void onCountrySet(Country country);
     }
 
 }

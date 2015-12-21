@@ -1,8 +1,8 @@
 package com.andela.helpmebuy.activities;
 
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -28,11 +28,11 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
-import com.andela.helpmebuy.dialogs.CityPickerDialog;
-import com.andela.helpmebuy.dialogs.CountryPickerDialog;
+import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.ItemDivider;
+import com.andela.helpmebuy.utilities.LocationPickerDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +60,8 @@ public class HomeActivity extends AppCompatActivity  {
 
     private FirebaseCollection<Travel> travelsCollection;
 
+    private Location userLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +71,13 @@ public class HomeActivity extends AppCompatActivity  {
 
         addActionBar();
 
+        initializeUserLocation();
+
         loadTravels();
 
         loadComponents();
 
-        initializeUserLocation();
+
     }
 
     private void addActionBar() {
@@ -86,7 +90,6 @@ public class HomeActivity extends AppCompatActivity  {
             actionBar.setHomeButtonEnabled(true);
         }
     }
-
 
     private void loadComponents() {
 
@@ -105,7 +108,7 @@ public class HomeActivity extends AppCompatActivity  {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         travellersView.setLayoutManager(layoutManager);
-
+        travels = new ArrayList<>();
         adapter = new TravellersAdapter(this, travels);
         travellersView.setAdapter(adapter);
     }
@@ -176,6 +179,12 @@ public class HomeActivity extends AppCompatActivity  {
         });
     }
 
+    public void loadTravelsByLocation(){
+        FeedLoader feedLoader = new FeedLoader();
+        feedLoader.execute(TAG);
+
+    }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -236,16 +245,63 @@ public class HomeActivity extends AppCompatActivity  {
 
 
         userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
-        userLocationTextView.setText("Lagos, Nigeria");
-
+        userLocationTextView.setText("Departure Address");
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
 
         toolbar.addView(view);
     }
 
     public void changeLocation(View view) {
-        CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
-        countryPickerDialog.show(HomeActivity.this.getSupportFragmentManager(), "countries_picker");
-        userLocationTextView.setText(CityPickerDialog.userLocation);
+        travels.clear();
+
+        final LocationPickerDialog dialog = new LocationPickerDialog(this);
+        dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
+            @Override
+            public void onLocationSet(Location location) {
+                userLocationTextView.setText(location.toString());
+                userLocation = location;
+                loadTravelsByLocation();
+                dialog.dismiss();
+
+            }
+
+        });
+
+        dialog.show();
+
+
+    }
+
+    public class FeedLoader extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
+            travelsCollection.query("departureAddress/location", userLocation.toFullString(), new DataCallback<List<Travel>>() {
+                @Override
+                public void onSuccess(List<Travel> data) {
+                    for (Travel travel : data) {
+                        int index = findIndex(travel);
+
+                        if (index < 0) {
+
+                            travels.add(travel);
+
+                            adapter.notifyItemInserted(travels.size() - 1);
+                        } else {
+                            travels.set(index, travel);
+
+                            adapter.notifyItemChanged(index);
+                        }
+                    }
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+
+                }
+            });
+            return null;
+        }
     }
 }
