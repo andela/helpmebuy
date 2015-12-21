@@ -1,7 +1,7 @@
 package com.andela.helpmebuy.dal.firebase;
 
-import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.dal.DataCallback;
+import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.models.Model;
 import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.ChildEventListener;
@@ -66,7 +66,7 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         List<T> data = new ArrayList<>();
 
-                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             data.add(snapshot.getValue(type));
                         }
 
@@ -89,9 +89,14 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                data.add(dataSnapshot.getValue(type));
+                //for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    data.add(dataSnapshot.getValue(type));
+                    callback.onSuccess(data);
 
-                callback.onSuccess(data);
+
+                //data.add(dataSnapshot.getValue(type));
+
+//                callback.onSuccess(data);
 //                List<T> data = new ArrayList<>();
 //
 //                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
@@ -99,26 +104,31 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
 //                }
 //
 //                callback.onSuccess(data);
-
-                System.out.println(dataSnapshot);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    System.out.println(dataSnapshot);
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                callback.onError(firebaseError.getMessage());
+
             }
+
         });
     }
 }

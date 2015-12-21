@@ -13,7 +13,6 @@ public class Address extends Model {
     @JsonSerialize(using=LocationSerializer.class)
     @JsonDeserialize(using=LocationDeserializer.class)
     private Location location;
-
     /**
      * The street part of the address.
      */
