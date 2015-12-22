@@ -215,11 +215,9 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         Address departureAddress = new Address();
         Address arrivalAddress = new Address();
 
-        //travel.setUserId("c655fd62-41e0-4ac1-8bbb-737c03666a42");
         User currentUser = CurrentUser.get(this);
         travel.setUserId(currentUser.getId());
-        travel.setId(travel.getId());
-        //travel.setId("123456");
+        travel.setId(generateTravelId(currentUser));
 
         departureAddress.setLocation(travelLocation.get(0));
         arrivalAddress.setLocation(travelLocation.get(1));
@@ -229,6 +227,15 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         travel.setArrivalDate(travelDateTime.get(1));
         travel.setArrivalAddress(arrivalAddress);
         saveTravelDetails(travel);
+
+    }
+
+    private String generateTravelId(User currentUser) {
+        String userParam = currentUser.getId().substring(0,3);
+        String DateTimeParam = DateTime.now().toString().replace(":","");
+        DateTimeParam = DateTimeParam.replace(".","");
+        String travelId = userParam.concat(DateTimeParam);
+        return travelId;
     }
 
     public void saveTravelDetails(Travel travel) {
@@ -241,9 +248,12 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                                System.exit(0);
                             }
 
                         }).show();
+
             }
             @Override
             public void onError(String errorMessage) {

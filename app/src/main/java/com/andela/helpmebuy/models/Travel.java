@@ -95,5 +95,4 @@ public class Travel extends Model {
     public void setArrivalAddress(Address arrivalAddress) {
         this.arrivalAddress = arrivalAddress;
     }
-
 }
