@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,12 +33,13 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.ItemDivider;
+import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity  {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public final static String TAG = "HomeActivity";
 
     private RecyclerView travellersView;
@@ -101,6 +103,7 @@ public class HomeActivity extends AppCompatActivity  {
         drawerToggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.home_activity_navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         travellersView = (RecyclerView) findViewById(R.id.travellers_recycler_view);
         travellersView.addItemDecoration(new ItemDivider(this));
@@ -214,6 +217,18 @@ public class HomeActivity extends AppCompatActivity  {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.add_travel) {
+            Launcher.launchActivity(this, CreateTravelActivity.class);
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private void connect(AdapterView.AdapterContextMenuInfo info) {
