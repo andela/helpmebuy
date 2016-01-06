@@ -1,31 +1,22 @@
 package com.andela.helpmebuy.fragments;
 
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 
-import java.util.ArrayList;
-
-public class TravelDepartureFragment extends TravelFragment implements OnTravelFragmentListener {
+public class TravelDepartureFragment extends TravelFragment {
 
     public static final String TRAVEL_DEPARTURE_KEY = "TRAVEL_DEPARTURE_KEY";
 
     public TravelDepartureFragment(){
-        mFragmentListener = this;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         return super.onCreateView(inflater, container, savedInstanceState);
 
     }
