@@ -19,7 +19,7 @@ import com.andela.helpmebuy.dialogs.DatePickerFragment;
 import com.andela.helpmebuy.dialogs.TimePickerFragment;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
-import com.andela.helpmebuy.utilities.Utils;
+import com.andela.helpmebuy.utilities.HourFormatter;
 
 import java.util.ArrayList;
 
@@ -169,7 +169,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        int hour = Utils.getHourIn12HoursFormat(hourOfDay);
+        int hour = HourFormatter.getHourIn12HoursFormat(hourOfDay);
         String timeVal = String.format("%02d:%02d %s", hour, minute, ((hourOfDay < 12) ? "AM" : "PM"));
 
         timeValue.setText(timeVal);
