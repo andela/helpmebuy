@@ -31,21 +31,6 @@ public class AlertDialogHelper {
         return builder.create();
     }
 
-    public static Dialog listCountries(final Context context) {
-        AlertDialog.Builder builder = initializeBuilder(context);
-
-        String[] location = {"sli"};
-
-        builder.setTitle(R.string.select_country);
-        builder.setSingleChoiceItems(location, -1, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        return builder.create();
-    }
-
     public static Dialog processDialog(final Context context) {
         ProgressDialog processDialog = new ProgressDialog(context);
 

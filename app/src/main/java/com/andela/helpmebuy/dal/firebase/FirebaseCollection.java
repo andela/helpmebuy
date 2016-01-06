@@ -1,13 +1,14 @@
 package com.andela.helpmebuy.dal.firebase;
 
-
-import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.dal.DataCallback;
+import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.models.Model;
 import com.andela.helpmebuy.utilities.Constants;
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         List<T> data = new ArrayList<>();
 
-                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             data.add(snapshot.getValue(type));
                         }
 
@@ -80,8 +81,54 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
     }
 
     @Override
-    public void query(String[] selection, String[] selectionArgs, final DataCallback<List<T>> callback) {
-        callback.onSuccess(new ArrayList<T>());
-    }
+    public void query(String path, String arg, final DataCallback<List<T>> callback) {
+        Query query = firebase.child(childName).orderByChild(path).equalTo(arg);
 
+        final List<T> data = new ArrayList<>();
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                //for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    data.add(dataSnapshot.getValue(type));
+                    callback.onSuccess(data);
+
+
+                //data.add(dataSnapshot.getValue(type));
+
+//                callback.onSuccess(data);
+//                List<T> data = new ArrayList<>();
+//
+//                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+//                    data.add(snapshot.getValue(type));
+//                }
+//
+//                callback.onSuccess(data);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    System.out.println(dataSnapshot);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+        });
+    }
 }

@@ -1,10 +1,12 @@
 package com.andela.helpmebuy.activities;
 
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,17 +29,17 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
+import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
-import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
-import com.andela.helpmebuy.utilities.CurrentUser;
 import com.andela.helpmebuy.utilities.ItemDivider;
-import com.firebase.client.Firebase;
+import com.andela.helpmebuy.utilities.Launcher;
+import com.andela.helpmebuy.utilities.LocationPickerDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public final static String TAG = "HomeActivity";
 
     private RecyclerView travellersView;
@@ -60,6 +62,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private FirebaseCollection<Travel> travelsCollection;
 
+    private Location userLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +73,12 @@ public class HomeActivity extends AppCompatActivity {
 
         addActionBar();
 
-        loadComponents();
-
         initializeUserLocation();
 
         loadTravels();
+
+        loadComponents();
+
 
     }
 
@@ -88,7 +93,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
     private void loadComponents() {
 
         parentLayout = (CoordinatorLayout) findViewById(R.id.parent_layout);
@@ -99,6 +103,7 @@ public class HomeActivity extends AppCompatActivity {
         drawerToggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.home_activity_navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         travellersView = (RecyclerView) findViewById(R.id.travellers_recycler_view);
         travellersView.addItemDecoration(new ItemDivider(this));
@@ -106,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         travellersView.setLayoutManager(layoutManager);
-
+        travels = new ArrayList<>();
         adapter = new TravellersAdapter(this, travels);
         travellersView.setAdapter(adapter);
     }
@@ -177,6 +182,12 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    public void loadTravelsByLocation(){
+        FeedLoader feedLoader = new FeedLoader();
+        feedLoader.execute(TAG);
+
+    }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -208,6 +219,18 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.add_travel) {
+            Launcher.launchActivity(this, CreateTravelActivity.class);
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     private void connect(AdapterView.AdapterContextMenuInfo info) {
         Snackbar.make(parentLayout,"Connect clicked", Snackbar.LENGTH_LONG).show();
     }
@@ -235,15 +258,65 @@ public class HomeActivity extends AppCompatActivity {
 
         final View view = inflater.inflate(R.layout.user_location, null, false);
 
-        userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
-        userLocationTextView.setText("Lagos, Nigeria");
 
+        userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
+        userLocationTextView.setText("Departure Address");
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
 
         toolbar.addView(view);
     }
 
     public void changeLocation(View view) {
+        travels.clear();
 
+        final LocationPickerDialog dialog = new LocationPickerDialog(this);
+        dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
+            @Override
+            public void onLocationSet(Location location) {
+                userLocationTextView.setText(location.toString());
+                userLocation = location;
+                loadTravelsByLocation();
+                dialog.dismiss();
+
+            }
+
+        });
+
+        dialog.show();
+
+
+    }
+
+    public class FeedLoader extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
+            travelsCollection.query("departureAddress/location", userLocation.toFullString(), new DataCallback<List<Travel>>() {
+                @Override
+                public void onSuccess(List<Travel> data) {
+                    for (Travel travel : data) {
+                        int index = findIndex(travel);
+
+                        if (index < 0) {
+
+                            travels.add(travel);
+
+                            adapter.notifyItemInserted(travels.size() - 1);
+                        } else {
+                            travels.set(index, travel);
+
+                            adapter.notifyItemChanged(index);
+                        }
+                    }
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+
+                }
+            });
+            return null;
+        }
     }
 }

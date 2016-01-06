@@ -20,8 +20,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
+        <activity
+            android:name=".activities.CreateTravelActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -39,7 +45,6 @@
             android:label="@string/title_activity_forgot_password"
             android:parentActivityName=".activities.SigninActivity"
             android:theme="@style/AppTheme" >
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.SigninActivity" />

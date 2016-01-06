@@ -19,20 +19,15 @@ import com.andela.helpmebuy.authentication.FirebaseAuth;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FacebookAuth;
-import com.andela.helpmebuy.utilities.CurrentUser;
+import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.andela.helpmebuy.authentication.GoogleAuth;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.AlertDialogHelper;
 import com.andela.helpmebuy.utilities.Constants;
 import com.facebook.login.widget.LoginButton;
-
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
 
 import java.util.Arrays;
 
@@ -62,13 +57,13 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (CurrentUser.get(this) != null) {
+        if (CurrentUserManager.get(this) != null) {
             Launcher.launchActivity(this, HomeActivity.class);
             finish();
         }
 
         setContentView(R.layout.activity_signin);
-
+        
         hideActionBar();
 
         loadComponents();
@@ -177,7 +172,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         emailPasswordAuth.signIn(email, password, new AuthCallback() {
 
             public void onSuccess(User user) {
-                CurrentUser.save(user, SigninActivity.this);
+                CurrentUserManager.save(user, SigninActivity.this);
 
                 Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
                 finish();
@@ -242,7 +237,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             public void onSuccess(User user) {
                 users.save(user, null);
 
-                CurrentUser.save(user, SigninActivity.this);
+                CurrentUserManager.save(user, SigninActivity.this);
 
                 Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
                 finish();
@@ -276,7 +271,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             public void onSuccess(User user) {
                 users.save(user, null);
 
-                CurrentUser.save(user, SigninActivity.this);
+                CurrentUserManager.save(user, SigninActivity.this);
 
                 Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
                 finish();
