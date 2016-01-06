@@ -19,12 +19,12 @@ import com.andela.helpmebuy.dialogs.DatePickerFragment;
 import com.andela.helpmebuy.dialogs.TimePickerFragment;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
-import com.andela.helpmebuy.utilities.Utils;
+import com.andela.helpmebuy.utilities.HourFormatter;
 
 import java.util.ArrayList;
 
 
-public class TravelFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public abstract class TravelFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private View locationView, date, time;
 
@@ -37,37 +37,29 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
 
     OnTravelActivityListener mActivityListener;
 
-    public OnTravelFragmentListener mFragmentListener;
-
     public TravelFragment(){
-
         travelDetails = new ArrayList<>();
         travelDetails.add(0, "");
         travelDetails.add(1, "");
         travelDetails.add(2, "");
     }
 
-    public void setmActivityListener(OnTravelActivityListener onTravelActivityListener){
+    public void setActivityListener(OnTravelActivityListener onTravelActivityListener){
         this.mActivityListener = onTravelActivityListener;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View view = inflater.inflate(mFragmentListener.viewLayout(), container, false);
+        View view = inflater.inflate(viewLayout(), container, false);
 
         initializeComponents(view);
-
         setViewText();
-
         setOnClickListeners();
 
         return view;
-
     }
 
     public void initializeComponents(View v) {
-
         locationView = v.findViewById(R.id.location);
         date = v.findViewById(R.id.date);
         time = v.findViewById(R.id.time);
@@ -75,7 +67,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
         locationValue = (TextView) v.findViewById(R.id.location_value);
         dateValue = (TextView) v.findViewById(R.id.date_value);
         timeValue = (TextView) v.findViewById(R.id.time_value);
-        travelInfoTitle = (TextView) v.findViewById(mFragmentListener.titleId());
+        travelInfoTitle = (TextView) v.findViewById(titleId());
 
         if (v.findViewById(R.id.next) != null) {
             nextButton = (ImageView) v.findViewById(R.id.next);
@@ -83,16 +75,14 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
             nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                     if (verifyDetails(travelDetails)) {
                         mActivityListener.onNextButtonClicked(v, travelDetails, travelLocation);
                     }
                 }
             });
-
         }
 
-        if(v.findViewById(R.id.previous) != null) {
+        if (v.findViewById(R.id.previous) != null) {
             previousButton = (ImageView) v.findViewById(R.id.previous);
 
             previousButton.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +93,7 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
             });
         }
 
-        if(v.findViewById(R.id.save) != null) {
+        if (v.findViewById(R.id.save) != null) {
             saveButton = (ImageView) v.findViewById(R.id.save);
 
             saveButton.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +105,6 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
                 }
             });
         }
-
     }
 
     public void setOnClickListeners() {
@@ -125,14 +114,13 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
     }
 
     public void setViewText() {
-        travelInfoTitle.setText( mFragmentListener.titleValue() );
-        locationValue.setText(mFragmentListener.locationValue());
-        dateValue.setText(mFragmentListener.dateValue());
-        timeValue.setText(mFragmentListener.timeValue());
+        travelInfoTitle.setText(titleValue() );
+        locationValue.setText(locationValue());
+        dateValue.setText(dateValue());
+        timeValue.setText(timeValue());
     }
 
     public boolean verifyDetails(ArrayList<String> details){
-
         boolean proceed = true;
 
         if (details.get(0).isEmpty()){
@@ -150,15 +138,11 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
             proceed = false;
         }
 
-        Log.d("HMB", "HELPMEBUY Location: " + details.get(0) + ", Date: " + details.get(1) + ", Time: " + details.get(2) + ", PROCEED: " + proceed);
-
         return proceed;
-
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-
         String dateVal = String.format("%02d/%02d/%02d", day, month + 1, year);
 
         dateValue.setText(dateVal);
@@ -169,19 +153,18 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        int hour = Utils.getHourIn12HoursFormat(hourOfDay);
+        int hour = HourFormatter.getHourIn12HoursFormat(hourOfDay);
         String timeVal = String.format("%02d:%02d %s", hour, minute, ((hourOfDay < 12) ? "AM" : "PM"));
 
         timeValue.setText(timeVal);
-
-        clearError(timeValue);
         travelDetails.set(2, timeVal);
-
+        clearError(timeValue);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
             case R.id.location :
                 displayLocationDialog();
                 break;
@@ -202,7 +185,6 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
         dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
             @Override
             public void onLocationSet(Location location) {
-                //getArguments().putParcelable(TravelDepartureFragment.TRAVEL_DEPARTURE_KEY, location);
                 travelLocation = location;
                 String locationVal = location.toString();
 
@@ -271,4 +253,15 @@ public class TravelFragment extends Fragment implements View.OnClickListener, Da
             return hint;
     }
 
+    public abstract int viewLayout();
+
+    public abstract int titleId();
+
+    public abstract String titleValue();
+
+    public abstract String locationValue();
+
+    public abstract String dateValue();
+
+    public abstract String timeValue();
 }

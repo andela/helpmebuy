@@ -17,21 +17,18 @@ import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.fragments.OnTravelActivityListener;
 import com.andela.helpmebuy.fragments.TravelArrivalFragment;
 import com.andela.helpmebuy.fragments.TravelDepartureFragment;
-import com.andela.helpmebuy.fragments.TravelFragment;
 import com.andela.helpmebuy.models.Address;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
-import com.andela.helpmebuy.utilities.CurrentUser;
+import com.andela.helpmebuy.utilities.CurrentUserManager;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 
 public class CreateTravelActivity extends AppCompatActivity implements OnTravelActivityListener {
 
@@ -54,17 +51,13 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_create_travel);
 
         if (travelDepartureFragment == null) {
-
             initializeComponents();
-
             initializeTravelFragments();
-
             initializeTravelDetails();
 
             addTravelFragment(parentLayout.getId(), travelDepartureFragment);
@@ -72,19 +65,17 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     }
 
     private void initializeComponents(){
-
         parentLayout = (FrameLayout) findViewById(R.id.create_travel_fragment_container);
     }
 
     private void initializeTravelFragments(){
-
         travelDepartureFragment = new TravelDepartureFragment();
         travelDepartureFragment.setArguments(new Bundle());
-        travelDepartureFragment.setmActivityListener(this);
+        travelDepartureFragment.setActivityListener(this);
 
         travelArrivalFragment = new TravelArrivalFragment();
         travelArrivalFragment.setArguments(new Bundle());
-        travelArrivalFragment.setmActivityListener(this);
+        travelArrivalFragment.setActivityListener(this);
 
     }
 
@@ -94,7 +85,6 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     }
 
     public void addTravelFragment(int layout, Fragment fragment){
-
         try {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -107,7 +97,6 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     }
 
     public void replaceTravelFragment(int layout, Fragment fragment, int TRANSITION){
-
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction = animateFragment(fragmentTransaction, TRANSITION);
@@ -118,13 +107,16 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     }
 
     private FragmentTransaction animateFragment(FragmentTransaction fragmentTransaction, int TRANSITION){
-
         switch (TRANSITION) {
+
             case TRANSIT_FORWARD:
                 fragmentTransaction.setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right);
                 break;
+
             case TRANSIT_BACKWARD:
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+                break;
+
             default:
                 break;
         }
@@ -133,11 +125,11 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     }
 
     @Override
-      public void onNextButtonClicked(View view, ArrayList<String> departureDetails, Location travelLocation) {
+    public void onNextButtonClicked(View view, ArrayList<String> departureDetails, Location travelLocation) {
         this.departureDetails = departureDetails;
         departureLocation = travelLocation;
-
         String message = "Departure date cannot be before current date";
+
         if (validateDateTime(view, this.departureDetails,message)) {
 
             if (arrivalDetails.size() > 0) {
@@ -145,6 +137,7 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
                 bundle.putStringArrayList(TravelArrivalFragment.TRAVEL_ARRIVAL_KEY, arrivalDetails);
                 travelArrivalFragment.getArguments().putAll(bundle);
             }
+
             replaceTravelFragment(parentLayout.getId(), travelArrivalFragment, TRANSIT_FORWARD);
         }
     }
@@ -160,15 +153,14 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         }
 
         replaceTravelFragment(parentLayout.getId(), travelDepartureFragment, TRANSIT_BACKWARD);
-
     }
 
     @Override
     public void onSaveButtonClicked(View view, ArrayList<String> arrivalDetails, Location travelLocation) {
         ArrayList<Location>travelLocations = new ArrayList<>();
         ArrayList<DateTime>travelDates = new ArrayList<>();
-
         String message = "Arrival date cannot be before departure date";
+
         if(validateDateTime(view, departureDetails, arrivalDetails, message)){
             travelLocations.add(departureLocation);
             travelLocations.add(travelLocation);
@@ -180,10 +172,12 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 
     private boolean validateDateTime(View view, ArrayList<String> details,String message) {
         boolean proceed = true;
+
         if(getDateTimeValue(details.get(1),details.get(2)).isBeforeNow()) {
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
             proceed = false;
         }
+
         return proceed;
     }
 
@@ -191,10 +185,12 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         boolean proceed = true;
         DateTime departureDateTime =  getDateTimeValue(departureDetails.get(1),departureDetails.get(2));
         DateTime arrivalDateTime = getDateTimeValue(arrivalDetails.get(1),departureDetails.get(2));
+
         if(arrivalDateTime.isBefore(departureDateTime)) {
             Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
             proceed = false;
         }
+
         return proceed;
     }
 
@@ -209,13 +205,12 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         System.exit(0);
     }
 
-
     public void setTravelDetails(ArrayList<Location> travelLocation, ArrayList<DateTime> travelDateTime) {
         Travel travel = new Travel();
         Address departureAddress = new Address();
         Address arrivalAddress = new Address();
 
-        User currentUser = CurrentUser.get(this);
+        User currentUser = CurrentUserManager.get(this);
         travel.setUserId(currentUser.getId());
         travel.setId(generateTravelId(currentUser));
 
@@ -234,14 +229,17 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         String DateTimeParam = DateTime.now().toString().replace(":","");
         DateTimeParam = DateTimeParam.replace(".","");
         String travelId = userParam.concat(DateTimeParam);
+
         return travelId;
     }
 
     public void saveTravelDetails(Travel travel) {
         FirebaseCollection<Travel> firebaseCollection = new FirebaseCollection<Travel>(Constants.TRAVELS, Travel.class);
+
         firebaseCollection.save(travel, new DataCallback<Travel>() {
             @Override
             public void onSuccess(Travel data) {
+
                 new AlertDialog.Builder(CreateTravelActivity.this).setTitle("Travel Details")
                         .setMessage("Travel Details Successfully saved")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -250,10 +248,10 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
                                 finish();
                                 System.exit(0);
                             }
-
-                        }).show();
-
+                        })
+                        .show();
             }
+
             @Override
             public void onError(String errorMessage) {
                 Log.d(TAG, errorMessage);

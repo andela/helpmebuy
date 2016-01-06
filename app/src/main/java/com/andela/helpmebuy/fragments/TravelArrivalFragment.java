@@ -5,16 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.andela.helpmebuy.R;
 
-public class TravelArrivalFragment extends TravelFragment implements OnTravelFragmentListener {
+public class TravelArrivalFragment extends TravelFragment {
 
     public static final String TRAVEL_ARRIVAL_KEY = "TRAVEL_ARRIVAL_KEY";
 
     public TravelArrivalFragment(){
-        mFragmentListener = this;
     }
 
     @Override
