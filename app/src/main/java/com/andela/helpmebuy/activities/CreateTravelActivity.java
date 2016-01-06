@@ -227,7 +227,6 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         travel.setArrivalDate(travelDateTime.get(1));
         travel.setArrivalAddress(arrivalAddress);
         saveTravelDetails(travel);
-
     }
 
     private String generateTravelId(User currentUser) {

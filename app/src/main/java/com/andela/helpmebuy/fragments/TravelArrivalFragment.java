@@ -19,7 +19,6 @@ public class TravelArrivalFragment extends TravelFragment implements OnTravelFra
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
