@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-public class CurrentUser {
+public class CurrentUserManager {
 
     private final static String CURRENT_USER_KEY = "currentUserKey";
 

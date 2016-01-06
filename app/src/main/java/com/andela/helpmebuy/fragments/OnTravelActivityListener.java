@@ -1,7 +1,5 @@
 package com.andela.helpmebuy.fragments;
 
-
-import android.app.Activity;
 import android.view.View;
 
 import com.andela.helpmebuy.models.Location;
