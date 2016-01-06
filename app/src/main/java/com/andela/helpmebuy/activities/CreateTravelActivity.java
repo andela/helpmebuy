@@ -22,7 +22,7 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
-import com.andela.helpmebuy.utilities.CurrentUser;
+import com.andela.helpmebuy.utilities.CurrentUserManager;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -210,7 +210,7 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         Address departureAddress = new Address();
         Address arrivalAddress = new Address();
 
-        User currentUser = CurrentUser.get(this);
+        User currentUser = CurrentUserManager.get(this);
         travel.setUserId(currentUser.getId());
         travel.setId(generateTravelId(currentUser));
 
