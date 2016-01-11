@@ -59,6 +59,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private TextView userLocationTextView;
 
+    private TextView notify;
+
     private CoordinatorLayout parentLayout;
 
     private FirebaseCollection<Travel> travelsCollection;
@@ -149,6 +151,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void loadTravels() {
+        notify = (TextView) findViewById(R.id.notify);
+        notify.setVisibility(View.INVISIBLE);
+
         progressWheel = (ProgressWheel) findViewById(R.id.progress_wheel);
 
         progressWheel.spin();
@@ -158,20 +163,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         travelsCollection.getAll(new DataCallback<List<Travel>>() {
             @Override
             public void onSuccess(List<Travel> data) {
-                progressWheel.stopSpinning();
 
-                for (Travel travel : data) {
-                    int index = findIndex(travel);
+                if (!data.isEmpty()) {
+                    notify.setVisibility(View.INVISIBLE);
 
-                    if (index < 0) {
-                        travels.add(travel);
+                    for (Travel travel : data) {
+                        int index = findIndex(travel);
 
-                        adapter.notifyItemInserted(travels.size() - 1);
-                    } else {
-                        travels.set(index, travel);
+                        if (index < 0) {
+                            travels.add(travel);
 
-                        adapter.notifyItemChanged(index);
+                            adapter.notifyItemInserted(travels.size() - 1);
+                        } else {
+                            travels.set(index, travel);
+
+                            adapter.notifyItemChanged(index);
+                        }
                     }
+                } else {
+                    notify.setVisibility(View.VISIBLE);
                 }
 
                 progressWheel.stopSpinning();
@@ -179,7 +189,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(String errorMessage) {
-                progressWheel.stopSpinning();
                 Log.d(TAG, errorMessage);
                 progressWheel.stopSpinning();
             }
@@ -187,8 +196,38 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void loadTravelsByLocation(){
-        FeedLoader feedLoader = new FeedLoader();
-        feedLoader.execute(TAG);
+        travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
+        travelsCollection.query("departureAddress/location", userLocation.toFullString(), new DataCallback<List<Travel>>() {
+            @Override
+            public void onSuccess(List<Travel> data) {
+                if (!data.isEmpty()) {
+
+                    notify.setVisibility(View.INVISIBLE);
+
+                    for (Travel travel : data) {
+                        int index = findIndex(travel);
+
+                        if (index < 0) {
+                            travels.add(travel);
+
+                            adapter.notifyItemInserted(travels.size() - 1);
+                        } else {
+                            travels.set(index, travel);
+
+                            adapter.notifyItemChanged(index);
+                        }
+                    }
+                } else {
+                    notify.setVisibility(View.VISIBLE);
+                }
+                progressWheel.stopSpinning();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                progressWheel.stopSpinning();
+            }
+        });
     }
 
     @Override
@@ -267,52 +306,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void changeLocation(View view) {
-        travels.clear();
-
         final LocationPickerDialog dialog = new LocationPickerDialog(this);
+
         dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
             @Override
             public void onLocationSet(Location location) {
+                travels.clear();
                 userLocationTextView.setText(location.toString());
                 userLocation = location;
+                notify.setVisibility(View.VISIBLE);
                 loadTravelsByLocation();
                 dialog.dismiss();
             }
         });
 
         dialog.show();
-    }
-
-    public class FeedLoader extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
-            travelsCollection.query("departureAddress/location", userLocation.toFullString(), new DataCallback<List<Travel>>() {
-                @Override
-                public void onSuccess(List<Travel> data) {
-                    for (Travel travel : data) {
-                        int index = findIndex(travel);
-
-                        if (index < 0) {
-                            travels.add(travel);
-
-                            adapter.notifyItemInserted(travels.size() - 1);
-                        } else {
-                            travels.set(index, travel);
-
-                            adapter.notifyItemChanged(index);
-                        }
-                    }
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-
-                }
-            });
-
-            return null;
-        }
     }
 }
