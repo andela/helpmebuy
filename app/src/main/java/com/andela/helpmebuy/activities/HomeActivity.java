@@ -158,6 +158,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         travelsCollection.getAll(new DataCallback<List<Travel>>() {
             @Override
             public void onSuccess(List<Travel> data) {
+                progressWheel.stopSpinning();
+
                 for (Travel travel : data) {
                     int index = findIndex(travel);
 
@@ -175,6 +177,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(String errorMessage) {
+                progressWheel.stopSpinning();
                 Log.d(TAG, errorMessage);
             }
         });
