@@ -81,6 +81,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
+        parentLayout = (CoordinatorLayout) findViewById(R.id.parent_layout);
 
         addActionBar();
 
@@ -109,17 +110,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void loadComponents() {
 
-        parentLayout = (CoordinatorLayout) findViewById(R.id.parent_layout);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.home_activity_drawer_layout);
 
-        drawerHeader = (LinearLayout) findViewById(R.id.drawer_header);
-
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerToggle.syncState();
-
         navigationView = (NavigationView) findViewById(R.id.home_activity_navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View drawerHeader = LayoutInflater.from(this).inflate(R.layout.home_activity_drawer_header, null);
+        navigationView.addHeaderView(drawerHeader);
+        usernameTextView  = (TextView) drawerHeader.findViewById(R.id.user_name_text);
+        userEmailTextView = (TextView) drawerHeader.findViewById(R.id.user_email_text);
 
         travellersView = (RecyclerView) findViewById(R.id.travellers_recycler_view);
         travellersView.addItemDecoration(new ItemDivider(this));
@@ -130,8 +132,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         travels = new ArrayList<>();
         adapter = new TravellersAdapter(this, travels);
         travellersView.setAdapter(adapter);
-        usernameTextView = (TextView) findViewById(R.id.user_name_text);
-        userEmailTextView = (TextView) findViewById(R.id.user_email_text);
+
     }
 
     @Override
