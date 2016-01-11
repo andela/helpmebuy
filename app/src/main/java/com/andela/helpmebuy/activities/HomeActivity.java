@@ -173,12 +173,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         adapter.notifyItemChanged(index);
                     }
                 }
+
+                progressWheel.stopSpinning();
             }
 
             @Override
             public void onError(String errorMessage) {
                 progressWheel.stopSpinning();
                 Log.d(TAG, errorMessage);
+                progressWheel.stopSpinning();
             }
         });
     }
