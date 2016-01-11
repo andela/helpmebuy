@@ -253,6 +253,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.add_travel) {
             Launcher.launchActivity(this, CreateTravelActivity.class);
         }
+        if (id == R.id.manage_profile){
+
+        }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
