@@ -54,6 +54,22 @@
                 android:layout_gravity="center"
                 wheel:matProg_barColor="@color/primary_color"
                 wheel:matProg_progressIndeterminate="true" />
+
+
+            <TextView
+                android:id="@+id/notify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/notfound"
+                android:drawablePadding="@dimen/activity_horizontal_margin"
+                android:drawableTint="@color/item_pressed_background_color"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/no_travelers"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/item_pressed_background_color"/>
+
+
         </FrameLayout>
 
     </RelativeLayout>
