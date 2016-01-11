@@ -35,6 +35,7 @@ import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.ItemDivider;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private Location userLocation;
 
+    private ProgressWheel progressWheel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,21 +74,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_home);
 
         addActionBar();
-
         initializeUserLocation();
-
         loadTravels();
-
         loadComponents();
-
-
     }
 
     private void addActionBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ActionBar actionBar = getSupportActionBar();
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
@@ -94,7 +91,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void loadComponents() {
-
         parentLayout = (CoordinatorLayout) findViewById(R.id.parent_layout);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.home_activity_drawer_layout);
@@ -153,8 +149,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void loadTravels() {
-        travels = new ArrayList<>();
+        progressWheel = (ProgressWheel) findViewById(R.id.progress_wheel);
 
+        progressWheel.spin();
+        travels = new ArrayList<>();
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
 
         travelsCollection.getAll(new DataCallback<List<Travel>>() {
@@ -185,7 +183,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void loadTravelsByLocation(){
         FeedLoader feedLoader = new FeedLoader();
         feedLoader.execute(TAG);
-
     }
 
     @Override
@@ -255,14 +252,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void initializeUserLocation() {
         LayoutInflater inflater = getLayoutInflater();
-
         final View view = inflater.inflate(R.layout.user_location, null, false);
-
-
         userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
+
         userLocationTextView.setText("Departure Address");
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
-
         toolbar.addView(view);
     }
 
@@ -277,14 +271,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 userLocation = location;
                 loadTravelsByLocation();
                 dialog.dismiss();
-
             }
-
         });
 
         dialog.show();
-
-
     }
 
     public class FeedLoader extends AsyncTask<String, String, String> {
@@ -299,7 +289,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         int index = findIndex(travel);
 
                         if (index < 0) {
-
                             travels.add(travel);
 
                             adapter.notifyItemInserted(travels.size() - 1);
@@ -316,6 +305,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 }
             });
+
             return null;
         }
     }
