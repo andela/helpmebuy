@@ -58,8 +58,13 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".UserSettingsActivity"
-            android:label="@string/title_activity_user_settings"
+            android:name=".activities.UserSettingsActivity"
+            android:label= "@string/title_activity_user_settings"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activities.DetailedProfileSettings"
+            android:label="@string/title_activity_detailed_profile_settings"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

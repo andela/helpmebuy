@@ -76,6 +76,7 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_user_settings">UserSettingsActivity</string>
+    <string name="title_activity_user_settings">User Profile Settings</string>
+    <string name="title_activity_detailed_profile_settings">DetailedProfileSettings</string>
 </resources>
 

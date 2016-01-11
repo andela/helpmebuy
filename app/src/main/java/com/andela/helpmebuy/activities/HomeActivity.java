@@ -31,6 +31,7 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
+import com.andela.helpmebuy.fragments.UserSettingsFragment;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
@@ -254,6 +255,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Launcher.launchActivity(this, CreateTravelActivity.class);
         }
         if (id == R.id.manage_profile){
+            Launcher.launchActivity(this,UserSettingsActivity.class);
 
         }
 
