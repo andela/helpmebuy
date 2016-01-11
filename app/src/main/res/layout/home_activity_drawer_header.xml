@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/primary_color"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
@@ -9,7 +10,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
-    android:gravity="bottom">
+    android:gravity="bottom"
+    android:id="@+id/drawer_header"
+    tools:context="com.andela.helpmebuy.HomeActivity">
 
 
     <ImageView android:layout_width="wrap_content"
@@ -18,12 +21,19 @@
         android:src="@drawable/helpmebuy"
         android:id="@+id/imageView" />
 
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing" android:text="User Name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:text="User Name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:id="@+id/user_name_text"/>
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="android.studio@android.com" android:id="@+id/textView" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="android.studio@android.com"
+        android:id="@+id/user_email_text"/>
 
 
 </LinearLayout>
