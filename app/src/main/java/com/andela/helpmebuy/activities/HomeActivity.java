@@ -76,6 +76,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private Location userLocation;
 
+    private HomeCountryDetector homeCountryDetector;
+
+    private android.location.Location location;
+
 
 
     @Override
@@ -93,11 +97,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         loadComponents();
 
-        setUserProfile(this);
+//        setUserProfile(this);
 
-        Log.d("Current Location", HomeCountryDetector.getCountryName(3.3778214, 6.5022222, this));
+        Log.d("Current Location",homeCountryDetector.detectCountry());
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        homeCountryDetector.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        homeCountryDetector.disconnect();
+        super.onStop();
     }
 
     private void addActionBar() {
@@ -113,6 +128,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void loadComponents() {
 
+        homeCountryDetector = new HomeCountryDetector(HomeActivity.this);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.home_activity_drawer_layout);
 
