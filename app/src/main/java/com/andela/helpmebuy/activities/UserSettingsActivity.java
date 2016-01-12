@@ -31,7 +31,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         parentLayout = (FrameLayout)findViewById(R.id.user_settings_layout);
         userSettingsFragment = new UserSettingsFragment();
 
-       addTravelFragment(parentLayout.getId(),userSettingsFragment);
+       //addUserSettingsFragment(parentLayout.getId(),userSettingsFragment);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +43,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         });
     }
 
-    public void addTravelFragment(int layout, Fragment fragment) {
+    public void addUserSettingsFragment(int layout, Fragment fragment) {
         try {
             getSupportFragmentManager()
                     .beginTransaction()
