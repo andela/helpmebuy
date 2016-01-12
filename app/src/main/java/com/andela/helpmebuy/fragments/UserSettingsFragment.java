@@ -1,14 +1,18 @@
 package com.andela.helpmebuy.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.activities.ForgotPasswordActivity;
+import com.andela.helpmebuy.utilities.Launcher;
 
 
 import java.util.ArrayList;
@@ -38,8 +42,6 @@ public class UserSettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
 
-
-
        final ListView listView = (ListView) view.findViewById(R.id.user_settings_layout);
 
         userProfileList = new ArrayList<>(Arrays.asList("Change Name", "Change Email", "Reset Password"));
@@ -48,15 +50,20 @@ public class UserSettingsFragment extends Fragment {
 
         listView.setAdapter(userProfileListAdapter);
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String forecast = userProfileListAdapter.getItem(position);
-//                Intent intent = new Intent(getActivity(), DetailedProfileSettings.class).putExtra(Intent.EXTRA_TEXT, forecast);
-//                //Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
-//                startActivity(intent);
-//            }
-//        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String forecast = userProfileListAdapter.getItem(position);
+                if (userProfileListAdapter.getItem(position).equals("Reset Password")) {
+                    Launcher.launchActivity(getContext(), ForgotPasswordActivity.class);
+
+
+                }
+                //Intent intent = new Intent(getActivity(), DetailedProfileSettings.class);
+                //Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+                //startActivity(intent);
+            }
+        });
 
         return view;
 
