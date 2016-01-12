@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.activities.ChangePasswordActivity;
 import com.andela.helpmebuy.activities.ForgotPasswordActivity;
 import com.andela.helpmebuy.utilities.Launcher;
 
@@ -30,6 +31,7 @@ import java.util.List;
 public class UserSettingsFragment extends Fragment {
 
 
+    private static final String SETTING_ITEM = "item";
     List<String> userProfileList;
     ArrayAdapter<String> userProfileListAdapter;
 
@@ -53,15 +55,12 @@ public class UserSettingsFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String forecast = userProfileListAdapter.getItem(position);
+
                 if (userProfileListAdapter.getItem(position).equals("Reset Password")) {
-                    Launcher.launchActivity(getContext(), ForgotPasswordActivity.class);
 
-
+                    Launcher.launchActivity(getContext(), ChangePasswordActivity.class);
                 }
-                //Intent intent = new Intent(getActivity(), DetailedProfileSettings.class);
-                //Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
-                //startActivity(intent);
+
             }
         });
 
