@@ -37,6 +37,7 @@ import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
+import com.andela.helpmebuy.utilities.HomeCountryDetector;
 import com.andela.helpmebuy.utilities.ItemDivider;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
@@ -94,6 +95,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         setUserProfile(this);
 
+        Log.d("Current Location", HomeCountryDetector.getCountryName(3.3778214, 6.5022222, this));
 
 
     }
