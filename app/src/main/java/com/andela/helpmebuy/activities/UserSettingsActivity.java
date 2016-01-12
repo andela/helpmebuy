@@ -54,5 +54,4 @@ public class UserSettingsActivity extends AppCompatActivity {
         }
     }
 
-
 }
