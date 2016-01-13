@@ -247,39 +247,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
 
-        travelsCollection.getAll(new DataCallback<List<Travel>>() {
-            @Override
-            public void onSuccess(List<Travel> data) {
-
-                if (!data.isEmpty()) {
-                    notify.setVisibility(View.INVISIBLE);
-
-                    for (Travel travel : data) {
-                        int index = findIndex(travel);
-
-                        if (index < 0) {
-                            travels.add(travel);
-
-                            adapter.notifyItemInserted(travels.size() - 1);
-                        } else {
-                            travels.set(index, travel);
-
-                            adapter.notifyItemChanged(index);
-                        }
-                    }
-                } else {
-                    notify.setVisibility(View.VISIBLE);
-                }
-
-                progressWheel.stopSpinning();
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Log.d(TAG, errorMessage);
-                progressWheel.stopSpinning();
-            }
-        });
+        travelsCollection.getAll(travelDataCallback);
     }
 
     private void loadTravellersByCountry(String countryName){
