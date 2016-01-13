@@ -31,7 +31,6 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
-import com.andela.helpmebuy.models.Country;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
@@ -83,7 +82,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private HomeCountryDetectorListener listener;
 
-    private String Country = "";
+    private String country = "";
 
 
     @Override
@@ -97,7 +96,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         initializeUserLocation();
 
-        loadTravels();
+        //loadTravels();
 
         loadComponents();
 
@@ -129,15 +128,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void loadComponents() {
 
-        homeCountryDetector = new HomeCountryDetector(HomeActivity.this);
-        HomeCountryDetectorListener listener = new HomeCountryDetectorListener() {
-            @Override
-            public void onCountryDetected(String name) {
-               Country =  homeCountryDetector.getCountryName();
-            }
-        };
-        homeCountryDetector.setListener(listener);
-
         drawerLayout = (DrawerLayout) findViewById(R.id.home_activity_drawer_layout);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
@@ -159,6 +149,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         travels = new ArrayList<>();
         adapter = new TravellersAdapter(this, travels);
         travellersView.setAdapter(adapter);
+
+        detectCountry();
+    }
+
+    public void detectCountry(){
+        homeCountryDetector = new HomeCountryDetector(HomeActivity.this);
+        HomeCountryDetectorListener listener = new HomeCountryDetectorListener() {
+            @Override
+            public void onCountryDetected(String name) {
+                country =  homeCountryDetector.getCountryName();
+                loadTravellersByCountry(country);
+                Log.d(TAG, country);
+
+            }
+        };
+        homeCountryDetector.setListener(listener);
     }
 
     @Override
@@ -225,6 +231,36 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Log.d(TAG, errorMessage);
             }
         });
+    }
+
+    private void loadTravellersByCountry(String countryName){
+        travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
+        travelsCollection.query("departureAddress/country", countryName, new DataCallback<List<Travel>>() {
+            @Override
+            public void onSuccess(List<Travel> data) {
+                travels.clear();
+                for (Travel travel : data)  {
+                    int index = findIndex(travel);
+                    if (index < 0) {
+                        travels.add(travel);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    else {
+                        travels.set(index, travel);
+
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.d(TAG, errorMessage);
+
+            }
+        });
+
     }
 
     private void setUserProfile(Context context) {
