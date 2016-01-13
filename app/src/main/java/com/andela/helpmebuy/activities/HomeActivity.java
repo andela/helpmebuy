@@ -31,13 +31,14 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
-import com.andela.helpmebuy.fragments.UserSettingsFragment;
+import com.andela.helpmebuy.models.Country;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.HomeCountryDetector;
+import com.andela.helpmebuy.utilities.HomeCountryDetectorListener;
 import com.andela.helpmebuy.utilities.ItemDivider;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
@@ -80,6 +81,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private android.location.Location location;
 
+    private HomeCountryDetectorListener listener;
+
+    private String Country = "";
 
 
     @Override
@@ -98,9 +102,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         loadComponents();
 
 //        setUserProfile(this);
-
-        Log.d("Current Location",homeCountryDetector.detectCountry());
-
     }
 
     @Override
@@ -129,6 +130,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void loadComponents() {
 
         homeCountryDetector = new HomeCountryDetector(HomeActivity.this);
+        HomeCountryDetectorListener listener = new HomeCountryDetectorListener() {
+            @Override
+            public void onCountryDetected(String name) {
+               Country =  homeCountryDetector.getCountryName();
+            }
+        };
+        homeCountryDetector.setListener(listener);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.home_activity_drawer_layout);
 
@@ -151,7 +159,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         travels = new ArrayList<>();
         adapter = new TravellersAdapter(this, travels);
         travellersView.setAdapter(adapter);
-
     }
 
     @Override

@@ -2,15 +2,11 @@ package com.andela.helpmebuy.utilities;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.andela.helpmebuy.activities.HomeActivity;
-import com.andela.helpmebuy.authentication.AuthCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -29,14 +25,15 @@ public class HomeCountryDetector implements GoogleApiClient.ConnectionCallbacks,
    Activity activity;
    private double longitude;
    private double latitude;
+   private HomeCountryDetectorListener listener;
 
 
     public String getCountryName() {
         return countryName;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public void setListener(HomeCountryDetectorListener listener) {
+        this.listener = listener;
     }
 
     public HomeCountryDetector(Activity activity) {
@@ -64,7 +61,7 @@ public class HomeCountryDetector implements GoogleApiClient.ConnectionCallbacks,
     public void onConnected(Bundle bundle) {
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(1000);
+        locationRequest.setInterval(1000 );
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,this);
     }
 
@@ -82,6 +79,8 @@ public class HomeCountryDetector implements GoogleApiClient.ConnectionCallbacks,
        longitude = location.getLongitude();
        latitude = location.getLatitude();
        countryName = detectCountry();
+
+       listener.onCountryDetected(countryName);
 
     }
 
