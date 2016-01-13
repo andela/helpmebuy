@@ -161,7 +161,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 country =  homeCountryDetector.getCountryName();
                 loadTravellersByCountry(country);
                 Log.d(TAG, country);
-
+                homeCountryDetector.disconnect();
             }
         };
         homeCountryDetector.setListener(listener);
