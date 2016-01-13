@@ -81,7 +81,6 @@ public class HomeCountryDetector implements GoogleApiClient.ConnectionCallbacks,
        countryName = detectCountry();
 
        listener.onCountryDetected(countryName);
-
     }
 
     public String detectCountry() {
