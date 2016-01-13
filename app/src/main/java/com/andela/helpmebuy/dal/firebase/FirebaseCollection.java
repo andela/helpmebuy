@@ -105,7 +105,7 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
 //
 //                callback.onSuccess(data);
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    System.out.println(dataSnapshot);
+
                 }
             }
 

@@ -85,15 +85,6 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
                 name.setText(user.getFullName());
 
 
-                String address = travel.getDepartureAddress().getLocation().getCity().getName() + ", " + travel.getDepartureAddress().getLocation().getCountry().getName();
-                departureLocation.setText(address);
-
-                if (travel.getArrivalDate() != null) {
-                    DateTimeFormatter formatter = DateTimeFormat.forPattern("EEE, MMMM e, y h:m a");
-
-                    departureDate.setText(travel.getArrivalDate().withZone(DateTimeZone.getDefault()).toString(formatter));
-                }
-
             }
 
             @Override
@@ -101,6 +92,16 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
             }
         });
+
+        String address = travel.getDepartureAddress().getLocation().getCity().getName() + ", " + travel.getDepartureAddress().getLocation().getCountry().getName();
+        departureLocation.setText(address);
+
+        if (travel.getArrivalDate() != null) {
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("EEE, MMMM e, y h:m a");
+
+            departureDate.setText(travel.getArrivalDate().withZone(DateTimeZone.getDefault()).toString(formatter));
+        }
+
     }
 
     @Override
