@@ -89,21 +89,9 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                //for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    data.add(dataSnapshot.getValue(type));
-                    callback.onSuccess(data);
+                data.add(dataSnapshot.getValue(type));
+                callback.onSuccess(data);
 
-
-                //data.add(dataSnapshot.getValue(type));
-
-//                callback.onSuccess(data);
-//                List<T> data = new ArrayList<>();
-//
-//                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-//                    data.add(snapshot.getValue(type));
-//                }
-//
-//                callback.onSuccess(data);
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                 }
@@ -126,7 +114,7 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                callback.onError("Connection was cancelled");
             }
 
         });

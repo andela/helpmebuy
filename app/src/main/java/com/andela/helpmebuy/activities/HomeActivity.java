@@ -41,6 +41,7 @@ import com.andela.helpmebuy.utilities.HomeCountryDetectorListener;
 import com.andela.helpmebuy.utilities.ItemDivider;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.LocationPickerDialog;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private TextView userEmailTextView;
 
+    private TextView notify;
+
     private CoordinatorLayout parentLayout;
 
     private LinearLayout drawerHeader;
@@ -84,6 +87,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private String country = "";
 
+    private ProgressWheel progressWheel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,14 +98,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         parentLayout = (CoordinatorLayout) findViewById(R.id.parent_layout);
 
         addActionBar();
-
         initializeUserLocation();
 
         //loadTravels();
 
         loadComponents();
 
-//        setUserProfile(this);
+        //setUserProfile(this);
     }
 
     @Override
@@ -117,9 +121,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void addActionBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ActionBar actionBar = getSupportActionBar();
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
@@ -127,11 +131,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void loadComponents() {
-
+        parentLayout = (CoordinatorLayout) findViewById(R.id.parent_layout);
         drawerLayout = (DrawerLayout) findViewById(R.id.home_activity_drawer_layout);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerToggle.syncState();
+
         navigationView = (NavigationView) findViewById(R.id.home_activity_navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -149,6 +154,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         travels = new ArrayList<>();
         adapter = new TravellersAdapter(this, travels);
         travellersView.setAdapter(adapter);
+
+        notify = (TextView) findViewById(R.id.notify);
+        progressWheel = (ProgressWheel) findViewById(R.id.progress_wheel);
+
+        notify.setVisibility(View.INVISIBLE);
+        progressWheel.spin();
 
         detectCountry();
     }
@@ -203,64 +214,84 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    DataCallback<List<Travel>> travelDataCallback = new DataCallback<List<Travel>>(){
+        @Override
+        public void onSuccess(List<Travel> data) {
+            if (!data.isEmpty()) {
+                notify.setVisibility(View.INVISIBLE);
+
+                for (Travel travel : data) {
+                    int index = findIndex(travel);
+
+                    if (index < 0) {
+                        travels.add(travel);
+                        adapter.notifyItemInserted(travels.size() - 1);
+                    } else {
+                        travels.set(index, travel);
+                        adapter.notifyItemChanged(index);
+                    }
+                }
+            } else {
+                notify.setVisibility(View.VISIBLE);
+            }
+            progressWheel.stopSpinning();
+        }
+
+        @Override
+        public void onError(String errorMessage) {
+            progressWheel.stopSpinning();
+        }
+    };
+
     private void loadTravels() {
-        travels = new ArrayList<>();
 
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
 
         travelsCollection.getAll(new DataCallback<List<Travel>>() {
             @Override
             public void onSuccess(List<Travel> data) {
-                for (Travel travel : data) {
-                    int index = findIndex(travel);
 
-                    if (index < 0) {
-                        travels.add(travel);
+                if (!data.isEmpty()) {
+                    notify.setVisibility(View.INVISIBLE);
 
-                        adapter.notifyItemInserted(travels.size() - 1);
-                    } else {
-                        travels.set(index, travel);
+                    for (Travel travel : data) {
+                        int index = findIndex(travel);
 
-                        adapter.notifyItemChanged(index);
+                        if (index < 0) {
+                            travels.add(travel);
+
+                            adapter.notifyItemInserted(travels.size() - 1);
+                        } else {
+                            travels.set(index, travel);
+
+                            adapter.notifyItemChanged(index);
+                        }
                     }
+                } else {
+                    notify.setVisibility(View.VISIBLE);
                 }
+
+                progressWheel.stopSpinning();
             }
 
             @Override
             public void onError(String errorMessage) {
                 Log.d(TAG, errorMessage);
+                progressWheel.stopSpinning();
             }
         });
     }
 
     private void loadTravellersByCountry(String countryName){
+        progressWheel.spin();
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
-        travelsCollection.query("departureAddress/country", countryName, new DataCallback<List<Travel>>() {
-            @Override
-            public void onSuccess(List<Travel> data) {
-                travels.clear();
-                for (Travel travel : data)  {
-                    int index = findIndex(travel);
-                    if (index < 0) {
-                        travels.add(travel);
-                        adapter.notifyDataSetChanged();
-                    }
+        travelsCollection.query("departureAddress/country", countryName, travelDataCallback);
+    }
 
-                    else {
-                        travels.set(index, travel);
 
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Log.d(TAG, errorMessage);
-
-            }
-        });
-
+    public void loadTravelsByLocation(){
+        travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
+        travelsCollection.query("departureAddress/location", userLocation.toFullString(), travelDataCallback);
     }
 
     private void setUserProfile(Context context) {
@@ -269,12 +300,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         String email = user.getEmail();
         usernameTextView.setText(name);
         userEmailTextView.setText(email);
-    }
-
-    public void loadTravelsByLocation(){
-        FeedLoader feedLoader = new FeedLoader();
-        feedLoader.execute(TAG);
-
     }
 
     @Override
@@ -348,69 +373,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void initializeUserLocation() {
         LayoutInflater inflater = getLayoutInflater();
-
         final View view = inflater.inflate(R.layout.user_location, null, false);
-
-
         userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
+
         userLocationTextView.setText("Departure Address");
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
-
         toolbar.addView(view);
     }
 
     public void changeLocation(View view) {
-        travels.clear();
-
         final LocationPickerDialog dialog = new LocationPickerDialog(this);
+
         dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
             @Override
             public void onLocationSet(Location location) {
+                travels.clear();
                 userLocationTextView.setText(location.toString());
                 userLocation = location;
+                notify.setVisibility(View.VISIBLE);
                 loadTravelsByLocation();
                 dialog.dismiss();
-
             }
-
         });
 
         dialog.show();
-
-
     }
 
-    public class FeedLoader extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
-            travelsCollection.query("departureAddress/location", userLocation.toFullString(), new DataCallback<List<Travel>>() {
-                @Override
-                public void onSuccess(List<Travel> data) {
-                    for (Travel travel : data) {
-                        int index = findIndex(travel);
-
-                        if (index < 0) {
-
-                            travels.add(travel);
-
-                            adapter.notifyItemInserted(travels.size() - 1);
-                        } else {
-                            travels.set(index, travel);
-
-                            adapter.notifyItemChanged(index);
-                        }
-                    }
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-
-                }
-            });
-            return null;
-        }
-
-    }
 }

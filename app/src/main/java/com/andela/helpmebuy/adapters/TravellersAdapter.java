@@ -56,14 +56,7 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        FrameLayout itemView = viewHolder.itemView;
-
-        final ImageView profilePicture = (ImageView) itemView.findViewById(R.id.traveller_profile_picture);
-        final TextView name = (TextView) itemView.findViewById(R.id.traveller_name);
-        final TextView departureLocation = (TextView) itemView.findViewById(R.id.traveller_departure_location);
-        final TextView departureDate = (TextView) itemView.findViewById(R.id.traveller_arrival_date);
-
+    public void onBindViewHolder(final ViewHolder viewHolder, int position) {
         final Travel travel = travels.get(position);
 
         users.get(travel.getUserId(), new DataCallback<User>() {
@@ -76,15 +69,13 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
                         .placeholder(R.drawable.ic_account_circle_black_48dp)
                         .error(R.drawable.ic_account_circle_black_48dp)
                         .transform(new CircleTransformation())
-                        .into(profilePicture);
+                        .into(viewHolder.profilePicture);
 
                 if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
-                    profilePicture.setAlpha(0.38f);
+                    viewHolder.profilePicture.setAlpha(0.38f);
                 }
 
-                name.setText(user.getFullName());
-
-
+                viewHolder.name.setText(user.getFullName());
             }
 
             @Override
@@ -94,14 +85,13 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         });
 
         String address = travel.getDepartureAddress().getLocation().getCity().getName() + ", " + travel.getDepartureAddress().getLocation().getCountry().getName();
-        departureLocation.setText(address);
+        viewHolder.departureLocation.setText(address);
 
         if (travel.getArrivalDate() != null) {
             DateTimeFormatter formatter = DateTimeFormat.forPattern("EEE, MMMM e, y h:m a");
 
-            departureDate.setText(travel.getArrivalDate().withZone(DateTimeZone.getDefault()).toString(formatter));
+            viewHolder.departureDate.setText(travel.getArrivalDate().withZone(DateTimeZone.getDefault()).toString(formatter));
         }
-
     }
 
     @Override
@@ -119,12 +109,17 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public FrameLayout itemView;
+        ImageView profilePicture;
+        TextView name;
+        TextView departureLocation;
+        TextView departureDate;
 
         public ViewHolder(View view) {
             super(view);
-
-            itemView = (FrameLayout) view;
+            profilePicture = (ImageView) view.findViewById(R.id.traveller_profile_picture);
+            name = (TextView) view.findViewById(R.id.traveller_name);
+            departureLocation = (TextView) view.findViewById(R.id.traveller_departure_location);
+            departureDate = (TextView) view.findViewById(R.id.traveller_arrival_date);
         }
     }
 }
