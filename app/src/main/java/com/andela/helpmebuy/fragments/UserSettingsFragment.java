@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.activities.ChangeEmailActivity;
 import com.andela.helpmebuy.activities.ChangePasswordActivity;
 import com.andela.helpmebuy.activities.ForgotPasswordActivity;
 import com.andela.helpmebuy.utilities.Launcher;
@@ -59,6 +60,10 @@ public class UserSettingsFragment extends Fragment {
                 if (userProfileListAdapter.getItem(position).equals("Reset Password")) {
 
                     Launcher.launchActivity(getContext(), ChangePasswordActivity.class);
+                }
+                if (userProfileListAdapter.getItem(position).equals("Change Email")) {
+
+                    Launcher.launchActivity(getContext(), ChangeEmailActivity.class);
                 }
 
             }

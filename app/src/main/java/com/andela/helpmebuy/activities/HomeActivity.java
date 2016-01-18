@@ -149,6 +149,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         travels = new ArrayList<>();
         adapter = new TravellersAdapter(this, travels);
         travellersView.setAdapter(adapter);
+        setUserProfile(this);
 
         detectCountry();
     }
