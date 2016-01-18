@@ -15,9 +15,8 @@ import com.firebase.client.FirebaseError;
 
 import java.util.Map;
 
-public class FirebaseAuth implements EmailPasswordAuth {
+public class FirebaseAuth implements EmailPasswordAuth, ChangeEmailAuth {
     public static final String TEMPORARY_PASSWORD = "Temporary Password";
-
 
     private Context context;
     private Firebase firebase;
@@ -85,5 +84,21 @@ public class FirebaseAuth implements EmailPasswordAuth {
 
     @Override
     public void signOut() {
+    }
+
+
+    @Override
+    public void changeEmail(String oldEmail, String newEmail, String password, final ChangeEmailCallback callback) {
+        firebase.changeEmail(oldEmail, newEmail, password, new Firebase.ResultHandler() {
+            @Override
+            public void onSuccess() {
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onError(FirebaseError firebaseError) {
+                callback.onError();
+            }
+        });
     }
 }
