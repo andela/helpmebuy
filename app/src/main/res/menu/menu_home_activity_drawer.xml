@@ -6,6 +6,13 @@
             android:id="@+id/add_travel"
             android:title="Add travel details"
             android:icon="@drawable/ic_flight_takeoff_black_24dp"/>
+
+        <item
+            android:id="@+id/manage_profile"
+            android:title="Manage profile"
+            android:icon="@drawable/ic_account_circle_black_48dp"/>
+
+
     </group>
 
 </menu>
