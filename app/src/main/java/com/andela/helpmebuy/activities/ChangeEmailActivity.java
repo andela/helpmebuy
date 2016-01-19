@@ -15,17 +15,20 @@ import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.ChangeEmailAuth;
 import com.andela.helpmebuy.authentication.ChangeEmailCallback;
 import com.andela.helpmebuy.authentication.FirebaseAuth;
+import com.andela.helpmebuy.authentication.FirebaseChangeEmail;
+import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.Constants;
 import com.firebase.client.Firebase;
 
-public class ChangeEmailActivity extends AppCompatActivity{
+public class ChangeEmailActivity extends AppCompatActivity {
     private TextView oldEmailText;
     private TextView newEmailText;
     private TextView passwordText;
     private Button updateEmailButton;
-    private ChangeEmailAuth changeEmailAuth;
+    private FirebaseChangeEmail firebaseChangeEmail;
     private LinearLayout parentLayout;
+    private FirebaseCollection<User> collection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,24 +53,35 @@ public class ChangeEmailActivity extends AppCompatActivity{
         newEmailText = (TextView)findViewById(R.id.new_email_text);
         passwordText =  (TextView)findViewById(R.id.password_text);
         updateEmailButton = (Button)findViewById(R.id.update_email_button);
-        changeEmailAuth = new FirebaseAuth(this);
     }
 
     public void updateEmail(View view) {
         String oldEmail = oldEmailText.getText().toString();
-        String newEmail = newEmailText.getText().toString();
+        final String newEmail = newEmailText.getText().toString();
         String password = passwordText.getText().toString();
-
-        changeEmailAuth.changeEmail(oldEmail, newEmail, password, new ChangeEmailCallback(){
-
+        firebaseChangeEmail = new FirebaseChangeEmail(this);
+        firebaseChangeEmail.changeEmail(oldEmail, newEmail, password, new AuthCallback() {
             @Override
-            public void onSuccess() {
-                Snackbar.make(parentLayout,"Email successfully changed",Snackbar.LENGTH_LONG).show();
+            public void onSuccess(User user) {
+                user.setEmail(newEmail);
+                collection = new FirebaseCollection<User>(Constants.USERS, User.class);
+                //collection.save();
+
             }
 
             @Override
-            public void onError() {
-                Snackbar.make(parentLayout,"Email not successfully changed",Snackbar.LENGTH_LONG).show();
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
             }
         });
 
