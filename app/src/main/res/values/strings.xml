@@ -81,7 +81,8 @@
     <string name="title_activity_detailed_profile_settings">DetailedProfileSettings</string>
 
     <string name="no_travelers">No travelers available in this Location</string>
-    <string name="title_activity_connect_travellers">ConnectTravellersActivity</string>
+    <string name="title_activity_connect_travellers">Travellers Connection</string>
+    <string name="traveller_details">Travellers' Details</string>
 
 </resources>
 
