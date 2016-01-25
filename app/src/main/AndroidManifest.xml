@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".HelpMeBuyApplication"
@@ -32,7 +32,7 @@
             android:value="@string/facebook_app_id" />
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -63,13 +63,22 @@
         </activity>
         <activity
             android:name=".activities.UserSettingsActivity"
-            android:label= "@string/title_activity_user_settings"
+            android:label="@string/title_activity_user_settings"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".activities.DetailedProfileSettings"
             android:label="@string/title_activity_detailed_profile_settings"
             android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activities.ConnectTravellersActivity"
+            android:label="@string/title_activity_connect_travellers"
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.andela.helpmebuy.activities.HomeActivity" />
         </activity>
     </application>
 
