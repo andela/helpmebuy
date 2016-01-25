@@ -209,6 +209,15 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
         Travel travel = new Travel();
         Address departureAddress = new Address();
         Address arrivalAddress = new Address();
+        Location departure = travelLocation.get(0);
+        Location arrival = travelLocation.get(1);
+        departureAddress.setCountry(departure.getCountry().getName());
+        departureAddress.setCity(departure.getCity().getName());
+        departureAddress.setRegion(departure.getRegion().getName());
+
+        arrivalAddress.setCountry(arrival.getCountry().getName());
+        arrivalAddress.setCity(arrival.getCity().getName());
+        arrivalAddress.setRegion(arrival.getRegion().getName());
 
         User currentUser = CurrentUserManager.get(this);
         travel.setUserId(currentUser.getId());

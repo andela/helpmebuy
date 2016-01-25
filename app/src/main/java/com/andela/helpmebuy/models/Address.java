@@ -15,6 +15,18 @@ public class Address extends Model {
     @JsonDeserialize(using=LocationDeserializer.class)
     private Location location;
     /**
+     * The country part of the address.
+     */
+    private String country;
+    /**
+     * The region part of the address.
+     */
+    private String region;
+    /**
+     * The city part of the address.
+     */
+    private  String city;
+    /**
      * The street part of the address.
      */
     private String street;
@@ -69,5 +81,27 @@ public class Address extends Model {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getCountry() {
+        return country;
+    }
 
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 }
