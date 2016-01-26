@@ -16,8 +16,7 @@
     android:layout_marginTop="16dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/traveller_details"
-    android:textStyle="bold"
+    android:text="Traveller Details"
     android:textSize="25sp"/>
 
     <LinearLayout
@@ -31,7 +30,6 @@
             android:layout_height="wrap_content"
             android:text="@string/traveller"
             android:textSize="20sp"
-            android:textStyle="bold"
             android:layout_marginRight="24dp"/>
 
         <TextView
@@ -54,7 +52,6 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:textStyle="bold"
             android:text="@string/home_country"
             android:layout_marginRight="24dp"/>
 
@@ -76,7 +73,6 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:textStyle="bold"
             android:text="@string/departure_date"
             android:layout_marginRight="24dp"/>
 
@@ -98,7 +94,6 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:textStyle="bold"
             android:text="@string/arrival_date"
             android:layout_marginRight="24dp"/>
 
@@ -109,4 +104,25 @@
             android:text="2016-02-02"/>
 
     </LinearLayout>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/connect_message"
+        android:textColorHint="@color/hint_text_color"
+        android:background="@drawable/rectangle_border"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connect_button_text"
+        android:layout_marginTop="16dp"
+        android:background="@color/primary_color"
+        android:textColor="@color/border_background"
+        android:layout_gravity="end"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
 </LinearLayout>
