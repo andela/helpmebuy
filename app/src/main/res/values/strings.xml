@@ -83,6 +83,11 @@
     <string name="no_travelers">No travelers available in this Location</string>
     <string name="title_activity_connect_travellers">Travellers Connection</string>
     <string name="traveller_details">Travellers' Details</string>
+    <string name="traveller">Traveller</string>
+    <string name="home_country">Home Country</string>
+    <string name="departure_date">Departure Date</string>
+    <string name="arrival_date">Arrival Date</string>
+    <string name="connect_message">Message</string>
 
 </resources>
 
