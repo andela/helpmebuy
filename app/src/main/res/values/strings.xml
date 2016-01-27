@@ -82,5 +82,7 @@
     <string name="title_activity_change_email">Change Email</string>
     <string name="old_email">Old Email</string>
     <string name="new_email">New Email</string>
+    <string name="confirm_password_label">Enter your password</string>
+    <string name="confirm">Confirm</string>
 </resources>
 
