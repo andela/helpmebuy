@@ -1,4 +1,4 @@
-package com.andela.helpmebuy.utilities;
+package com.andela.helpmebuy.config;
 
 
 public class Constants {

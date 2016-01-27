@@ -26,7 +26,7 @@ import com.google.android.gms.common.SignInButton;
 import com.andela.helpmebuy.authentication.GoogleAuth;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.AlertDialogHelper;
-import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.config.Constants;
 import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
