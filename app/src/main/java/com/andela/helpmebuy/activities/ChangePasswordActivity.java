@@ -1,5 +1,8 @@
 package com.andela.helpmebuy.activities;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +15,7 @@ import android.widget.LinearLayout;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FirebasePasswordReset;
 import com.andela.helpmebuy.authentication.PasswordReset;
+import com.andela.helpmebuy.fragments.ConfirmPasswordFragment;
 import com.andela.helpmebuy.models.User;
 
 
@@ -50,7 +54,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     public void changePassword(View view) {
-        SoftKeyboard.hide(ChangePasswordActivity.this);
+        SoftKeyboard.hide(this);
 
         String email = emailText.getText().toString().trim();
         String oldPassword = this.oldPassword.getText().toString();
@@ -76,8 +80,18 @@ public class ChangePasswordActivity extends AppCompatActivity {
             @Override
             public void onSuccess(User user) {
                 Snackbar.make(parentLayout, "Password changed successfully", Snackbar.LENGTH_LONG).show();
-                Launcher.launchActivity(ChangePasswordActivity.this, HomeActivity.class);
+
+                Bundle bundle = getIntent().getBundleExtra(Launcher.TRANSPORT);
+                if (bundle != null){
+                    if (bundle.getBoolean(ConfirmPasswordFragment.CONFIRM_PASSWORD)){
+                        Launcher.launchActivity(ChangePasswordActivity.this, UserSettingsActivity.class);
+                    }
+                } else {
+                    Launcher.launchActivity(ChangePasswordActivity.this, HomeActivity.class);
+                }
+
                 finish();
+
             }
 
             @Override
