@@ -50,7 +50,7 @@
         android:hint="@string/password"
         android:textColor="#ffffff"
         android:textColorHint="#7fffffff"
-        android:inputType="textEmailAddress"
+        android:inputType="textPassword"
         android:textCursorDrawable="@null"/>
     </android.support.design.widget.TextInputLayout>
     <com.andela.helpmebuy.views.TogglePasswordVisibilityButton

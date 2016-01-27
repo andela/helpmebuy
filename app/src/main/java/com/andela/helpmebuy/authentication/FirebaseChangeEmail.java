@@ -3,7 +3,8 @@ package com.andela.helpmebuy.authentication;
 import android.content.Context;
 
 import com.andela.helpmebuy.models.User;
-import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.config.Constants;
+import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
@@ -17,22 +18,23 @@ public class FirebaseChangeEmail implements ChangeEmailAuth {
 
     public FirebaseChangeEmail(Context context) {
         this.context = context;
-        firebase = new Firebase(Constants.FIREBASE_URL);
+        this.firebase = new Firebase(Constants.FIREBASE_URL);
     }
 
-
     @Override
-    public void changeEmail(String oldEmail, String newEmail, String password, final AuthCallback callback) {
-        firebase.changeEmail(oldEmail, password, newEmail, new Firebase.ResultHandler() {
+    public void changeEmail(String oldEmail, final String newEmail, String password, final AuthCallback callback) {
+        this.firebase.changeEmail(oldEmail, password, newEmail, new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
-                User user = new User();
+                User user = CurrentUserManager.get(context);
+                user.setEmail(newEmail);
+                CurrentUserManager.save(user, context);
                 callback.onSuccess(user);
             }
 
             @Override
             public void onError(FirebaseError firebaseError) {
-
+                callback.onError(firebaseError.getMessage());
             }
         });
     }

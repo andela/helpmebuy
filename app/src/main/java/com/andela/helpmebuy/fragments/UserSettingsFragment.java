@@ -30,48 +30,35 @@ import java.util.List;
  * interface.
  */
 public class UserSettingsFragment extends Fragment {
-
-
-    private static final String SETTING_ITEM = "item";
-    List<String> userProfileList;
-    ArrayAdapter<String> userProfileListAdapter;
-
-    private ListAdapter mAdapter;
-
+    private ArrayAdapter<String> userProfileListAdapter;
+    private static final String CHANGE_EMAIL = "Change Email";
+    private static final String CHANGE_PASSWORD = "Change Password";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
+        List<String> userProfileList = new ArrayList<>(Arrays.asList(CHANGE_EMAIL, CHANGE_PASSWORD));
+        userProfileListAdapter = new ArrayAdapter<>(getActivity(), R.layout.user_settings, userProfileList);
 
-       final ListView listView = (ListView) view.findViewById(R.id.user_settings_layout);
-
-        userProfileList = new ArrayList<>(Arrays.asList("Change Name", "Change Email", "Reset Password"));
-
-        userProfileListAdapter = new ArrayAdapter<String>(getActivity(), R.layout.user_settings, userProfileList);
-
+        final ListView listView = (ListView) view.findViewById(R.id.user_settings_layout);
         listView.setAdapter(userProfileListAdapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if (userProfileListAdapter.getItem(position).equals("Reset Password")) {
-
-                    Launcher.launchActivity(getContext(), ChangePasswordActivity.class);
+                switch (userProfileListAdapter.getItem(position)) {
+                    case CHANGE_PASSWORD:
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, new ConfirmPasswordFragment())
+                                .commit();
+                        break;
+                    case CHANGE_EMAIL:
+                        Launcher.launchActivity(getContext(), ChangeEmailActivity.class);
+                        break;
                 }
-                if (userProfileListAdapter.getItem(position).equals("Change Email")) {
-
-                    Launcher.launchActivity(getContext(), ChangeEmailActivity.class);
-                }
-
             }
         });
 
         return view;
-
     }
-
-
 }
