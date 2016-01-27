@@ -75,7 +75,7 @@
     <string name="update_email">Update Email</string>
 
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_user_settings">Manage Profile</string>
     <string name="title_activity_detailed_profile_settings">DetailedProfileSettings</string>
