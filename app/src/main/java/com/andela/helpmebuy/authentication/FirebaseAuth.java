@@ -1,13 +1,11 @@
 package com.andela.helpmebuy.authentication;
 
-import android.app.Application;
 import android.content.Context;
 
-import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
-import com.andela.helpmebuy.utilities.Constants;
 import com.andela.helpmebuy.utilities.FireBaseErrorHandler;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -15,7 +13,7 @@ import com.firebase.client.FirebaseError;
 
 import java.util.Map;
 
-public class FirebaseAuth implements EmailPasswordAuth, ChangeEmailAuth {
+public class FirebaseAuth implements EmailPasswordAuth {
     public static final String TEMPORARY_PASSWORD = "Temporary Password";
 
     private Context context;
@@ -53,9 +51,7 @@ public class FirebaseAuth implements EmailPasswordAuth, ChangeEmailAuth {
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-               // FireBaseErrorHandler.getErrorMessage(firebaseError,  FirebaseAuth.this)
-                callback.onError(FireBaseErrorHandler.getErrorMessage(firebaseError,context ));
-
+                callback.onError(FireBaseErrorHandler.getErrorMessage(firebaseError, context));
             }
         });
 
@@ -65,18 +61,18 @@ public class FirebaseAuth implements EmailPasswordAuth, ChangeEmailAuth {
     public void signUp(final String email, String password, final AuthCallback callback) {
         firebase.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
-             public void onSuccess(Map<String, Object> result) {
+            public void onSuccess(Map<String, Object> result) {
                 String id = result.get("uid").toString();
 
                 User user = new User(id);
                 user.setEmail(email);
 
                 callback.onSuccess(user);
-             }
+            }
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                callback.onError(FireBaseErrorHandler.getErrorMessage(firebaseError,context ));
+                callback.onError(FireBaseErrorHandler.getErrorMessage(firebaseError, context));
             }
         });
 
@@ -84,21 +80,5 @@ public class FirebaseAuth implements EmailPasswordAuth, ChangeEmailAuth {
 
     @Override
     public void signOut() {
-    }
-
-
-    @Override
-    public void changeEmail(String oldEmail, String newEmail, String password, final ChangeEmailCallback callback) {
-        firebase.changeEmail(oldEmail, newEmail, password, new Firebase.ResultHandler() {
-            @Override
-            public void onSuccess() {
-                callback.onSuccess();
-            }
-
-            @Override
-            public void onError(FirebaseError firebaseError) {
-                callback.onError();
-            }
-        });
     }
 }
