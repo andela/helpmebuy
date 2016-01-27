@@ -94,6 +94,8 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         }
     }
 
+
+
     @Override
     public int getItemCount() {
         return travels.size();
@@ -121,5 +123,6 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
             departureLocation = (TextView) view.findViewById(R.id.traveller_departure_location);
             departureDate = (TextView) view.findViewById(R.id.traveller_arrival_date);
         }
+
     }
 }
