@@ -1,7 +1,6 @@
 package com.andela.helpmebuy.dal;
 
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface DataCollection<T> {

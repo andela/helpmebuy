@@ -72,15 +72,18 @@
     <string name="arrival_date_value_summary">Select your arrival date</string>
     <string name="arrival_time_value_summary">Select your arrival time</string>
     <string name="location_date_format">"DD/MM/YYYY"</string>
+    <string name="update_email">Update Email</string>
 
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="title_activity_user_settings">User Profile Settings</string>
-    <string name="title_activity_detailed_profile_settings">DetailedProfileSettings</string>
-
     <string name="no_travelers">No travelers available in this Location</string>
-
+    <string name="title_activity_user_settings">Manage Profile</string>
+    <string name="title_activity_detailed_profile_settings">DetailedProfileSettings</string>
+    <string name="title_activity_change_email">Change Email</string>
+    <string name="old_email">Old Email</string>
+    <string name="new_email">New Email</string>
+    <string name="confirm_password_label">Enter your password</string>
+    <string name="confirm">Confirm</string>
 </resources>
 

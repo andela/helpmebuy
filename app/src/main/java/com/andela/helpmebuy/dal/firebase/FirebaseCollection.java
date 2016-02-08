@@ -3,7 +3,7 @@ package com.andela.helpmebuy.dal.firebase;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.models.Model;
-import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.config.Constants;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;

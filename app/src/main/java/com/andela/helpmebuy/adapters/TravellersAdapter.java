@@ -17,7 +17,7 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
-import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.config.Constants;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTimeZone;
