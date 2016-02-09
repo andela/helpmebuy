@@ -61,7 +61,12 @@
         <activity
             android:name=".activities.UserSettingsActivity"
             android:label="@string/title_activity_user_settings"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.andela.helpmebuy.activities.HomeActivity" />
+        </activity>
         <activity
             android:name=".activities.ChangeEmailActivity"
             android:label="@string/title_activity_change_email"

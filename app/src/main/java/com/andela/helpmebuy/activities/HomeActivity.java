@@ -310,7 +310,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Launcher.launchActivity(this, CreateTravelActivity.class);
         }
         if (id == R.id.manage_profile){
-            Launcher.launchActivity(this,UserSettingsActivity.class);
+            Launcher.launchActivity(this, UserSettingsActivity.class);
 
         }
 
