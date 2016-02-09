@@ -121,8 +121,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void addActionBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        ActionBar actionBar = getSupportActionBar();
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -310,7 +310,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Launcher.launchActivity(this, CreateTravelActivity.class);
         }
         if (id == R.id.manage_profile){
-            Launcher.launchActivity(this,UserSettingsActivity.class);
+            Launcher.launchActivity(this, UserSettingsActivity.class);
 
         }
 
