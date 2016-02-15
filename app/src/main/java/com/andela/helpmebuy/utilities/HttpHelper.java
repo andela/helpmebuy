@@ -27,14 +27,14 @@ public class HttpHelper implements JsonCallback {
                         if (e != null) {
                             httpCallback.onError(e.getMessage());
                         } else {
-                            //httpCallback.onSuccess(result.getAsString());
                             String formattedAddress = result
                                     .getAsJsonArray("results")
                                     .get(0)
                                     .getAsJsonObject()
                                     .get("formatted_address")
                                     .getAsString();
-                            Log.d("FOO", formattedAddress);
+                            // Log.d("FOO", formattedAddress);
+                            httpCallback.onSuccess(formattedAddress);
                         }
                     }
                 });
