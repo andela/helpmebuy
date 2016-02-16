@@ -78,12 +78,19 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_travelers">No travelers available in this Location</string>
-    <string name="title_activity_user_settings">Manage Profile</string>
-    <string name="title_activity_detailed_profile_settings">DetailedProfileSettings</string>
-    <string name="title_activity_change_email">Change Email</string>
-    <string name="old_email">Old Email</string>
-    <string name="new_email">New Email</string>
-    <string name="confirm_password_label">Enter your password</string>
-    <string name="confirm">Confirm</string>
+    <!--<string name="title_activity_user_settings">Manage Profile</string>-->
+    <!--<string name="title_activity_detailed_profile_settings">DetailedProfileSettings</string>-->
+    <!--<string name="title_activity_change_email">Change Email</string>-->
+    <!--<string name="old_email">Old Email</string>-->
+    <!--<string name="new_email">New Email</string>-->
+    <!--<string name="confirm_password_label">Enter your password</string>-->
+    <!--<string name="confirm">Confirm</string>-->
+    <string name="title_activity_connect_travellers">Travellers Connection</string>
+    <string name="traveller">Traveller</string>
+    <string name="home_country">Home Country</string>
+    <string name="departure_date">Departure Date</string>
+    <string name="arrival_date">Arrival Date</string>
+    <string name="connect_message">Type your message</string>
+    <string name="connect_button_text">Connect</string>
 </resources>
 

@@ -58,15 +58,20 @@
             android:name=".activities.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.UserSettingsActivity"
-            android:label="@string/title_activity_user_settings"
-            android:parentActivityName=".activities.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.andela.helpmebuy.activities.HomeActivity" />
-        </activity>
+
+        <!--<activity-->
+            <!--android:name=".activities.UserSettingsActivity"-->
+            <!--android:label="@string/title_activity_user_settings"-->
+<!--<<<<<<< HEAD-->
+            <!--android:parentActivityName=".activities.HomeActivity"-->
+<!--=======-->
+<!--&gt;>>>>>> 0a5ce02be7a463987de90d4702a3de646890a410-->
+            <!--android:theme="@style/AppTheme.NoActionBar" >-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.andela.helpmebuy.activities.HomeActivity" />-->
+        <!--</activity>-->
+
         <activity
             android:name=".activities.ChangeEmailActivity"
             android:label="@string/title_activity_change_email"
@@ -76,6 +81,21 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andela.helpmebuy.activities.UserSettingsActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.ConnectTravellersActivity"
+            android:label="@string/title_activity_connect_travellers"
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.andela.helpmebuy.activities.HomeActivity" />
         </activity>
     </application>
 

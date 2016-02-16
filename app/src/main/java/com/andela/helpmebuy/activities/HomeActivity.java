@@ -291,6 +291,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.connect_action:
                 connect(info);
+                Launcher.launchActivity(this,ConnectTravellersActivity.class);
                 return true;
 
             case R.id.more_action:
