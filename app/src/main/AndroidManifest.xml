@@ -72,16 +72,16 @@
                 <!--android:value="com.andela.helpmebuy.activities.HomeActivity" />-->
         <!--</activity>-->
 
-        <activity
-            android:name=".activities.ChangeEmailActivity"
-            android:label="@string/title_activity_change_email"
-            android:noHistory="true"
-            android:parentActivityName=".activities.UserSettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.andela.helpmebuy.activities.UserSettingsActivity" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".activities.ChangeEmailActivity"-->
+            <!--android:label="@string/title_activity_change_email"-->
+            <!--android:noHistory="true"-->
+            <!--android:parentActivityName=".activities.UserSettingsActivity"-->
+            <!--android:theme="@style/AppTheme.NoActionBar" >-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value="com.andela.helpmebuy.activities.UserSettingsActivity" />-->
+        <!--</activity>-->
 
         <activity
             android:name=".activities.ConnectTravellersActivity"
@@ -93,6 +93,7 @@
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andela.helpmebuy.activities.HomeActivity" />
