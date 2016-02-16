@@ -118,7 +118,7 @@ public class HomeCountryDetector implements GoogleApiClient.ConnectionCallbacks,
                 Log.d("HMB", result);
                 countryName = getCountry(result);
                 Log.d("HMB", countryName);
-                // listener.onCountryDetected(countryName);
+                listener.onCountryDetected(countryName);
             }
 
             @Override
