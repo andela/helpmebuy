@@ -58,6 +58,14 @@
             android:name=".activities.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.UserSettingsActivity"
+            android:label="Change Settings"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.HomeActivity"/>
+        </activity>
     </application>
 
 </manifest>
