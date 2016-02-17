@@ -17,4 +17,5 @@
     <color name="white_view_pressed_color">#61ffffff</color>
     <color name="border_background">#F5F5F5</color>
     <color name="border_stroke">#BDBDBD</color>
+
 </resources>
