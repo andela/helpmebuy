@@ -167,7 +167,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void detectCountry(){
         homeCountryDetector = new HomeCountryDetector(HomeActivity.this);
-        HomeCountryDetectorListener listener = new HomeCountryDetectorListener() {
+
+        homeCountryDetector.setListener(new HomeCountryDetectorListener() {
             @Override
             public void onCountryDetected(String name) {
                 country =  homeCountryDetector.getCountryName();
@@ -175,8 +176,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Log.d(TAG, country);
                 homeCountryDetector.disconnect();
             }
-        };
-        homeCountryDetector.setListener(listener);
+        });
     }
 
     @Override
@@ -291,6 +291,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.connect_action:
                 connect(info);
+                Launcher.launchActivity(this,ConnectTravellersActivity.class);
                 return true;
 
             case R.id.more_action:

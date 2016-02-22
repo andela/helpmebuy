@@ -44,4 +44,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.firebase:firebase-client-android:2.4.1'
     compile 'com.pnikosis:materialish-progress:1.7'
+    compile 'com.koushikdutta.ion:ion:2.+'
+    compile 'com.google.code.gson:gson:2.5'
+    compile files('build/junit-4.10.jar')
 }
