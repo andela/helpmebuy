@@ -3,7 +3,7 @@ package com.andela.helpmebuy.dal.firebase;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.models.Model;
-import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.config.Constants;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -89,23 +89,11 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                //for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    data.add(dataSnapshot.getValue(type));
-                    callback.onSuccess(data);
+                data.add(dataSnapshot.getValue(type));
+                callback.onSuccess(data);
 
-
-                //data.add(dataSnapshot.getValue(type));
-
-//                callback.onSuccess(data);
-//                List<T> data = new ArrayList<>();
-//
-//                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-//                    data.add(snapshot.getValue(type));
-//                }
-//
-//                callback.onSuccess(data);
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    System.out.println(dataSnapshot);
+
                 }
             }
 
@@ -126,7 +114,7 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                callback.onError("Connection was cancelled");
             }
 
         });

@@ -32,12 +32,12 @@ public class CurrentUserManager {
         return toUser(preferences.getString(CURRENT_USER_KEY, ""));
     }
 
-    private static String toJson(User user){
+    private static String toJson(User user) {
         ObjectMapper mapper = new ObjectMapper();
 
         try {
             return mapper.writeValueAsString(user);
-        } catch(JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             return "";
         }
     }
@@ -51,7 +51,7 @@ public class CurrentUserManager {
 
         try {
             return mapper.readValue(json, User.class);
-        } catch(IOException e) {
+        } catch (IOException e) {
             return null;
         }
     }

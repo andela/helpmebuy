@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="#009688"
+    android:id = "@+id/change_email_layout"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_change_email"
+    tools:context="com.andela.helpmebuy.activities.ChangeEmailActivity">
+
+    <android.support.design.widget.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:hintTextAppearance="@style/TextInputStyle"
+    android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/old_email_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/old_email"
+            android:textColor="#ffffff"
+            android:textColorHint="#7fffffff"
+            android:inputType="textEmailAddress"
+            android:textCursorDrawable="@null"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:hintTextAppearance="@style/TextInputStyle">
+    <EditText
+        android:id="@+id/password_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/password"
+        android:textColor="#ffffff"
+        android:textColorHint="#7fffffff"
+        android:inputType="textPassword"
+        android:textCursorDrawable="@null"/>
+    </android.support.design.widget.TextInputLayout>
+    <com.andela.helpmebuy.views.TogglePasswordVisibilityButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/toggle_password_visibility_padding"
+        android:background="@drawable/white_view_state_list"
+        app:passwordEditText="@id/password_text"
+        app:passwordInvisibleImageResource="@drawable/ic_visibility_white_18dp"
+        app:passwordVisibleImageResource="@drawable/ic_visibility_off_white_18dp" />
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@style/TextInputStyle"
+        android:layout_marginTop="10dp">
+    <EditText
+        android:id="@+id/new_email_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/new_email"
+        android:textColor="#ffffff"
+        android:textColorHint="#7fffffff"
+        android:inputType="textEmailAddress"
+        android:textCursorDrawable="@null"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@style/TextInputStyle">
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/update_email_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/update_email"
+        android:textStyle="bold"
+        android:textColor="#004d40"
+        android:onClick="updateEmail"/>
+
+</LinearLayout>
+
+

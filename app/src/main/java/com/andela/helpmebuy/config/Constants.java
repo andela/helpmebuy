@@ -1,4 +1,4 @@
-package com.andela.helpmebuy.utilities;
+package com.andela.helpmebuy.config;
 
 
 public class Constants {
@@ -14,4 +14,7 @@ public class Constants {
     public final static String REGIONS = "regions";
 
     public final static String CITIES = "cities";
+
+    public final static String GOOGLE_MAP_CONNECTION_URL
+            = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=";
 }

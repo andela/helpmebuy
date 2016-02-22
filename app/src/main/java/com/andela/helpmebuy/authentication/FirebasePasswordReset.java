@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.andela.helpmebuy.models.User;
-import com.andela.helpmebuy.utilities.Constants;
+import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.utilities.FireBaseErrorHandler;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
