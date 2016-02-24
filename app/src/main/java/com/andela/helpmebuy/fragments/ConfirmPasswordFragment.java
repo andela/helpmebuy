@@ -36,13 +36,14 @@ public class ConfirmPasswordFragment extends Fragment {
         return view;
     }
 
-    private void initializeComponents(View view) {
+    private void initializeComponents(final View view) {
         confirmPassword = (EditText) view.findViewById(R.id.confirm_password);
 
         confirmPasswordButton = (Button) view.findViewById(R.id.confirm_password_button);
         confirmPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                confirmPasswordButton.setEnabled(false);
                 confirmPassword(confirmPassword.getText().toString());
             }
         });
@@ -55,6 +56,7 @@ public class ConfirmPasswordFragment extends Fragment {
         firebaseAuth.signIn(user.getEmail(), password, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
+                confirmPasswordButton.setEnabled(true);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(CONFIRM_PASSWORD, true);
                 Launcher.launchActivity(getContext(), bundle, ChangePasswordActivity.class);
@@ -63,16 +65,18 @@ public class ConfirmPasswordFragment extends Fragment {
 
             @Override
             public void onCancel() {
-
+                confirmPasswordButton.setEnabled(true);
             }
 
             @Override
             public void onError(String errorMessage) {
+                confirmPasswordButton.setEnabled(true);
                 Log.d("HMB", errorMessage + " Login failed!");
             }
 
             @Override
             public void onFailure(Exception e) {
+                confirmPasswordButton.setEnabled(true);
 
             }
         });
