@@ -34,5 +34,6 @@
         <item name="colorControlNormal">@color/primary_color</item>
         <item name="colorControlActivated">@color/primary_color</item>
         <item name="colorControlHighlight">@color/primary_color</item>
+        <item name="android:layout_marginBottom">10dp</item>
     </style>
 </resources>
