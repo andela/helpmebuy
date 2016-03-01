@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.activities.ChangePasswordActivity;
@@ -71,13 +72,13 @@ public class ConfirmPasswordFragment extends Fragment {
             @Override
             public void onError(String errorMessage) {
                 confirmPasswordButton.setEnabled(true);
-                Log.d("HMB", errorMessage + " Login failed!");
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Exception e) {
                 confirmPasswordButton.setEnabled(true);
-
+                Toast.makeText(getContext(), "Error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

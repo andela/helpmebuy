@@ -26,7 +26,7 @@
         with and we\'ll send you instructions on how to reset your password.</string>
     <string name="reset_password_successful">Reset Password Successful! Check your Email.</string>
     <string name="continue_button">Continue</string>
-    <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="title_activity_change_password">Change Password</string>
     <string name="alert_dialog_title">Reset Password</string>
     <string name="alert_dialog_message">SignIn successful!\nWARNING: The password inputed will expire within the next 24
     hours.\n\nClick on continue to change password</string>

@@ -113,15 +113,18 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
+                changePasswordButton.setEnabled(true);
             }
 
             @Override
             public void onError(String errorMessage) {
                 Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
+                changePasswordButton.setEnabled(true);
             }
 
             @Override
             public void onFailure(Exception e) {
+                changePasswordButton.setEnabled(true);
                 Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
