@@ -3,6 +3,7 @@ package com.andela.helpmebuy.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.activities.HomeActivity;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Location;
@@ -18,6 +20,7 @@ import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
 import com.andela.helpmebuy.config.Constants;
+import com.andela.helpmebuy.utilities.CurrentTravelListener;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTimeZone;
@@ -36,6 +39,8 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
     private FirebaseCollection<User> users;
 
     private Location location;
+
+    private CurrentTravelListener currentTravelListener;
 
     public TravellersAdapter(Context context) {
         this.context = context;
@@ -92,8 +97,14 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
             viewHolder.departureDate.setText(travel.getArrivalDate().withZone(DateTimeZone.getDefault()).toString(formatter));
         }
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                currentTravelListener.getCurrentTravel(travel);
+                return false;
+            }
+        });
     }
-
 
 
     @Override
@@ -107,6 +118,10 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
     public void setTravels(List<Travel> travels) {
         this.travels = travels;
+    }
+
+    public void setCurrentTravelListener(CurrentTravelListener currentTravelListener) {
+        this.currentTravelListener = currentTravelListener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
