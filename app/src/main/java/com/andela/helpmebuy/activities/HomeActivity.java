@@ -31,6 +31,8 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
+import com.andela.helpmebuy.models.Connection;
+import com.andela.helpmebuy.models.ConnectionStatus;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
@@ -88,6 +90,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private String country = "";
 
     private ProgressWheel progressWheel;
+
+    private Context context = HomeActivity.this;
 
 
     @Override
@@ -171,7 +175,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         homeCountryDetector.setListener(new HomeCountryDetectorListener() {
             @Override
             public void onCountryDetected(String name) {
-                country =  homeCountryDetector.getCountryName();
+                country = homeCountryDetector.getCountryName();
                 loadTravellersByCountry(country);
                 Log.d(TAG, country);
                 homeCountryDetector.disconnect();
@@ -291,11 +295,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.connect_action:
                 connect(info);
-                Launcher.launchActivity(this,ConnectTravellersActivity.class);
                 return true;
 
             case R.id.more_action:
                 more(info);
+                Launcher.launchActivity(this, ConnectTravellersActivity.class);
                 return true;
 
             default:
@@ -320,7 +324,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void connect(AdapterView.AdapterContextMenuInfo info) {
-        Snackbar.make(parentLayout,"Connect clicked", Snackbar.LENGTH_LONG).show();
+        //Travel travel = getCurrentTravel();
+        Connection connection = new Connection(CurrentUserManager.get(context), ConnectionStatus.PENDING.getStatus());
+        connection.setId("170");
+        FirebaseCollection<Connection> firebaseCollection =
+                new FirebaseCollection<>(Constants.CONNECTIONS, Connection.class);
+        firebaseCollection.save(connection, new DataCallback<Connection>() {
+            @Override
+            public void onSuccess(Connection data) {
+                Log.d(TAG, data.getUser().getFullName());
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e(TAG, errorMessage);
+            }
+        });
+        //Snackbar.make(parentLayout,"Connect clicked", Snackbar.LENGTH_LONG).show();
     }
 
     private void message(AdapterView.AdapterContextMenuInfo info) {
