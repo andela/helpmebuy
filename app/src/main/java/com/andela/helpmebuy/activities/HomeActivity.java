@@ -37,6 +37,7 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.config.Constants;
+import com.andela.helpmebuy.utilities.CurrentTravelListener;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.HomeCountryDetector;
 import com.andela.helpmebuy.utilities.HomeCountryDetectorListener;
@@ -48,7 +49,7 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CurrentTravelListener {
     public final static String TAG = "HomeActivity";
 
     private RecyclerView travellersView;
@@ -56,6 +57,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private TravellersAdapter adapter;
 
     private List<Travel> travels;
+
+    private Travel travel;
 
     private DrawerLayout drawerLayout;
 
@@ -146,7 +149,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         View drawerHeader = LayoutInflater.from(this).inflate(R.layout.home_activity_drawer_header, null);
         navigationView.addHeaderView(drawerHeader);
-        usernameTextView  = (TextView) drawerHeader.findViewById(R.id.user_name_text);
+        usernameTextView = (TextView) drawerHeader.findViewById(R.id.user_name_text);
         userEmailTextView = (TextView) drawerHeader.findViewById(R.id.user_email_text);
 
         travellersView = (RecyclerView) findViewById(R.id.travellers_recycler_view);
@@ -157,6 +160,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         travellersView.setLayoutManager(layoutManager);
         travels = new ArrayList<>();
         adapter = new TravellersAdapter(this, travels);
+        adapter.setCurrentTravelListener(this);
         travellersView.setAdapter(adapter);
         setUserProfile(this);
 
@@ -169,7 +173,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         detectCountry();
     }
 
-    public void detectCountry(){
+    public void detectCountry() {
         homeCountryDetector = new HomeCountryDetector(HomeActivity.this);
 
         homeCountryDetector.setListener(new HomeCountryDetectorListener() {
@@ -219,7 +223,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    DataCallback<List<Travel>> travelDataCallback = new DataCallback<List<Travel>>(){
+    DataCallback<List<Travel>> travelDataCallback = new DataCallback<List<Travel>>() {
         @Override
         public void onSuccess(List<Travel> data) {
             if (!data.isEmpty()) {
@@ -255,14 +259,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         travelsCollection.getAll(travelDataCallback);
     }
 
-    private void loadTravellersByCountry(String countryName){
+    private void loadTravellersByCountry(String countryName) {
         progressWheel.spin();
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
         travelsCollection.query("departureAddress/country", countryName, travelDataCallback);
     }
 
 
-    public void loadTravelsByLocation(){
+    public void loadTravelsByLocation() {
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
         travelsCollection.query("departureAddress/location", userLocation.toFullString(), travelDataCallback);
     }
@@ -285,7 +289,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        ContextMenu.ContextMenuInfo i =  item.getMenuInfo();
+        ContextMenu.ContextMenuInfo i = item.getMenuInfo();
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
@@ -314,7 +318,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.add_travel) {
             Launcher.launchActivity(this, CreateTravelActivity.class);
         }
-        if (id == R.id.manage_profile){
+        if (id == R.id.manage_profile) {
             Launcher.launchActivity(this, UserSettingsActivity.class);
 
         }
@@ -324,23 +328,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void connect(AdapterView.AdapterContextMenuInfo info) {
-        //Travel travel = getCurrentTravel();
-        Connection connection = new Connection(CurrentUserManager.get(context), ConnectionStatus.PENDING.getStatus());
-        connection.setId("170");
-        FirebaseCollection<Connection> firebaseCollection =
-                new FirebaseCollection<>(Constants.CONNECTIONS, Connection.class);
-        firebaseCollection.save(connection, new DataCallback<Connection>() {
-            @Override
-            public void onSuccess(Connection data) {
-                Log.d(TAG, data.getUser().getFullName());
-            }
+        if (this.travel != null) {
+            Connection connection = new Connection(CurrentUserManager.get(context), ConnectionStatus.PENDING.getStatus());
+            connection.setId(travel.getUserId());
 
-            @Override
-            public void onError(String errorMessage) {
-                Log.e(TAG, errorMessage);
-            }
-        });
-        //Snackbar.make(parentLayout,"Connect clicked", Snackbar.LENGTH_LONG).show();
+            FirebaseCollection<Connection> firebaseCollection =
+                    new FirebaseCollection<>(Constants.CONNECTIONS, Connection.class);
+            firebaseCollection.save(connection, new DataCallback<Connection>() {
+                @Override
+                public void onSuccess(Connection data) {
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                }
+            });
+        }
     }
 
     private void message(AdapterView.AdapterContextMenuInfo info) {
@@ -348,7 +351,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void more(AdapterView.AdapterContextMenuInfo info) {
-        Snackbar.make(parentLayout,"More clicked",Snackbar.LENGTH_LONG).show();
+        Snackbar.make(parentLayout, "More clicked", Snackbar.LENGTH_LONG).show();
     }
 
     private int findIndex(Travel travel) {
@@ -365,7 +368,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         LayoutInflater inflater = getLayoutInflater();
         final View view = inflater.inflate(R.layout.user_location, null, false);
         userLocationTextView = (TextView) view.findViewById(R.id.user_location_text_view);
-
         userLocationTextView.setText("Departure Address");
         view.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
         toolbar.addView(view);
@@ -373,7 +375,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void changeLocation(View view) {
         final LocationPickerDialog dialog = new LocationPickerDialog(this);
-
         dialog.setOnLocationSetListener(new LocationPickerDialog.OnLocationSetListener() {
             @Override
             public void onLocationSet(Location location) {
@@ -389,4 +390,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         dialog.show();
     }
 
+    @Override
+    public void getCurrentTravel(Travel travel) {
+        this.travel = travel;
+    }
 }
