@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
@@ -329,14 +330,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void connect(AdapterView.AdapterContextMenuInfo info) {
         if (this.travel != null) {
-            Connection connection = new Connection(CurrentUserManager.get(context), ConnectionStatus.PENDING.getStatus());
-            connection.setId(travel.getUserId());
+            User user = CurrentUserManager.get(context);
+            Connection connection = new Connection(user, ConnectionStatus.PENDING.getStatus());
+            connection.setId(user.getId());
 
             FirebaseCollection<Connection> firebaseCollection =
-                    new FirebaseCollection<>(Constants.CONNECTIONS, Connection.class);
+                    new FirebaseCollection<>(Constants.CONNECTIONS+"/"+travel.getUserId(), Connection.class);
             firebaseCollection.save(connection, new DataCallback<Connection>() {
                 @Override
                 public void onSuccess(Connection data) {
+                    Toast.makeText(context, "Connect request sent", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
