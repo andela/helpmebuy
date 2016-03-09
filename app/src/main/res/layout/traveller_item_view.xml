@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/coming_from"
+                    android:text="@string/coming_to"
                     android:textColor="@color/hint_text_color" />
 
                 <TextView
@@ -83,6 +83,12 @@
                     android:maxLines="1"
                     android:ellipsize="end"/>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/connect_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Connect" />
 
         </LinearLayout>
 
