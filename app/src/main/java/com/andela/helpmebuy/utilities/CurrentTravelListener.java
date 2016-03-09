@@ -1,7 +1,9 @@
 package com.andela.helpmebuy.utilities;
 
+import android.widget.Button;
+
 import com.andela.helpmebuy.models.Travel;
 
 public interface CurrentTravelListener {
-    void getCurrentTravel(Travel travel);
+    void getCurrentTravel(Button connectButton, Travel travel);
 }

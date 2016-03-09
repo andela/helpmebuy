@@ -3,23 +3,21 @@ package com.andela.helpmebuy.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
-import com.andela.helpmebuy.activities.HomeActivity;
+import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
-import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.utilities.CurrentTravelListener;
 import com.squareup.picasso.Picasso;
 
@@ -97,11 +95,12 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
             viewHolder.departureDate.setText(travel.getArrivalDate().withZone(DateTimeZone.getDefault()).toString(formatter));
         }
-        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        viewHolder.connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-                currentTravelListener.getCurrentTravel(travel);
-                return false;
+            public void onClick(View view) {
+                if(currentTravelListener != null) {
+                    currentTravelListener.getCurrentTravel(viewHolder.connectButton, travel);
+                }
             }
         });
     }
@@ -130,6 +129,7 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         TextView name;
         TextView departureLocation;
         TextView departureDate;
+        Button connectButton;
 
         public ViewHolder(View view) {
             super(view);
@@ -137,6 +137,7 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
             name = (TextView) view.findViewById(R.id.traveller_name);
             departureLocation = (TextView) view.findViewById(R.id.traveller_departure_location);
             departureDate = (TextView) view.findViewById(R.id.traveller_arrival_date);
+            connectButton = (Button) view.findViewById(R.id.connect_button);
         }
 
     }

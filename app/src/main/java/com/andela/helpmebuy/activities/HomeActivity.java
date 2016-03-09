@@ -2,7 +2,7 @@ package com.andela.helpmebuy.activities;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -24,12 +24,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
+import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Connection;
@@ -37,7 +39,6 @@ import com.andela.helpmebuy.models.ConnectionStatus;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
-import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.utilities.CurrentTravelListener;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.HomeCountryDetector;
@@ -58,8 +59,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private TravellersAdapter adapter;
 
     private List<Travel> travels;
-
-    private Travel travel;
 
     private DrawerLayout drawerLayout;
 
@@ -329,24 +328,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void connect(AdapterView.AdapterContextMenuInfo info) {
-        if (this.travel != null) {
-            User user = CurrentUserManager.get(context);
-            Connection connection = new Connection(user, ConnectionStatus.PENDING.getStatus());
-            connection.setId(user.getId());
 
-            FirebaseCollection<Connection> firebaseCollection =
-                    new FirebaseCollection<>(Constants.CONNECTIONS+"/"+travel.getUserId(), Connection.class);
-            firebaseCollection.save(connection, new DataCallback<Connection>() {
-                @Override
-                public void onSuccess(Connection data) {
-                    Toast.makeText(context, "Connect request sent", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-                }
-            });
-        }
     }
 
     private void message(AdapterView.AdapterContextMenuInfo info) {
@@ -394,7 +376,36 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void getCurrentTravel(Travel travel) {
-        this.travel = travel;
+    public void getCurrentTravel(Button connectButton, Travel travel) {
+        sendConnectionRequest(connectButton, travel);
+    }
+
+    private void sendConnectionRequest(final Button connectButton, Travel travel) {
+        if (travel != null) {
+            User user = CurrentUserManager.get(context);
+            Connection connection = new Connection(user, ConnectionStatus.PENDING.getStatus());
+            connection.setId(user.getId());
+
+            connectButton.setText("connecting...");
+            connectButton.setEnabled(false);
+
+            FirebaseCollection<Connection> firebaseCollection =
+                    new FirebaseCollection<>(Constants.CONNECTIONS + "/" + travel.getUserId(), Connection.class);
+            firebaseCollection.save(connection, new DataCallback<Connection>() {
+                @Override
+                public void onSuccess(Connection data) {
+                    Toast.makeText(context, "Connection request successful", Toast.LENGTH_SHORT).show();
+                    connectButton.setText("Request sent");
+                    connectButton.setBackgroundColor(Color.parseColor("#ffbf00"));
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Toast.makeText(context, "Connection request was not successful", Toast.LENGTH_SHORT).show();
+                    connectButton.setText("Connect");
+                    connectButton.setEnabled(true);
+                }
+            });
+        }
     }
 }
