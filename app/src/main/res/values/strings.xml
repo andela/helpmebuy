@@ -93,5 +93,6 @@
     <string name="arrival_date">Arrival Date</string>
     <string name="connect_message">Type your message</string>
     <string name="connect_button_text">Connect</string>
+    <string name="title_activity_request">View Requests</string>
 </resources>
 
