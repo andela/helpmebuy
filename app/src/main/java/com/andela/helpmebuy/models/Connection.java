@@ -1,11 +1,20 @@
 package com.andela.helpmebuy.models;
 
-/**
- * Created by andela-jugba on 2/22/16.
- */
+
 public class Connection extends Model{
     private User user;
+
     private int connectionStatus;
+
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public Connection(){
     }
