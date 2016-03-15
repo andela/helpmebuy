@@ -38,6 +38,7 @@ import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.config.Constants;
+import com.andela.helpmebuy.utilities.ConnectionRequestListener;
 import com.andela.helpmebuy.utilities.CurrentTravelListener;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.HomeCountryDetector;
@@ -50,7 +51,8 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CurrentTravelListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        CurrentTravelListener {
     public final static String TAG = "HomeActivity";
 
     private RecyclerView travellersView;
@@ -315,13 +317,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.add_travel) {
-            Launcher.launchActivity(this, CreateTravelActivity.class);
-        }
-        if (id == R.id.manage_profile) {
-            Launcher.launchActivity(this, UserSettingsActivity.class);
-
+        switch (id) {
+            case R.id.add_travel:
+                Launcher.launchActivity(this, CreateTravelActivity.class);
+                break;
+            case R.id.manage_profile:
+                Launcher.launchActivity(this, UserSettingsActivity.class);
+                break;
+            case R.id.connections_launch:
+                Launcher.launchActivity(this, ConnectionRequestActivity.class);
+                break;
+            default:
+                break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -335,7 +342,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             connection.setId(user.getId());
 
             FirebaseCollection<Connection> firebaseCollection =
-                    new FirebaseCollection<>(Constants.CONNECTIONS+"/"+travel.getUserId(), Connection.class);
+                    new FirebaseCollection<>(Constants.CONNECTIONS + "/" + travel.getUserId(), Connection.class);
             firebaseCollection.save(connection, new DataCallback<Connection>() {
                 @Override
                 public void onSuccess(Connection data) {
@@ -397,4 +404,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void getCurrentTravel(Travel travel) {
         this.travel = travel;
     }
+
+
 }
