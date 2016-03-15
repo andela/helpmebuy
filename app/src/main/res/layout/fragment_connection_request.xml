@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:wheel="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -9,5 +10,17 @@
     tools:context="com.andela.helpmebuy.activities.RequestActivityFragment"
     tools:showIn="@layout/activity_connection_request">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.pnikosis.materialishprogress.ProgressWheel
+        android:id="@+id/connection_progress_wheel"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        wheel:matProg_barColor="@color/primary_color"
+        wheel:matProg_progressIndeterminate="true" />
 
 </RelativeLayout>
