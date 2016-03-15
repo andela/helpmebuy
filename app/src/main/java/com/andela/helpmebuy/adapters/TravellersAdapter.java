@@ -2,6 +2,7 @@ package com.andela.helpmebuy.adapters;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +15,14 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
+import com.andela.helpmebuy.models.Connection;
+import com.andela.helpmebuy.models.ConnectionStatus;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
 import com.andela.helpmebuy.utilities.CurrentTravelListener;
+import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTimeZone;
@@ -36,6 +40,8 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
     private FirebaseCollection<User> users;
 
+    private FirebaseCollection<Connection> connection;
+
     private Location location;
 
     private CurrentTravelListener currentTravelListener;
@@ -44,6 +50,7 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         this.context = context;
         this.travels = new ArrayList<>();
         this.users = new FirebaseCollection<>(Constants.USERS, User.class);
+        this.connection = new FirebaseCollection<>(Constants.CONNECTIONS + "/" + CurrentUserManager.get(context).getId(), Connection.class);
     }
 
     public TravellersAdapter(Context context, List<Travel> travels) {
@@ -61,8 +68,9 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, int position) {
         final Travel travel = travels.get(position);
+        String travelUserId = travel.getUserId();
 
-        users.get(travel.getUserId(), new DataCallback<User>() {
+        users.get(travelUserId, new DataCallback<User>() {
             @Override
             public void onSuccess(User user) {
                 String profilePictureUrl = user.getProfilePictureUrl();
@@ -87,6 +95,24 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
             }
         });
 
+        connection.get(travelUserId, new DataCallback<Connection>() {
+            @Override
+            public void onSuccess(Connection data) {
+                if (data != null) {
+                    if (data.getConnectionStatus() == ConnectionStatus.PENDING.getStatus()) {
+                        setButton(viewHolder.connectButton);
+                    } else if (data.getConnectionStatus() == ConnectionStatus.ACCEPTED.getStatus()) {
+                        viewHolder.connectButton.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+
         String address = travel.getDepartureAddress().getLocation().getCity().getName() + ", " + travel.getDepartureAddress().getLocation().getCountry().getName();
         viewHolder.departureLocation.setText(address);
 
@@ -98,8 +124,9 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         viewHolder.connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(currentTravelListener != null) {
-                    currentTravelListener.getCurrentTravel(viewHolder.connectButton, travel);
+                if (currentTravelListener != null) {
+                    setButton(viewHolder.connectButton);
+                    currentTravelListener.getCurrentTravel(travel);
                 }
             }
         });
@@ -140,5 +167,11 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
             connectButton = (Button) view.findViewById(R.id.connect_button);
         }
 
+    }
+
+    public void setButton(Button button) {
+        button.setText(R.string.request_sent);
+        button.setBackgroundColor(Color.parseColor("#ffbf00"));
+        button.setEnabled(false);
     }
 }
