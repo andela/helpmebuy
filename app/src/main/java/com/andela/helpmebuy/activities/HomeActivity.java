@@ -96,6 +96,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private Context context = HomeActivity.this;
 
+    private FirebaseCollection<Connection> connectionsCollection;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,14 +232,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 notify.setVisibility(View.INVISIBLE);
 
                 for (Travel travel : data) {
-                    int index = findIndex(travel);
+                    if (!CurrentUserManager.get(context).getId().equals(travel.getUserId())) {
+                        int index = findIndex(travel);
 
-                    if (index < 0) {
-                        travels.add(travel);
-                        adapter.notifyItemInserted(travels.size() - 1);
-                    } else {
-                        travels.set(index, travel);
-                        adapter.notifyItemChanged(index);
+                        if (index < 0) {
+                            travels.add(travel);
+                            adapter.notifyItemInserted(travels.size() - 1);
+                        } else {
+                            travels.set(index, travel);
+                            adapter.notifyItemChanged(index);
+                        }
                     }
                 }
             } else {
@@ -376,18 +380,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void getCurrentTravel(Button connectButton, Travel travel) {
-        sendConnectionRequest(connectButton, travel);
+    public void getCurrentTravel(Travel travel) {
+        sendConnectionRequest(travel);
     }
 
-    private void sendConnectionRequest(final Button connectButton, Travel travel) {
+    private void sendConnectionRequest(Travel travel) {
         if (travel != null) {
             User user = CurrentUserManager.get(context);
             Connection connection = new Connection(user, ConnectionStatus.PENDING.getStatus());
             connection.setId(user.getId());
-
-            connectButton.setText("connecting...");
-            connectButton.setEnabled(false);
 
             FirebaseCollection<Connection> firebaseCollection =
                     new FirebaseCollection<>(Constants.CONNECTIONS + "/" + travel.getUserId(), Connection.class);
@@ -395,17 +396,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onSuccess(Connection data) {
                     Toast.makeText(context, "Connection request successful", Toast.LENGTH_SHORT).show();
-                    connectButton.setText("Request sent");
-                    connectButton.setBackgroundColor(Color.parseColor("#ffbf00"));
                 }
 
                 @Override
                 public void onError(String errorMessage) {
                     Toast.makeText(context, "Connection request was not successful", Toast.LENGTH_SHORT).show();
-                    connectButton.setText("Connect");
-                    connectButton.setEnabled(true);
                 }
             });
         }
     }
+
 }
