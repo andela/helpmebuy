@@ -83,7 +83,16 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
     @Override
     public void query(String path, String arg, final DataCallback<List<T>> callback) {
         Query query = firebase.child(childName).orderByChild(path).equalTo(arg);
+        firebaseQuery(query, callback);
+    }
 
+    @Override
+    public void query(String path, int arg, DataCallback<List<T>> callback) {
+        Query query = firebase.child(childName).orderByChild(path).equalTo(arg);
+        firebaseQuery(query, callback);
+    }
+
+    private void firebaseQuery(Query query, final DataCallback<List<T>> callback) {
         final List<T> data = new ArrayList<>();
 
         query.addChildEventListener(new ChildEventListener() {
@@ -91,25 +100,18 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 data.add(dataSnapshot.getValue(type));
                 callback.onSuccess(data);
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
