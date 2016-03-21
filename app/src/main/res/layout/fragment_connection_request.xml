@@ -19,7 +19,7 @@
         android:id="@+id/connection_progress_wheel"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         wheel:matProg_barColor="@color/primary_color"
         wheel:matProg_progressIndeterminate="true" />
 

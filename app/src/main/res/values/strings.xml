@@ -97,5 +97,9 @@
     <string name="connection_message_label">would like to connect with you.</string>
     <string name="connection_accept_label">Accept</string>
     <string name="connection_reject_label">Reject</string>
+    <string name="operation_successful">Operation successful</string>
+    <string name="operation_failed">Operation failed</string>
+    <string name="no_request_found">No Request Found</string>
+    <string name="connectionStatus">connectionStatus</string>
 </resources>
 
