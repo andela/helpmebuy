@@ -2,11 +2,20 @@ package com.andela.helpmebuy.models;
 
 
 public class Connection extends Model{
-    private User user;
 
     private int connectionStatus;
 
     private String message;
+
+    private String receiver;
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
 
     public String getMessage() {
         return message;
@@ -20,7 +29,6 @@ public class Connection extends Model{
     }
 
     public Connection(User user, int connectionStatus){
-        this.user = user;
         this.connectionStatus = connectionStatus;
     }
 
@@ -32,11 +40,4 @@ public class Connection extends Model{
         this.connectionStatus = connectionStatus;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
