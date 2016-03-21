@@ -70,7 +70,6 @@ public class RequestActivityFragment extends Fragment {
                         if (!data.isEmpty()) {
                             for (Connection connection : data) {
                                 int index = findIndex(connection);
-
                                 if (index < 0) {
                                     connections.add(connection);
                                     requestsAdapter.notifyItemInserted(connections.size() - 1);
