@@ -1,5 +1,7 @@
 package com.andela.helpmebuy.dal.firebase;
 
+import android.util.Log;
+
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.models.Model;
@@ -48,6 +50,7 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+
                         callback.onSuccess(dataSnapshot.getValue(type));
                     }
 
@@ -98,6 +101,9 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                if (dataSnapshot == null || !dataSnapshot.exists()) {
+                    Log.d("HMB", previousChildName + " does not exist.");
+                }
                 data.add(dataSnapshot.getValue(type));
                 callback.onSuccess(data);
             }
