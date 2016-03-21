@@ -96,8 +96,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private FirebaseCollection<Connection> connectionsCollection;
 
-    private Bundle bundle;
-
     private boolean isRunning;
 
 
@@ -111,10 +109,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         addActionBar();
         initializeUserLocation();
 
-        //loadTravels();
-        bundle = savedInstanceState;
-        loadComponents(savedInstanceState);
-        //setUserProfile(this);
+        loadComponents();
     }
 
     @Override
@@ -142,7 +137,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void loadComponents(Bundle savedInstance) {
+    private void loadComponents() {
         parentLayout = (CoordinatorLayout) findViewById(R.id.parent_layout);
         drawerLayout = (DrawerLayout) findViewById(R.id.home_activity_drawer_layout);
 
@@ -259,12 +254,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     };
 
-    private void loadTravels() {
-
-        travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
-
-        travelsCollection.getAll(travelDataCallback);
-    }
 
     private void loadTravellersByCountry(String countryName) {
         progressWheel.spin();
@@ -409,7 +398,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .save(connection, new DataCallback<Connection>() {
                     @Override
                     public void onSuccess(Connection data) {
-                        
+
                     }
 
                     @Override
