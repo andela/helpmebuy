@@ -2,7 +2,6 @@ package com.andela.helpmebuy.activities;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -24,7 +23,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,6 +96,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private FirebaseCollection<Connection> connectionsCollection;
 
+    private Bundle bundle;
+
+    private boolean isRunning;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,16 +112,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         initializeUserLocation();
 
         //loadTravels();
-
-        loadComponents();
-
+        bundle = savedInstanceState;
+        loadComponents(savedInstanceState);
         //setUserProfile(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        homeCountryDetector.connect();
+        if (!isRunning) {
+            homeCountryDetector.connect();
+        }
     }
 
     @Override
@@ -139,7 +142,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void loadComponents() {
+    private void loadComponents(Bundle savedInstance) {
         parentLayout = (CoordinatorLayout) findViewById(R.id.parent_layout);
         drawerLayout = (DrawerLayout) findViewById(R.id.home_activity_drawer_layout);
 
@@ -171,7 +174,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         notify.setVisibility(View.INVISIBLE);
         progressWheel.spin();
-
         detectCountry();
     }
 
@@ -185,6 +187,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 loadTravellersByCountry(country);
                 Log.d(TAG, country);
                 homeCountryDetector.disconnect();
+                isRunning = true;
             }
         });
     }
@@ -266,13 +269,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void loadTravellersByCountry(String countryName) {
         progressWheel.spin();
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
-        travelsCollection.query("departureAddress/country", countryName, travelDataCallback);
+        travelsCollection.query("arrivalAddress/country", countryName, travelDataCallback);
     }
 
 
     public void loadTravelsByLocation() {
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
-        travelsCollection.query("departureAddress/location", userLocation.toFullString(), travelDataCallback);
+        travelsCollection.query("arrivalAddress/location", userLocation.toFullString(), travelDataCallback);
     }
 
     private void setUserProfile(Context context) {
@@ -368,6 +371,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onLocationSet(Location location) {
                 travels.clear();
+                adapter.notifyDataSetChanged();
                 userLocationTextView.setText(location.toString());
                 userLocation = location;
                 notify.setVisibility(View.VISIBLE);
@@ -381,29 +385,38 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void getCurrentTravel(Travel travel) {
-        sendConnectionRequest(travel);
+        if (travel != null) {
+            postConnectionRequest(travel.getUserId());
+        }
     }
 
-    private void sendConnectionRequest(Travel travel) {
-        if (travel != null) {
-            User user = CurrentUserManager.get(context);
-            Connection connection = new Connection(user, ConnectionStatus.PENDING.getStatus());
-            connection.setId(user.getId());
+    private void postConnectionRequest(final String toUser) {
+        User currentUser = CurrentUserManager.get(context);
+        Connection connection = new Connection(ConnectionStatus.PENDING.getStatus());
+        connection.setId(currentUser.getId());
+        connection.setReceiver(toUser);
 
-            FirebaseCollection<Connection> firebaseCollection =
-                    new FirebaseCollection<>(Constants.CONNECTIONS + "/" + travel.getUserId(), Connection.class);
-            firebaseCollection.save(connection, new DataCallback<Connection>() {
-                @Override
-                public void onSuccess(Connection data) {
-                    Toast.makeText(context, "Connection request successful", Toast.LENGTH_SHORT).show();
-                }
+        Connection connection1 = new Connection(ConnectionStatus.PENDING.getStatus());
+        connection1.setId(toUser);
+        connection1.setReceiver(toUser);
 
-                @Override
-                public void onError(String errorMessage) {
-                    Toast.makeText(context, "Connection request was not successful", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+        sendConnection(Constants.CONNECTIONS + "/" + toUser, connection);
+        sendConnection(Constants.CONNECTIONS + "/" + currentUser.getId(), connection1);
+    }
+
+    private void sendConnection(String url, Connection connection) {
+        new FirebaseCollection<>(url, Connection.class)
+                .save(connection, new DataCallback<Connection>() {
+                    @Override
+                    public void onSuccess(Connection data) {
+                        
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
     }
 
 }
