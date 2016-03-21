@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/coming_to"
+                    android:text="@string/coming_from"
                     android:textColor="@color/hint_text_color" />
 
                 <TextView
