@@ -4,15 +4,14 @@ package com.andela.helpmebuy.models;
  * Created by andela-jugba on 2/22/16.
  */
 public class Connection extends Model {
-    private User user;
     private int connectionStatus;
     private String message;
+    private String receiver;
 
     public Connection() {
     }
 
-    public Connection(User user, int connectionStatus) {
-        this.user = user;
+    public Connection(int connectionStatus) {
         this.connectionStatus = connectionStatus;
         this.message = "would like to connect with you.";
     }
@@ -25,19 +24,19 @@ public class Connection extends Model {
         this.connectionStatus = connectionStatus;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getMessage() {
         return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 }
