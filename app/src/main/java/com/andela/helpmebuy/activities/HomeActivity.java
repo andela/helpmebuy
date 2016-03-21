@@ -255,13 +255,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     };
 
-    private void loadTravels() {
-
-        travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
-
-        travelsCollection.getAll(travelDataCallback);
-    }
-
     private void loadTravellersByCountry(String countryName) {
         progressWheel.spin();
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
