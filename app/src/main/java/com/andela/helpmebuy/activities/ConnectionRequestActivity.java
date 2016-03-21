@@ -40,7 +40,12 @@ public class ConnectionRequestActivity extends AppCompatActivity
 
     @Override
     public void onConnectionUpdate(Connection connection) {
-        new FirebaseCollection<>(connectionUrl(), Connection.class)
+        updateConnection(connection, connectionUrl(CurrentUserManager.get(context).getId()));
+        updateConnection(connection, connectionUrl(connection.getId()));
+    }
+
+    private void updateConnection(Connection connection, String connectionUrl) {
+        new FirebaseCollection<>(connectionUrl, Connection.class)
                 .save(connection, new DataCallback<Connection>() {
                     @Override
                     public void onSuccess(Connection data) {
@@ -54,8 +59,8 @@ public class ConnectionRequestActivity extends AppCompatActivity
                 });
     }
 
-    private String connectionUrl() {
-        return Constants.CONNECTIONS + "/" + CurrentUserManager.get(context).getId();
+    private String connectionUrl(String userId) {
+        return Constants.CONNECTIONS + "/" + userId;
     }
 
     private void displayMessage(int message) {
