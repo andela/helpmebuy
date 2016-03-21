@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.config.Constants;
+import com.andela.helpmebuy.dal.DataCallback;
+import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Connection;
 import com.andela.helpmebuy.models.ConnectionStatus;
 import com.andela.helpmebuy.models.User;
@@ -38,24 +41,21 @@ public class ConnectionRequestsAdapter extends RecyclerView.Adapter<ConnectionRe
     }
 
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, final int position) {
+    public void onBindViewHolder(final CustomViewHolder holder, final int position) {
         final Connection connection = this.connections.get(position);
-        User user = connection.getUser();
-        String profilePictureUrl = user.getProfilePictureUrl();
 
-        Picasso.with(context)
-                .load(profilePictureUrl)
-                .placeholder(R.drawable.ic_account_circle_black_48dp)
-                .error(R.drawable.ic_account_circle_black_48dp)
-                .transform(new CircleTransformation())
-                .into(holder.profilePicture);
+        new FirebaseCollection<>(Constants.USERS, User.class)
+                .get(connection.getId(), new DataCallback<User>() {
+                    @Override
+                    public void onSuccess(User data) {
+                        bindUser(data, holder, connection);
+                    }
 
-        if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
-            holder.profilePicture.setAlpha(0.38f);
-        }
+                    @Override
+                    public void onError(String errorMessage) {
 
-        holder.username.setText(user.getFullName());
-        holder.message.setText(connection.getMessage());
+                    }
+                });
 
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
@@ -78,6 +78,24 @@ public class ConnectionRequestsAdapter extends RecyclerView.Adapter<ConnectionRe
 
         holder.accept.setOnClickListener(clickListener);
         holder.reject.setOnClickListener(clickListener);
+    }
+
+    private void bindUser(User user, CustomViewHolder holder, Connection connection) {
+        String profilePictureUrl = user.getProfilePictureUrl();
+
+        if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
+            holder.profilePicture.setAlpha(0.38f);
+        } else {
+            Picasso.with(context)
+                    .load(profilePictureUrl)
+                    .placeholder(R.drawable.ic_account_circle_black_48dp)
+                    .error(R.drawable.ic_account_circle_black_48dp)
+                    .transform(new CircleTransformation())
+                    .into(holder.profilePicture);
+        }
+
+        holder.username.setText(user.getFullName());
+        holder.message.setText(connection.getMessage());
     }
 
     @Override
