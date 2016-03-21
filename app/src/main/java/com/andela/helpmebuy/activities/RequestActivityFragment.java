@@ -1,15 +1,13 @@
 package com.andela.helpmebuy.activities;
 
-import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.ConnectionRequestsAdapter;
@@ -19,17 +17,16 @@ import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Connection;
 import com.andela.helpmebuy.utilities.ConnectionRequestListener;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
+import com.andela.helpmebuy.utilities.ItemDivider;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class RequestActivityFragment extends Fragment {
 
     private List<Connection> connections;
     private ConnectionRequestsAdapter requestsAdapter;
-    private Context context;
-    private View view;
     private ProgressWheel progressWheel;
 
     public RequestActivityFragment() {
@@ -46,57 +43,72 @@ public class RequestActivityFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        context = getContext();
+        initializeComponents(view);
 
-        requestsAdapter = new ConnectionRequestsAdapter(connections);
-        requestsAdapter.setConnectionRequestListener(
-                (ConnectionRequestListener) getActivity());
+        loadConnections();
+    }
+
+    private void initializeComponents(View view) {
+        requestsAdapter = new ConnectionRequestsAdapter(connections, getContext());
+        requestsAdapter.setConnectionRequestListener((ConnectionRequestListener) getActivity());
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setAdapter(requestsAdapter);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.addItemDecoration(new ItemDivider(getContext()));
 
-        progressWheel = (ProgressWheel)view.findViewById(R.id.connection_progress_wheel);
-
-        this.view =  view;
-
-        loadConnections();
+        progressWheel = (ProgressWheel) view.findViewById(R.id.connection_progress_wheel);
     }
 
     private void loadConnections() {
         progressWheel.spin();
 
-        String userId = CurrentUserManager.get(context).getId();
+        new FirebaseCollection<>(connectionUrl(), Connection.class)
+                .query(getString(R.string.connectionStatus), 2, new DataCallback<List<Connection>>() {
+                    @Override
+                    public void onSuccess(List<Connection> data) {
+                        if (!data.isEmpty()) {
+                            for (Connection connection : data) {
+                                int index = findIndex(connection);
 
-        DataCallback<List<Connection>> connectionDataCallback = new DataCallback<List<Connection>>() {
-            @Override
-            public void onSuccess(List<Connection> data) {
-                if (!data.isEmpty()) {
-                    initializeAdapter(data);
-                } else {
-                    Toast.makeText(context, "No data available.", Toast.LENGTH_SHORT).show();
-                }
-                progressWheel.stopSpinning();
-            }
+                                if (index < 0) {
+                                    connections.add(connection);
+                                    requestsAdapter.notifyItemInserted(connections.size() - 1);
+                                } else {
+                                    connections.set(index, connection);
+                                    requestsAdapter.notifyItemChanged(index);
+                                }
+                            }
+                        } else {
+                            displayMessage(getString(R.string.no_request_found));
+                        }
 
-            @Override
-            public void onError(String errorMessage) {
-                Toast.makeText(context, "Error fetching connections", Toast.LENGTH_SHORT).show();
-                progressWheel.stopSpinning();
-            }
-        };
+                        progressWheel.stopSpinning();
+                    }
 
-        FirebaseCollection<Connection> connectionCollection
-                = new FirebaseCollection<>(Constants.CONNECTIONS, Connection.class);
-        connectionCollection.query(userId + "/connectionStatus", "2", connectionDataCallback);
+                    @Override
+                    public void onError(String errorMessage) {
+                        displayMessage(errorMessage);
+                        progressWheel.stopSpinning();
+                    }
+                });
     }
 
-    private void initializeAdapter(List<Connection> connections) {
-        for (Connection connection : connections) {
-            this.connections.add(connection);
+    private int findIndex(Connection connection) {
+        for (int i = 0, size = connections.size(); i < size; ++i) {
+            if (connection.getId().equals(connections.get(i).getId())) {
+                return i;
+            }
         }
-        requestsAdapter.notifyDataSetChanged();
+
+        return -1;
     }
 
+    private String connectionUrl() {
+        return Constants.CONNECTIONS + "/" + CurrentUserManager.get(getContext()).getId();
+    }
 
+    private void displayMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
 }

@@ -24,7 +24,12 @@
         </activity>
         <activity
             android:name=".activities.CreateTravelActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".activities.SigninActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.HomeActivity" />
+        </activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -87,8 +92,8 @@
         <activity
             android:name=".activities.ConnectionRequestActivity"
             android:label="@string/title_activity_request"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.HomeActivity">
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andela.helpmebuy.activities.HomeActivity" />
