@@ -36,7 +36,7 @@ public class User extends Model {
     /**
      * the url for the user profile picture
      */
-    private String profilePictureUrl;
+    private String profilePictureUrl = "";
 
     /**
      * Creates a new user.
