@@ -95,8 +95,6 @@ public class RequestActivityFragment extends Fragment {
                         } else {
                             displayMessage(getString(R.string.no_request_found));
                         }
-
-
                     }
 
                     @Override
