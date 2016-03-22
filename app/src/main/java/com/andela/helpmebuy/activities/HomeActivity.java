@@ -291,18 +291,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void connect(AdapterView.AdapterContextMenuInfo info) {
-
-    }
-
-    private void message(AdapterView.AdapterContextMenuInfo info) {
-        Snackbar.make(parentLayout, "Message clicked", Snackbar.LENGTH_LONG).show();
-    }
-
-    private void more(AdapterView.AdapterContextMenuInfo info) {
-        Snackbar.make(parentLayout, "More clicked", Snackbar.LENGTH_LONG).show();
-    }
-
     private int findIndex(Travel travel) {
         for (int i = 0, size = travels.size(); i < size; ++i) {
             if (travel.getId().equals(travels.get(i).getId())) {
