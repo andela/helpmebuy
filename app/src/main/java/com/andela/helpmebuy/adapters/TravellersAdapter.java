@@ -83,7 +83,7 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
                 String profilePictureUrl = user.getProfilePictureUrl();
 
                 Picasso.with(context)
-                        .load(profilePictureUrl)
+                        .load(profilePictureUrl.isEmpty() ? "http://example.com" : profilePictureUrl)
                         .placeholder(R.drawable.ic_account_circle_black_48dp)
                         .error(R.drawable.ic_account_circle_black_48dp)
                         .transform(new CircleTransformation())

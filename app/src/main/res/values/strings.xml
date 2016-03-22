@@ -94,5 +94,13 @@
     <string name="connect_message">Type your message</string>
     <string name="connect_button_text">Connect</string>
     <string name="request_sent">Request sent</string>
+    <string name="title_activity_request">View Requests</string>
+    <string name="connection_message_label">would like to connect with you.</string>
+    <string name="connection_accept_label">Accept</string>
+    <string name="connection_reject_label">Reject</string>
+    <string name="operation_successful">Operation successful</string>
+    <string name="operation_failed">Operation failed</string>
+    <string name="no_request_found">No Request Found</string>
+    <string name="connectionStatus">connectionStatus</string>
 </resources>
 

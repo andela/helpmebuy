@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -15,17 +14,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.TravellersAdapter;
@@ -49,7 +44,8 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CurrentTravelListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        CurrentTravelListener {
     public final static String TAG = "HomeActivity";
 
     private RecyclerView travellersView;
@@ -254,7 +250,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     };
 
-
     private void loadTravellersByCountry(String countryName) {
         progressWheel.spin();
         travelsCollection = new FirebaseCollection<>(Constants.TRAVELS, Travel.class);
@@ -278,13 +273,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.add_travel) {
-            Launcher.launchActivity(this, CreateTravelActivity.class);
-        }
-        if (id == R.id.manage_profile) {
-            Launcher.launchActivity(this, UserSettingsActivity.class);
-
+        switch (id) {
+            case R.id.add_travel:
+                Launcher.launchActivity(this, CreateTravelActivity.class);
+                break;
+            case R.id.manage_profile:
+                Launcher.launchActivity(this, UserSettingsActivity.class);
+                break;
+            case R.id.connections_launch:
+                Launcher.launchActivity(this, ConnectionRequestActivity.class);
+                break;
+            default:
+                break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -354,14 +354,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .save(connection, new DataCallback<Connection>() {
                     @Override
                     public void onSuccess(Connection data) {
-
                     }
 
                     @Override
                     public void onError(String errorMessage) {
-
                     }
                 });
     }
-
 }

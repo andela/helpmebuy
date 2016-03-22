@@ -1,9 +1,8 @@
 package com.andela.helpmebuy.models;
 
-/**
- * Created by andela-jugba on 2/22/16.
- */
+
 public class Connection extends Model {
+
     private int connectionStatus;
     private String message;
     private String receiver;

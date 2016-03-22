@@ -1,6 +1,7 @@
 package com.andela.helpmebuy.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -41,6 +42,8 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
     private TravelDepartureFragment travelDepartureFragment;
 
     private TravelArrivalFragment travelArrivalFragment;
+
+    private Context context = CreateTravelActivity.this;
 
     FrameLayout parentLayout;
 
@@ -202,7 +205,6 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
 
     public void closeWindow(View view) {
         finish();
-        System.exit(0);
     }
 
     public void setTravelDetails(ArrayList<Location> travelLocation, ArrayList<DateTime> travelDateTime) {
@@ -255,7 +257,6 @@ public class CreateTravelActivity extends AppCompatActivity implements OnTravelA
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 finish();
-                                System.exit(0);
                             }
                         })
                         .show();
