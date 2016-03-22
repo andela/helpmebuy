@@ -93,7 +93,7 @@
     <string name="arrival_date">Arrival Date</string>
     <string name="connect_message">Type your message</string>
     <string name="connect_button_text">Connect</string>
-    <string name="request_sent">Request sent</string>
+    <string name="connection_pending">Connection Pending</string>
     <string name="title_activity_request">View Requests</string>
     <string name="connection_message_label">would like to connect with you.</string>
     <string name="connection_accept_label">Accept</string>
