@@ -226,16 +226,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 notify.setVisibility(View.INVISIBLE);
 
                 for (Travel travel : data) {
-                    if (!CurrentUserManager.get(context).getId().equals(travel.getUserId())) {
-                        int index = findIndex(travel);
+                    int index = findIndex(travel);
 
-                        if (index < 0) {
-                            travels.add(travel);
-                            adapter.notifyItemInserted(travels.size() - 1);
-                        } else {
-                            travels.set(index, travel);
-                            adapter.notifyItemChanged(index);
-                        }
+                    if (index < 0) {
+                        travels.add(travel);
+                        adapter.notifyItemInserted(travels.size() - 1);
+                    } else {
+                        travels.set(index, travel);
+                        adapter.notifyItemChanged(index);
                     }
                 }
             } else {
@@ -335,18 +333,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void postConnectionRequest(final String toUser) {
-        User currentUser = CurrentUserManager.get(context);
+    private void postConnectionRequest(final String toUserId) {
+        String currentUserId = CurrentUserManager.get(context).getId();
+
         Connection connection = new Connection(ConnectionStatus.PENDING.getStatus());
-        connection.setId(currentUser.getId());
-        connection.setReceiver(toUser);
+        connection.setId(currentUserId);
+        connection.setSender(currentUserId);
+        connection.setReceiver(toUserId);
 
         Connection connection1 = new Connection(ConnectionStatus.PENDING.getStatus());
-        connection1.setId(currentUser.getId());
-        connection1.setReceiver(toUser);
+        connection1.setId(toUserId);
+        connection1.setSender(currentUserId);
+        connection1.setReceiver(toUserId);
 
-        sendConnection(Constants.CONNECTIONS + "/" + toUser, connection);
-        sendConnection(Constants.CONNECTIONS + "/" + currentUser.getId(), connection1);
+        sendConnection(Constants.CONNECTIONS + "/" + toUserId, connection);
+        sendConnection(Constants.CONNECTIONS + "/" + currentUserId, connection1);
     }
 
     private void sendConnection(String url, Connection connection) {
