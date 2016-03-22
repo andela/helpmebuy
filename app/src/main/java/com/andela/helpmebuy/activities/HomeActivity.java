@@ -342,7 +342,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         connection.setReceiver(toUser);
 
         Connection connection1 = new Connection(ConnectionStatus.PENDING.getStatus());
-        connection1.setId(toUser);
+        connection1.setId(currentUser.getId());
         connection1.setReceiver(toUser);
 
         sendConnection(Constants.CONNECTIONS + "/" + toUser, connection);

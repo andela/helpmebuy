@@ -17,6 +17,8 @@ import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Connection;
+import com.andela.helpmebuy.models.ConnectionStatus;
+import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.ConnectionRequestListener;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.ItemDivider;
@@ -32,6 +34,7 @@ public class RequestActivityFragment extends Fragment {
     private ProgressWheel progressWheel;
     private ImageView retry;
     private CountDownTimer countDownTimer;
+    private User user;
 
     public RequestActivityFragment() {
         connections = new ArrayList<>();
@@ -70,6 +73,8 @@ public class RequestActivityFragment extends Fragment {
         recyclerView.addItemDecoration(new ItemDivider(getContext()));
 
         progressWheel = (ProgressWheel) view.findViewById(R.id.connection_progress_wheel);
+
+        user = CurrentUserManager.get(getContext());
     }
 
     private void loadConnections() {
@@ -83,13 +88,9 @@ public class RequestActivityFragment extends Fragment {
 
                         if (!data.isEmpty()) {
                             for (Connection connection : data) {
-                                int index = findIndex(connection);
-                                if (index < 0) {
-                                    connections.add(connection);
-                                    requestsAdapter.notifyItemInserted(connections.size() - 1);
-                                } else {
-                                    connections.set(index, connection);
-                                    requestsAdapter.notifyItemChanged(index);
+                                if (!connection.getId().equals(user.getId()) &&
+                                        connection.getConnectionStatus() == ConnectionStatus.PENDING.getStatus()) {
+                                    addConnection(connection);
                                 }
                             }
                         } else {
@@ -103,6 +104,17 @@ public class RequestActivityFragment extends Fragment {
                         stopTimer();
                     }
                 });
+    }
+
+    private void addConnection(Connection connection) {
+        int index = findIndex(connection);
+        if (index < 0) {
+            connections.add(connection);
+            requestsAdapter.notifyItemInserted(connections.size() - 1);
+        } else {
+            connections.set(index, connection);
+            requestsAdapter.notifyItemChanged(index);
+        }
     }
 
     private int findIndex(Connection connection) {
@@ -144,7 +156,7 @@ public class RequestActivityFragment extends Fragment {
         countDownTimer.start();
     }
 
-    private void stopTimer() {
+    public void stopTimer() {
         countDownTimer.cancel();
         progressWheel.stopSpinning();
     }

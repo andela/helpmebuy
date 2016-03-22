@@ -53,7 +53,6 @@ public class ConnectionRequestsAdapter extends RecyclerView.Adapter<ConnectionRe
 
                     @Override
                     public void onError(String errorMessage) {
-
                     }
                 });
 
