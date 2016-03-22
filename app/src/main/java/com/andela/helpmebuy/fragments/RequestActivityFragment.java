@@ -88,7 +88,7 @@ public class RequestActivityFragment extends Fragment {
 
                         if (!data.isEmpty()) {
                             for (Connection connection : data) {
-                                if (!connection.getId().equals(user.getId()) &&
+                                if (!connection.getSender().equals(user.getId()) &&
                                         connection.getConnectionStatus() == ConnectionStatus.PENDING.getStatus()) {
                                     addConnection(connection);
                                 }
