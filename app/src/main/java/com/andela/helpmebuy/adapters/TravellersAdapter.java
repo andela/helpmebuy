@@ -2,7 +2,6 @@ package com.andela.helpmebuy.adapters;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +72,6 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         viewHolder.connectButton.setEnabled(true);
         viewHolder.connectButton.setText("CONNECT");
 
-
         viewHolder.travelClickListener.updatePosition(position);
         viewHolder.travelClickListener.bindData(travelUserId);
 
@@ -98,7 +96,6 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
             @Override
             public void onError(String errorMessage) {
-
             }
         });
 
@@ -159,40 +156,47 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
     private class TravelClickListener implements View.OnClickListener {
         private int position;
         private Button button;
+        private String userId = CurrentUserManager.get(context).getId();
 
         public void updatePosition(int position) {
             this.position = position;
         }
 
-        public void setButton(Button button){
+        public void setButton(Button button) {
             this.button = button;
+        }
+
+        private void requestSent() {
+            button.setVisibility(View.VISIBLE);
+            button.setText(R.string.connection_pending);
+            button.setEnabled(false);
         }
 
         @Override
         public void onClick(View view) {
-            Button button = (Button) view;
-            button.setText(R.string.request_sent);
-            button.setEnabled(false);
+            requestSent();
             currentTravelListener.getCurrentTravel(getTravel(this.position));
         }
 
         public void bindData(final String travelUserId) {
-            new FirebaseCollection<>(Constants.CONNECTIONS + "/" + CurrentUserManager.get(context).getId(), Connection.class)
+            new FirebaseCollection<>(Constants.CONNECTIONS + "/" + userId, Connection.class)
                     .get(travelUserId, new DataCallback<Connection>() {
                         @Override
                         public void onSuccess(Connection data) {
                             if (data != null) {
-                                if (data.getReceiver().equals(travelUserId)) {
-                                    if (data.getConnectionStatus() == ConnectionStatus.PENDING.getStatus()) {
-                                        button.performClick();
-                                    } else if (data.getConnectionStatus() == ConnectionStatus.ACCEPTED.getStatus()) {
-                                        button.setVisibility(View.GONE);
-                                    } else {
-                                        button.setVisibility(View.VISIBLE);
-                                        button.setEnabled(true);
-                                        button.setText("CONNECT");
-                                    }
+                                if (data.getConnectionStatus() == ConnectionStatus.PENDING.getStatus()) {
+                                    requestSent();
+                                } else if (data.getConnectionStatus() == ConnectionStatus.ACCEPTED.getStatus()) {
+                                    button.setVisibility(View.GONE);
+                                } else {
+                                    button.setVisibility(View.VISIBLE);
+                                    button.setEnabled(true);
+                                    button.setText("CONNECT");
                                 }
+                            }
+
+                            if (userId.equals(travelUserId)) {
+                                button.setVisibility(View.GONE);
                             }
                         }
 

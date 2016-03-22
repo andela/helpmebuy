@@ -42,8 +42,16 @@ public class ConnectionRequestActivity extends AppCompatActivity
 
     @Override
     public void onConnectionUpdate(Connection connection) {
-        updateConnection(connection, connectionUrl(CurrentUserManager.get(context).getId()));
-        updateConnection(connection, connectionUrl(connection.getId()));
+        String currentUserId = CurrentUserManager.get(context).getId();
+        updateConnection(connection, connectionUrl(currentUserId));
+
+        Connection connection1 = new Connection(connection.getConnectionStatus());
+        connection1.setId(currentUserId);
+        connection1.setMessage(connection.getMessage());
+        connection1.setReceiver(currentUserId);
+        connection1.setSender(connection.getSender());
+
+        updateConnection(connection1, connectionUrl(connection.getSender()));
     }
 
     private void updateConnection(Connection connection, String connectionUrl) {
@@ -59,7 +67,6 @@ public class ConnectionRequestActivity extends AppCompatActivity
                         displayMessage(R.string.operation_failed);
                     }
                 });
-        Log.d("HMB", connectionUrl);
     }
 
     private String connectionUrl(String userId) {
