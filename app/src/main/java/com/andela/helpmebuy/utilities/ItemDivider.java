@@ -4,6 +4,7 @@ package com.andela.helpmebuy.utilities;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -20,7 +21,7 @@ public class ItemDivider extends RecyclerView.ItemDecoration {
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         Paint paint = new Paint();
-        paint.setColor(context.getResources().getColor(R.color.divider_color));
+        paint.setColor(ContextCompat.getColor(context, R.color.divider_color));
         paint.setStrokeWidth(1.0f);
 
         float startX = parent.getLeft();

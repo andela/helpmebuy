@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_account_circle_black_48dp"/>
 
 
+        <item
+            android:id="@+id/connections_launch"
+            android:title="Connections"
+            android:icon="@mipmap/connect_dark"/>
     </group>
 
 </menu>

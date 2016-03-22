@@ -29,7 +29,7 @@
     <string name="title_activity_change_password">Change Password</string>
     <string name="alert_dialog_title">Reset Password</string>
     <string name="alert_dialog_message">SignIn successful!\nWARNING: The password inputed will expire within the next 24
-    hours.\n\nClick on continue to change password</string>
+        hours.\n\nClick on continue to change password</string>
     <string name="success_login">Login Successful</string>
     <string name="facebook_login_success">Login Successful!</string>
     <string name="facebook_login_cancelled">Facebook login cancelled</string>
@@ -93,5 +93,14 @@
     <string name="arrival_date">Arrival Date</string>
     <string name="connect_message">Type your message</string>
     <string name="connect_button_text">Connect</string>
+    <string name="connection_pending">Connection Pending</string>
+    <string name="title_activity_request">View Requests</string>
+    <string name="connection_message_label">would like to connect with you.</string>
+    <string name="connection_accept_label">Accept</string>
+    <string name="connection_reject_label">Reject</string>
+    <string name="operation_successful">Operation successful</string>
+    <string name="operation_failed">Operation failed</string>
+    <string name="no_request_found">No Request Found</string>
+    <string name="connectionStatus">connectionStatus</string>
 </resources>
 

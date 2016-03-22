@@ -15,6 +15,8 @@ public class Constants {
 
     public final static String CITIES = "cities";
 
+    public final static String CONNECTIONS = "connections";
+
     public final static String GOOGLE_MAP_CONNECTION_URL
             = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=";
 }

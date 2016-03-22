@@ -6,18 +6,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
+import com.andela.helpmebuy.models.Connection;
+import com.andela.helpmebuy.models.ConnectionStatus;
 import com.andela.helpmebuy.models.Location;
 import com.andela.helpmebuy.models.Travel;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
-import com.andela.helpmebuy.config.Constants;
+import com.andela.helpmebuy.utilities.CurrentTravelListener;
+import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTimeZone;
@@ -35,7 +39,11 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
     private FirebaseCollection<User> users;
 
+    private FirebaseCollection<Connection> connection;
+
     private Location location;
+
+    private CurrentTravelListener currentTravelListener;
 
     public TravellersAdapter(Context context) {
         this.context = context;
@@ -52,20 +60,28 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.traveller_item_view, parent, false);
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, new TravelClickListener());
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         final Travel travel = travels.get(position);
+        final String travelUserId = travel.getUserId();
 
-        users.get(travel.getUserId(), new DataCallback<User>() {
+        viewHolder.connectButton.setVisibility(View.VISIBLE);
+        viewHolder.connectButton.setEnabled(true);
+        viewHolder.connectButton.setText("CONNECT");
+
+        viewHolder.travelClickListener.updatePosition(position);
+        viewHolder.travelClickListener.bindData(travelUserId);
+
+        users.get(travelUserId, new DataCallback<User>() {
             @Override
             public void onSuccess(User user) {
                 String profilePictureUrl = user.getProfilePictureUrl();
 
                 Picasso.with(context)
-                        .load(profilePictureUrl)
+                        .load(profilePictureUrl.isEmpty() ? "http://example.com" : profilePictureUrl)
                         .placeholder(R.drawable.ic_account_circle_black_48dp)
                         .error(R.drawable.ic_account_circle_black_48dp)
                         .transform(new CircleTransformation())
@@ -80,7 +96,6 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
 
             @Override
             public void onError(String errorMessage) {
-
             }
         });
 
@@ -95,10 +110,13 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
     }
 
 
-
     @Override
     public int getItemCount() {
         return travels.size();
+    }
+
+    public Travel getTravel(int thePosition) {
+        return travels.get(thePosition);
     }
 
     public List<Travel> getTravels() {
@@ -109,20 +127,84 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         this.travels = travels;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public void setCurrentTravelListener(CurrentTravelListener currentTravelListener) {
+        this.currentTravelListener = currentTravelListener;
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView profilePicture;
         TextView name;
         TextView departureLocation;
         TextView departureDate;
+        Button connectButton;
+        TravelClickListener travelClickListener;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view, TravelClickListener travelClickListener) {
             super(view);
             profilePicture = (ImageView) view.findViewById(R.id.traveller_profile_picture);
             name = (TextView) view.findViewById(R.id.traveller_name);
             departureLocation = (TextView) view.findViewById(R.id.traveller_departure_location);
             departureDate = (TextView) view.findViewById(R.id.traveller_arrival_date);
+            connectButton = (Button) view.findViewById(R.id.connect_button);
+            this.travelClickListener = travelClickListener;
+            this.travelClickListener.setButton(connectButton);
+            connectButton.setOnClickListener(this.travelClickListener);
+        }
+    }
+
+    private class TravelClickListener implements View.OnClickListener {
+        private int position;
+        private Button button;
+        private String userId = CurrentUserManager.get(context).getId();
+
+        public void updatePosition(int position) {
+            this.position = position;
         }
 
+        public void setButton(Button button) {
+            this.button = button;
+        }
+
+        private void requestSent() {
+            button.setVisibility(View.VISIBLE);
+            button.setText(R.string.connection_pending);
+            button.setEnabled(false);
+        }
+
+        @Override
+        public void onClick(View view) {
+            requestSent();
+            currentTravelListener.getCurrentTravel(getTravel(this.position));
+        }
+
+        public void bindData(final String travelUserId) {
+            new FirebaseCollection<>(Constants.CONNECTIONS + "/" + userId, Connection.class)
+                    .get(travelUserId, new DataCallback<Connection>() {
+                        @Override
+                        public void onSuccess(Connection data) {
+                            if (data != null) {
+                                if (data.getConnectionStatus() == ConnectionStatus.PENDING.getStatus()) {
+                                    requestSent();
+                                } else if (data.getConnectionStatus() == ConnectionStatus.ACCEPTED.getStatus()) {
+                                    button.setVisibility(View.GONE);
+                                } else {
+                                    button.setVisibility(View.VISIBLE);
+                                    button.setEnabled(true);
+                                    button.setText("CONNECT");
+                                }
+                            }
+
+                            if (userId.equals(travelUserId)) {
+                                button.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+
+                        }
+                    });
+        }
     }
 }
