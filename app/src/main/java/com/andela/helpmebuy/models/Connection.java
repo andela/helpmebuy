@@ -6,6 +6,7 @@ public class Connection extends Model {
     private int connectionStatus;
     private String message;
     private String receiver;
+    private String sender;
 
     public Connection() {
     }
@@ -37,5 +38,13 @@ public class Connection extends Model {
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }
