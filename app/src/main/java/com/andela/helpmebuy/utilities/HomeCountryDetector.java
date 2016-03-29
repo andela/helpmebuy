@@ -81,8 +81,6 @@ public class HomeCountryDetector implements GoogleApiClient.ConnectionCallbacks,
        longitude = location.getLongitude();
        latitude = location.getLatitude();
        detectCountry();
-
-
     }
 
     public void detectCountry() {
