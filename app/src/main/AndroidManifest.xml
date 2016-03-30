@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.andela.helpmebuy" >
+    package="com.andela.helpmebuy">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -12,10 +12,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".activities.SignupActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +24,12 @@
         </activity>
         <activity
             android:name=".activities.CreateTravelActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".activities.SigninActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.HomeActivity" />
+        </activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -45,7 +50,7 @@
             android:name=".activities.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
             android:parentActivityName=".activities.SigninActivity"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.SigninActivity" />
@@ -57,6 +62,15 @@
         <activity
             android:name=".activities.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
+            android:parentActivityName=".activities.UserSettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.andela.helpmebuy.activities.UserSettingsActivity" />
+        </activity>
+        <activity
+            android:name=".activities.ChangeEmailActivity"
+            android:label="@string/title_activity_change_email"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.UserSettingsActivity"
@@ -64,14 +78,22 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.HomeActivity"/>
+                android:value=".activities.HomeActivity" />
         </activity>
         <activity
             android:name=".activities.ConnectTravellersActivity"
             android:label="@string/title_activity_connect_travellers"
             android:parentActivityName=".activities.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-            
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.andela.helpmebuy.activities.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".activities.ConnectionRequestActivity"
+            android:label="@string/title_activity_request"
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andela.helpmebuy.activities.HomeActivity" />

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.activities.ChangePasswordActivity;
@@ -36,13 +37,14 @@ public class ConfirmPasswordFragment extends Fragment {
         return view;
     }
 
-    private void initializeComponents(View view) {
+    private void initializeComponents(final View view) {
         confirmPassword = (EditText) view.findViewById(R.id.confirm_password);
 
         confirmPasswordButton = (Button) view.findViewById(R.id.confirm_password_button);
         confirmPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                confirmPasswordButton.setEnabled(false);
                 confirmPassword(confirmPassword.getText().toString());
             }
         });
@@ -55,6 +57,7 @@ public class ConfirmPasswordFragment extends Fragment {
         firebaseAuth.signIn(user.getEmail(), password, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
+                confirmPasswordButton.setEnabled(true);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(CONFIRM_PASSWORD, true);
                 Launcher.launchActivity(getContext(), bundle, ChangePasswordActivity.class);
@@ -63,17 +66,19 @@ public class ConfirmPasswordFragment extends Fragment {
 
             @Override
             public void onCancel() {
-
+                confirmPasswordButton.setEnabled(true);
             }
 
             @Override
             public void onError(String errorMessage) {
-                Log.d("HMB", errorMessage + " Login failed!");
+                confirmPasswordButton.setEnabled(true);
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Exception e) {
-
+                confirmPasswordButton.setEnabled(true);
+                Toast.makeText(getContext(), "Error, please try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

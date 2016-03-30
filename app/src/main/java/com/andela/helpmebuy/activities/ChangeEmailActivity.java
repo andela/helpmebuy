@@ -1,11 +1,15 @@
 package com.andela.helpmebuy.activities;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.authentication.AuthCallback;
@@ -21,15 +25,30 @@ public class ChangeEmailActivity extends AppCompatActivity {
     private TextView passwordText;
     private Button updateButton;
 
+    private Context context = ChangeEmailActivity.this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_email);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
 
         initializeComponents();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initializeComponents() {
@@ -73,11 +92,14 @@ public class ChangeEmailActivity extends AppCompatActivity {
             @Override
             public void onError(String errorMessage) {
                 updateButton.setEnabled(true);
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Exception e) {
                 updateButton.setEnabled(true);
+                Toast.makeText(context, "An error occurred, please try again.",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

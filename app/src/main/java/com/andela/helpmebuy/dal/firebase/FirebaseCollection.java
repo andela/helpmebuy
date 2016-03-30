@@ -1,9 +1,9 @@
 package com.andela.helpmebuy.dal.firebase;
 
+import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.DataCollection;
 import com.andela.helpmebuy.models.Model;
-import com.andela.helpmebuy.config.Constants;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -48,6 +48,7 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+
                         callback.onSuccess(dataSnapshot.getValue(type));
                     }
 
@@ -83,7 +84,16 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
     @Override
     public void query(String path, String arg, final DataCallback<List<T>> callback) {
         Query query = firebase.child(childName).orderByChild(path).equalTo(arg);
+        firebaseQuery(query, callback);
+    }
 
+    @Override
+    public void query(String path, int arg, DataCallback<List<T>> callback) {
+        Query query = firebase.child(childName).orderByChild(path).equalTo(arg);
+        firebaseQuery(query, callback);
+    }
+
+    private void firebaseQuery(Query query, final DataCallback<List<T>> callback) {
         final List<T> data = new ArrayList<>();
 
         query.addChildEventListener(new ChildEventListener() {
@@ -91,25 +101,18 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 data.add(dataSnapshot.getValue(type));
                 callback.onSuccess(data);
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
