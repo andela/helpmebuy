@@ -1,5 +1,6 @@
 package com.andela.helpmebuy.activities;
 
+import android.app.Activity;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
+import com.firebase.client.Firebase;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -41,7 +43,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (CurrentUserManager.get(this) != null) {
-            Launcher.launchActivity(this, HomeActivity.class);
+            Launcher.launchActivity(this, MainActivity.class);
             finish();
         }
 
@@ -61,6 +63,7 @@ public class SignupActivity extends AppCompatActivity {
         }
 
     }
+
     private void loadComponents() {
         parentLayout = (RelativeLayout) findViewById(R.id.background);
         fullNameEditText = (EditText) findViewById(R.id.fullName_text);
@@ -110,11 +113,11 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             signupButton.setText(R.string.signing_up);
             signupButton.setEnabled(false);
-            signUp(fullName,email,password);
+            signUp(fullName, email, password);
         }
     }
 
-    private void signUp(final String fullName,String email,String password) {
+    private void signUp(final String fullName, String email, String password) {
 
         emailPasswordAuth.signUp(email, password, new AuthCallback() {
             @Override
@@ -127,7 +130,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 CurrentUserManager.save(user, SignupActivity.this);
 
-                Launcher.launchActivity(SignupActivity.this, HomeActivity.class);
+                Launcher.launchActivity(SignupActivity.this, MainActivity.class);
                 finish();
             }
 
