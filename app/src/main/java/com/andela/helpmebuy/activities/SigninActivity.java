@@ -23,6 +23,7 @@ import com.andela.helpmebuy.authentication.FacebookAuth;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
+import com.facebook.FacebookSdk;
 import com.google.android.gms.common.SignInButton;
 import com.andela.helpmebuy.authentication.GoogleAuth;
 import com.andela.helpmebuy.models.User;
@@ -57,18 +58,14 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        FacebookSdk.sdkInitialize(this);
         if (CurrentUserManager.get(this) != null) {
             Launcher.launchActivity(this, MainActivity.class);
             finish();
         }
-
         setContentView(R.layout.activity_signin);
-        
         hideActionBar();
-
         loadComponents();
-
         initializeUserscollection();
 
         initializeFacebookAuth();
