@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <application
+        android:name="android.support.multidex.MultiDexApplication">
         android:name=".HelpMeBuyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,10 +15,10 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.SignupActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -28,7 +28,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.HomeActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
 
         <meta-data
@@ -45,7 +45,12 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".activities.SigninActivity"
-            android:label="@string/title_activity_signin" />
+            android:label="@string/title_activity_signin"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".activities.MainActivity"
+            android:label="Main"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
@@ -55,10 +60,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.SigninActivity" />
         </activity>
-        <activity
-            android:name=".activities.HomeActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
@@ -78,25 +79,25 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.HomeActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.ConnectTravellersActivity"
             android:label="@string/title_activity_connect_travellers"
-            android:parentActivityName=".activities.HomeActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.andela.helpmebuy.activities.HomeActivity" />
+                android:value="com.andela.helpmebuy.activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.ConnectionRequestActivity"
             android:label="@string/title_activity_request"
-            android:parentActivityName=".activities.HomeActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.andela.helpmebuy.activities.HomeActivity" />
+                android:value="com.andela.helpmebuy.activities.MainActivity" />
         </activity>
     </application>
 
