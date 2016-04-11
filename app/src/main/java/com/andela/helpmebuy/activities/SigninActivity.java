@@ -1,6 +1,7 @@
 package com.andela.helpmebuy.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -58,7 +59,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
 
         if (CurrentUserManager.get(this) != null) {
-            Launcher.launchActivity(this, HomeActivity.class);
+            Launcher.launchActivity(this, MainActivity.class);
             finish();
         }
 
@@ -173,7 +174,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             public void onSuccess(User user) {
                 CurrentUserManager.save(user, SigninActivity.this);
 
-                Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                Launcher.launchActivity(SigninActivity.this, MainActivity.class);
                 finish();
             }
 
@@ -238,7 +239,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                 CurrentUserManager.save(user, SigninActivity.this);
 
-                Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                Launcher.launchActivity(SigninActivity.this, MainActivity.class);
                 finish();
             }
 
@@ -272,7 +273,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                 CurrentUserManager.save(user, SigninActivity.this);
 
-                Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                Launcher.launchActivity(SigninActivity.this, MainActivity.class);
                 finish();
             }
 
