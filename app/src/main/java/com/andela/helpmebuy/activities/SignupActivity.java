@@ -22,6 +22,7 @@ import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
+import com.facebook.FacebookSdk;
 import com.firebase.client.Firebase;
 
 public class SignupActivity extends AppCompatActivity {
@@ -41,7 +42,6 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (CurrentUserManager.get(this) != null) {
             Launcher.launchActivity(this, MainActivity.class);
             finish();
@@ -170,6 +170,7 @@ public class SignupActivity extends AppCompatActivity {
 
     public void initializeEmailPasswordAuth() {
         Firebase.setAndroidContext(this);
+        FacebookSdk.sdkInitialize(this);
         emailPasswordAuth = new FirebaseAuth(this);
     }
 }
