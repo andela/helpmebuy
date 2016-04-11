@@ -49,10 +49,9 @@ public class RequestActivityFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initializeComponents(view);
 
-        loadConnections();
+       loadConnections();
     }
 
     private void initializeComponents(View view) {
@@ -65,7 +64,21 @@ public class RequestActivityFragment extends Fragment {
         });
 
         requestsAdapter = new ConnectionRequestsAdapter(connections, getContext());
-        requestsAdapter.setConnectionRequestListener((ConnectionRequestListener) getActivity());
+        requestsAdapter.setConnectionRequestListener(new ConnectionRequestListener() {
+            @Override
+            public void onConnectionUpdate(Connection connection) {
+                String currentUserId = CurrentUserManager.get(getContext()).getId();
+                updateConnection(connection, connectionUrl(currentUserId));
+
+                Connection connection1 = new Connection(connection.getConnectionStatus());
+                connection1.setId(currentUserId);
+                connection1.setMessage(connection.getMessage());
+                connection1.setReceiver(currentUserId);
+                connection1.setSender(connection.getSender());
+
+                updateConnection(connection1, connectionUrl(connection.getSender()));
+            }
+        });
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setAdapter(requestsAdapter);
@@ -159,5 +172,26 @@ public class RequestActivityFragment extends Fragment {
     public void stopTimer() {
         countDownTimer.cancel();
         progressWheel.stopSpinning();
+    }
+    private void updateConnection(Connection connection, String connectionUrl) {
+        new FirebaseCollection<>(connectionUrl, Connection.class)
+                .save(connection, new DataCallback<Connection>() {
+                    @Override
+                    public void onSuccess(Connection data) {
+                        displayMessage(R.string.operation_successful);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        displayMessage(R.string.operation_failed);
+                    }
+                });
+
+    }
+    private String connectionUrl(String userId) {
+        return Constants.CONNECTIONS + "/" + userId;
+    }
+    private void displayMessage(int message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
