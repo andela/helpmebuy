@@ -49,7 +49,7 @@
             android:theme="@style/AppTheme"/>
         <activity
             android:name=".activities.MainActivity"
-            android:label="Main"
+            android:label="Helpmebuy"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.ForgotPasswordActivity"
