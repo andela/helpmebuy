@@ -36,8 +36,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="Kuti Karumbi"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -48,8 +47,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/coming_from"
-                    android:textSize="15sp"
-                    android:textColor="@color/secondary_text_color" />
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/traveller_departure_location"
@@ -57,8 +56,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/secondary_text_color" />
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -70,9 +69,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/on"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/secondary_text_color"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/traveller_arrival_date"
@@ -80,8 +78,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/secondary_text_color" />
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <Button
