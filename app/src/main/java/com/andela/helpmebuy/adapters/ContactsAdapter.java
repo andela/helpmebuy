@@ -15,6 +15,7 @@ import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Connection;
 import com.andela.helpmebuy.models.ConnectionStatus;
+import com.andela.helpmebuy.models.Contact;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
 import com.andela.helpmebuy.utilities.ConnectionRequestListener;
@@ -24,13 +25,13 @@ import java.util.List;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.CustomViewHolder> {
 
-    private List<Connection> connections;
-    private ConnectionRequestListener callback;
     private Context context;
 
-    public ContactsAdapter(List<Connection> connections, Context context) {
-        this.connections = connections;
+    private List<Contact> contacts;
+
+    public ContactsAdapter(Context context, List<Contact> contacts) {
         this.context = context;
+        this.contacts = contacts;
     }
 
     @Override
@@ -42,13 +43,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
-        final Connection connection = this.connections.get(position);
-
+        Contact contact = contacts.get(position);
         new FirebaseCollection<>(Constants.USERS, User.class)
-                .get(connection.getId(), new DataCallback<User>() {
+                .get(contact.getId(), new DataCallback<User>() {
                     @Override
                     public void onSuccess(User data) {
-                        bindUser(data, holder, connection);
+                        bindUser(data, holder);
                     }
 
                     @Override
@@ -57,7 +57,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
                 });
     }
 
-    private void bindUser(User user, CustomViewHolder holder, Connection connection) {
+    private void bindUser(User user, CustomViewHolder holder) {
         String profilePictureUrl = user.getProfilePictureUrl();
 
         if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
@@ -76,12 +76,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
 
     @Override
     public int getItemCount() {
-        return connections.size();
+        return contacts.size();
     }
 
     public static class CustomViewHolder extends RecyclerView.ViewHolder {
         ImageView profilePicture;
         TextView username;
+
         public CustomViewHolder(View view) {
             super(view);
             profilePicture = (ImageView) view.findViewById(R.id.profile_pic);
