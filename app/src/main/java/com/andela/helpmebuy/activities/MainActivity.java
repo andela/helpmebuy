@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.adapters.PagerAdapter;
 import com.andela.helpmebuy.utilities.Launcher;
 
 
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Travels"));
         tabLayout.addTab(tabLayout.newTab().setText("Requests"));
+        tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
