@@ -98,7 +98,6 @@ public class RequestFragment extends Fragment {
     }
 
 
-
     private boolean isConnectionAccepted(Connection connection) {
         return connection.getConnectionStatus() == ConnectionStatus.ACCEPTED.getStatus();
     }
