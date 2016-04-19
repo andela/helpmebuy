@@ -2,6 +2,7 @@ package com.andela.helpmebuy.views;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -22,23 +23,21 @@ public class CustomRecyclerView extends RecyclerView {
 
     public CustomRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setDividerPadding(context, attrs);
+        setDividerPadding(context);
     }
 
     public CustomRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setDividerPadding(context, attrs);
+        setDividerPadding(context);
     }
 
-    private void setDividerPadding(Context context, AttributeSet attrs) {
-        TypedArray typedArray
-                = context.obtainStyledAttributes(attrs, R.styleable.TogglePasswordVisibilityButton);
-        try {
-            dividerPadding = typedArray.getFloat(R.styleable.TogglePasswordVisibilityButton_divider_Padding, 0.0f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            typedArray.recycle();
-        }
+    private void setDividerPadding(Context context) {
+        dividerPadding = dimenToInt(context);
+    }
+
+    private int dimenToInt(Context context) {
+        Resources res = context.getResources();
+        return res.getDimensionPixelSize(R.dimen.profile_picture_width)
+                + res.getDimensionPixelSize(R.dimen.activity_horizontal_margin);
     }
 }
