@@ -1,11 +1,12 @@
-package com.andela.helpmebuy.activities;
+package com.andela.helpmebuy.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.andela.helpmebuy.fragments.HomeActivityFragment;
-import com.andela.helpmebuy.fragments.RequestActivityFragment;
+import com.andela.helpmebuy.fragments.ContactFragment;
+import com.andela.helpmebuy.fragments.TravelListFragment;
+import com.andela.helpmebuy.fragments.RequestFragment;
 
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
@@ -21,11 +22,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                HomeActivityFragment tab1 = new HomeActivityFragment();
-                return tab1;
+                return new TravelListFragment();
             case 1:
-                RequestActivityFragment tab2 = new RequestActivityFragment();
-                return tab2;
+                return new RequestFragment();
+            case 2:
+                return new ContactFragment();
             default:
                 return null;
         }

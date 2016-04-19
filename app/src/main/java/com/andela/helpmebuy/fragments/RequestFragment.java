@@ -27,7 +27,7 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RequestActivityFragment extends Fragment {
+public class RequestFragment extends Fragment {
 
     private List<Connection> connections;
     private ConnectionRequestsAdapter requestsAdapter;
@@ -36,7 +36,7 @@ public class RequestActivityFragment extends Fragment {
     private CountDownTimer countDownTimer;
     private User user;
 
-    public RequestActivityFragment() {
+    public RequestFragment() {
         connections = new ArrayList<>();
     }
 
