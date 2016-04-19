@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:wheel="http://schemas.android.com/apk/res-auto"
@@ -5,13 +6,13 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".fragments.RequestFragment"
+    tools:context=".fragments.ContactFragment"
     tools:showIn="@layout/activity_connection_request">
 
     <com.andela.helpmebuy.views.CustomRecyclerView
-        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_list"/>
 
     <com.pnikosis.materialishprogress.ProgressWheel
         android:id="@+id/connection_progress_wheel"
@@ -28,6 +29,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@mipmap/refresh"
-        android:tint="@color/primary_color" />
-
+        android:tint="@color/primary_color"/>
 </RelativeLayout>
