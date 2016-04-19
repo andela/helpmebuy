@@ -18,8 +18,11 @@ import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.Connection;
 import com.andela.helpmebuy.models.ConnectionStatus;
+import com.andela.helpmebuy.models.Contact;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.utilities.ConnectionRequestListener;
+import com.andela.helpmebuy.utilities.ContactsHelper;
+import com.andela.helpmebuy.utilities.ContactsListener;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.ItemDivider;
 import com.pnikosis.materialishprogress.ProgressWheel;
@@ -51,7 +54,7 @@ public class RequestFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initializeComponents(view);
 
-       loadConnections();
+        loadConnections();
     }
 
     private void initializeComponents(View view) {
@@ -77,6 +80,10 @@ public class RequestFragment extends Fragment {
                 connection1.setSender(connection.getSender());
 
                 updateConnection(connection1, connectionUrl(connection.getSender()));
+
+                if (isConnectionAccepted(connection)) {
+                    createContact(connection);
+                }
             }
         });
 
@@ -90,7 +97,14 @@ public class RequestFragment extends Fragment {
         user = CurrentUserManager.get(getContext());
     }
 
+
+
+    private boolean isConnectionAccepted(Connection connection) {
+        return connection.getConnectionStatus() == ConnectionStatus.ACCEPTED.getStatus();
+    }
+
     private void loadConnections() {
+        progressWheel.spin();
         countDown();
 
         new FirebaseCollection<>(connectionUrl(), Connection.class)
@@ -108,6 +122,7 @@ public class RequestFragment extends Fragment {
                             }
                         } else {
                             displayMessage(getString(R.string.no_request_found));
+                            retry.setVisibility(View.VISIBLE);
                         }
                     }
 
@@ -136,8 +151,38 @@ public class RequestFragment extends Fragment {
                 return i;
             }
         }
-
         return -1;
+    }
+
+    private void createContact(Connection connection1) {
+        Contact contact1 = new Contact();
+        contact1.setId(connection1.getSender());
+        Contact contact2 = new Contact();
+        contact2.setId(connection1.getReceiver());
+
+        saveContact(contact1, connection1.getReceiver());
+        saveContact(contact2, connection1.getSender());
+    }
+
+    private void saveContact(Contact contact, String targetId) {
+        ContactsHelper helper = new ContactsHelper(getContactsListener());
+        helper.createContact(contact, targetId);
+    }
+
+    private ContactsListener getContactsListener() {
+        return new ContactsListener() {
+            @Override
+            public void onContactCreated(Contact contact) {
+                Toast.makeText(getActivity(), "Contact created successfully", Toast.LENGTH_LONG)
+                        .show();
+            }
+
+            @Override
+            public void onError(String message) {
+                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG)
+                        .show();
+            }
+        };
     }
 
     private String connectionUrl() {
@@ -162,7 +207,6 @@ public class RequestFragment extends Fragment {
                 if (progressWheel.isSpinning()) {
                     progressWheel.stopSpinning();
                     retry.setVisibility(View.VISIBLE);
-                    displayMessage("No connection request");
                 }
             }
         };
@@ -173,6 +217,7 @@ public class RequestFragment extends Fragment {
         countDownTimer.cancel();
         progressWheel.stopSpinning();
     }
+
     private void updateConnection(Connection connection, String connectionUrl) {
         new FirebaseCollection<>(connectionUrl, Connection.class)
                 .save(connection, new DataCallback<Connection>() {
@@ -188,9 +233,11 @@ public class RequestFragment extends Fragment {
                 });
 
     }
+
     private String connectionUrl(String userId) {
         return Constants.CONNECTIONS + "/" + userId;
     }
+
     private void displayMessage(int message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
