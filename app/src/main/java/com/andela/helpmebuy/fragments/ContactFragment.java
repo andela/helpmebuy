@@ -1,6 +1,7 @@
 package com.andela.helpmebuy.fragments;
 
 
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
@@ -35,11 +37,13 @@ public class ContactFragment extends Fragment {
 
     private ProgressWheel progressWheel;
 
-    private ImageView retry;
-
     private List<Contact> contacts;
 
     private ContactsAdapter adapter;
+
+    private CountDownTimer countDownTimer;
+
+    private TextView noContacts;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,15 +61,8 @@ public class ContactFragment extends Fragment {
     }
 
     private void initializeComponents() {
-        retry = (ImageView) rootView.findViewById(R.id.retry);
-        retry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressWheel.spin();
-                loadContacts();
-            }
-        });
         progressWheel = (ProgressWheel) rootView.findViewById(R.id.connection_progress_wheel);
+        noContacts = (TextView)rootView.findViewById(R.id.retry);
     }
 
     private void initializeRecyclerView() {
@@ -83,23 +80,45 @@ public class ContactFragment extends Fragment {
 
     private void loadContacts() {
         progressWheel.spin();
+        countDown();
         ContactsHelper helper = new ContactsHelper(null);
         helper.getAllContacts(currentUser.getId(), getListCallback());
+    }
+
+    private void countDown() {
+        countDownTimer = new CountDownTimer(15000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                if (progressWheel.isSpinning()) {
+                    progressWheel.stopSpinning();
+                }
+            }
+        };
+        countDownTimer.start();
+    }
+
+    public void stopTimer() {
+        countDownTimer.cancel();
+        progressWheel.stopSpinning();
     }
 
     private ListCallback<Contact> getListCallback() {
         return new ListCallback<Contact>() {
             @Override
             public void onGetList(List<Contact> items) {
-                progressWheel.stopSpinning();
+                stopTimer();
                 if (items.size() == 0) {
-                    retry.setVisibility(View.VISIBLE);
+                    noContacts.setVisibility(View.VISIBLE);
                 } else {
                     for (Contact contact : items) {
                         contacts.add(contact);
                     }
                     adapter.notifyDataSetChanged();
-                    retry.setVisibility(View.GONE);
+                    noContacts.setVisibility(View.GONE);
                 }
             }
         };
