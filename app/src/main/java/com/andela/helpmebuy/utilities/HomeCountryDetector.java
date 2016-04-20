@@ -121,7 +121,6 @@ public class HomeCountryDetector implements GoogleApiClient.ConnectionCallbacks,
 
             @Override
             public void onError(String message) {
-                Log.e("HMB", message);
             }
         });
     }
