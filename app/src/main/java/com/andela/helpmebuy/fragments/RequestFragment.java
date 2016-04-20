@@ -119,6 +119,7 @@ public class RequestFragment extends Fragment {
                                     addConnection(connection);
                                 }
                             }
+                            retry.setVisibility(View.GONE);
                         } else {
                             displayMessage(getString(R.string.no_request_found));
                             retry.setVisibility(View.VISIBLE);
