@@ -22,12 +22,12 @@
         wheel:matProg_barColor="@color/primary_color"
         wheel:matProg_progressIndeterminate="true" />
 
-    <ImageView
+    <TextView
         android:id="@+id/retry"
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@mipmap/refresh"
-        android:tint="@color/primary_color"/>
+        android:text="No Contacts Available"
+        />
 </RelativeLayout>

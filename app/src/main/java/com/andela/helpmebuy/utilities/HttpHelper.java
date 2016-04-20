@@ -33,7 +33,6 @@ public class HttpHelper implements JsonCallback {
                                     .getAsJsonObject()
                                     .get("formatted_address")
                                     .getAsString();
-                            // Log.d("FOO", formattedAddress);
                             httpCallback.onSuccess(formattedAddress);
                         }
                     }
