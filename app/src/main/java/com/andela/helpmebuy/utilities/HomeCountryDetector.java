@@ -121,6 +121,7 @@ public class HomeCountryDetector implements GoogleApiClient.ConnectionCallbacks,
 
             @Override
             public void onError(String message) {
+                Log.e("HMB", message);
             }
         });
     }
@@ -130,4 +131,6 @@ public class HomeCountryDetector implements GoogleApiClient.ConnectionCallbacks,
         countryName = placeNames[placeNames.length - 1].trim();
         return countryName;
     }
+
+
 }

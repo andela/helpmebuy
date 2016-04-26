@@ -2,7 +2,6 @@ package com.andela.helpmebuy.adapters;
 
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +71,6 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         viewHolder.connectButton.setVisibility(View.VISIBLE);
         viewHolder.connectButton.setEnabled(true);
         viewHolder.connectButton.setText("CONNECT");
-        viewHolder.name.setTypeface(null, Typeface.NORMAL);
 
         viewHolder.travelClickListener.updatePosition(position);
         viewHolder.travelClickListener.bindData(travelUserId);
@@ -151,7 +149,6 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
             connectButton = (Button) view.findViewById(R.id.connect_button);
             this.travelClickListener = travelClickListener;
             this.travelClickListener.setButton(connectButton);
-            this.travelClickListener.setName(name);
             connectButton.setOnClickListener(this.travelClickListener);
         }
     }
@@ -159,7 +156,6 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
     private class TravelClickListener implements View.OnClickListener {
         private int position;
         private Button button;
-        private TextView name;
         private String userId = CurrentUserManager.get(context).getId();
 
         public void updatePosition(int position) {
@@ -169,15 +165,11 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
         public void setButton(Button button) {
             this.button = button;
         }
-        public void setName(TextView name) {
-            this.name = name;
-        }
 
         private void requestSent() {
             button.setVisibility(View.VISIBLE);
             button.setText(R.string.connection_pending);
             button.setEnabled(false);
-            name.setTypeface(null, Typeface.BOLD);
         }
 
         @Override
@@ -194,7 +186,6 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
                             if (data != null) {
                                 if (data.getConnectionStatus() == ConnectionStatus.PENDING.getStatus()) {
                                     requestSent();
-
                                 } else if (data.getConnectionStatus() == ConnectionStatus.ACCEPTED.getStatus()) {
                                     button.setVisibility(View.GONE);
                                 } else {
@@ -215,6 +206,5 @@ public class TravellersAdapter extends RecyclerView.Adapter<TravellersAdapter.Vi
                         }
                     });
         }
-
     }
 }

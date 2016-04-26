@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.fragments.UserSettingsFragment;
 
@@ -25,7 +24,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
 
-        addUserSettingsFragment(savedInstanceState);
+       addUserSettingsFragment(savedInstanceState);
     }
 
     public void addUserSettingsFragment(Bundle savedInstanceState) {

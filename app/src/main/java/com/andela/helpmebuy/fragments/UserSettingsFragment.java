@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.activities.ChangeEmailActivity;
 import com.andela.helpmebuy.activities.ChangePasswordActivity;
@@ -24,10 +23,10 @@ import java.util.List;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
+ * <p>
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
- * <p/>
+ * <p>
  * interface.
  */
 public class UserSettingsFragment extends Fragment {

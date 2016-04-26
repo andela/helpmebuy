@@ -3,7 +3,7 @@
     <color name="primary_color">#009688</color>
     <color name="primary_color_dark">#004d40</color>
     <color name="accent_color">#f44336</color>
-    <color name="divider_color">#94000000</color>
+    <color name="divider_color">#eeeeee</color>
     <color name="item_pressed_background_color">#e0e0e0</color>
     <color name="primary_text_color">#de000000</color>
     <color name="secondary_text_color">#8a000000</color>

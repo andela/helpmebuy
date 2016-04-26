@@ -1,12 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/action_create_travel" android:title="@string/action_create_travel"
-        android:orderInCategory="100" app:showAsAction="always"
-        android:icon="@drawable/ic_flight_takeoff_white_24dp"/>
-    <item android:id="@+id/action_profile" android:title="@string/action_profile"
-        android:orderInCategory="100" app:showAsAction="always"
-        android:icon="@drawable/ic_account_box_white_24dp"/>
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

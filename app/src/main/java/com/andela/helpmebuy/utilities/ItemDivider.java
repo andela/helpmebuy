@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.andela.helpmebuy.R;
-import com.andela.helpmebuy.views.CustomRecyclerView;
 
 public class ItemDivider extends RecyclerView.ItemDecoration {
 
@@ -23,13 +22,9 @@ public class ItemDivider extends RecyclerView.ItemDecoration {
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         Paint paint = new Paint();
         paint.setColor(ContextCompat.getColor(context, R.color.divider_color));
-        paint.setStrokeWidth(2.0f);
+        paint.setStrokeWidth(1.0f);
 
-        CustomRecyclerView recyclerView = (CustomRecyclerView)parent;
-
-        float padding = recyclerView.getDividerPadding();
-
-        float startX = parent.getLeft() + padding;
+        float startX = parent.getLeft();
 
         for (int i = 0, count = parent.getChildCount(); i < count; ++i) {
             View child = parent.getChildAt(i);
@@ -39,5 +34,6 @@ public class ItemDivider extends RecyclerView.ItemDecoration {
 
             c.drawLine(startX, startY, stopX, startY, paint);
         }
+
     }
 }

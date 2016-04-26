@@ -19,6 +19,4 @@ public class Constants {
 
     public final static String GOOGLE_MAP_CONNECTION_URL
             = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=";
-
-    public static final String CONTACTS = "contacts";
 }

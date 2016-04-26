@@ -1,73 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:longClickable="true"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginTop="3dp">
 
-    <RelativeLayout
+    <ImageView
+        android:layout_width="@dimen/profile_picture_width"
+        android:layout_height="@dimen/profile_picture_width"
+        android:id="@+id/profile_pic"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@mipmap/ic_manage_profile"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Eston Karumbi"
+        android:padding="5dp"
+        android:id="@+id/username"
+        android:layout_toRightOf="@+id/profile_pic"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connection_message_label"
+        android:ellipsize="end"
+        android:padding="5dp"
+        android:id="@+id/message"
+        android:layout_below="@+id/username"
+        android:layout_alignLeft="@+id/username"
+        android:layout_alignStart="@+id/username"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_marginTop="3dp"
-        android:layout_gravity="center"
-        android:gravity="center_vertical">
+        android:orientation="horizontal"
+        android:layout_below="@+id/message"
+        android:layout_alignLeft="@+id/message"
+        android:layout_alignStart="@+id/message">
 
-        <ImageView
-            android:layout_width="@dimen/profile_picture_width"
-            android:layout_height="@dimen/profile_picture_width"
-            android:id="@+id/profile_pic"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:src="@mipmap/ic_manage_profile"
-            android:scaleType="centerInside"/>
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/connection_accept_label"
+        android:id="@+id/accept"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Eston Karumbi"
-            android:padding="5dp"
-            android:id="@+id/username"
-            android:layout_toRightOf="@+id/profile_pic"
-            android:layout_centerHorizontal="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold"/>
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/connection_reject_label"
+        android:id="@+id/reject"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/connection_message_label"
-            android:ellipsize="end"
-            android:padding="5dp"
-            android:id="@+id/message"
-            android:layout_below="@+id/username"
-            android:layout_alignLeft="@+id/username"
-            android:layout_alignStart="@+id/username"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/message"
-            android:layout_alignLeft="@+id/message"
-            android:layout_alignStart="@+id/message">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/connection_accept_label"
-            android:id="@+id/accept"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/connection_reject_label"
-            android:id="@+id/reject"/>
-
-        </LinearLayout>
-    </RelativeLayout>
-</FrameLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -4,6 +4,5 @@
         <attr name="passwordEditText" format="reference" />
         <attr name="passwordVisibleImageResource" format="reference" />
         <attr name="passwordInvisibleImageResource" format="reference" />
-        <attr name="divider_Padding" format="dimension"/>
     </declare-styleable>
 </resources>
