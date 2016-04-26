@@ -18,7 +18,8 @@
             android:layout_width="@dimen/profile_picture_width"
             android:layout_height="@dimen/profile_picture_height"
             android:layout_marginTop="@dimen/profile_picture_margin_top"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_manage_profile" />
 
         <LinearLayout
             android:id="@+id/traveller_details"
@@ -35,8 +36,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
+                android:text="Kuti Karumbi"
+                android:textSize="15sp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -46,10 +47,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:singleLine="false"
                     android:text="@string/coming_from"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/secondary_text_color"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/font_small" />
 
                 <TextView
                     android:id="@+id/traveller_departure_location"
@@ -57,8 +58,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/secondary_text_color" />
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="@dimen/font_small" />
 
             </LinearLayout>
 
@@ -70,9 +71,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/on"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/secondary_text_color"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/font_small" />
 
                 <TextView
                     android:id="@+id/traveller_arrival_date"
@@ -80,17 +80,20 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/secondary_text_color" />
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="@dimen/font_small" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/connect_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Connect" />
+                android:text="@string/connection_pending"
+                />
 
         </LinearLayout>
+
+
 
     </RelativeLayout>
 

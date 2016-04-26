@@ -11,7 +11,9 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -27,12 +29,13 @@ android {
 
     dexOptions {
         preDexLibraries = false
+        javaMaxHeapSize "2048M"
     }
-
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:multidex:1.0.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'joda-time:joda-time:2.8.2'
     compile 'com.android.support:design:23.1.1'

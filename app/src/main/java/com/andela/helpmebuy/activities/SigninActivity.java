@@ -1,6 +1,7 @@
 package com.andela.helpmebuy.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -22,6 +23,7 @@ import com.andela.helpmebuy.authentication.FacebookAuth;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
+import com.facebook.FacebookSdk;
 import com.google.android.gms.common.SignInButton;
 import com.andela.helpmebuy.authentication.GoogleAuth;
 import com.andela.helpmebuy.models.User;
@@ -56,18 +58,14 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        FacebookSdk.sdkInitialize(this);
         if (CurrentUserManager.get(this) != null) {
-            Launcher.launchActivity(this, HomeActivity.class);
+            Launcher.launchActivity(this, MainActivity.class);
             finish();
         }
-
         setContentView(R.layout.activity_signin);
-        
         hideActionBar();
-
         loadComponents();
-
         initializeUserscollection();
 
         initializeFacebookAuth();
@@ -173,7 +171,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             public void onSuccess(User user) {
                 CurrentUserManager.save(user, SigninActivity.this);
 
-                Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                Launcher.launchActivity(SigninActivity.this, MainActivity.class);
                 finish();
             }
 
@@ -238,7 +236,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                 CurrentUserManager.save(user, SigninActivity.this);
 
-                Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                Launcher.launchActivity(SigninActivity.this, MainActivity.class);
                 finish();
             }
 
@@ -272,7 +270,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
                 CurrentUserManager.save(user, SigninActivity.this);
 
-                Launcher.launchActivity(SigninActivity.this, HomeActivity.class);
+                Launcher.launchActivity(SigninActivity.this, MainActivity.class);
                 finish();
             }
 

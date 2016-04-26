@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.andela.helpmebuy.activities.HomeActivity;
 import com.andela.helpmebuy.dialogs.CityPickerDialog;
 import com.andela.helpmebuy.dialogs.CountryPickerDialog;
 import com.andela.helpmebuy.dialogs.RegionPickerDialog;
