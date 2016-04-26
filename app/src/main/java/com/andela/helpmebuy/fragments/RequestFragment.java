@@ -1,14 +1,13 @@
 package com.andela.helpmebuy.fragments;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
@@ -25,7 +24,6 @@ import com.andela.helpmebuy.utilities.ContactsHelper;
 import com.andela.helpmebuy.utilities.ContactsListener;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.ItemDivider;
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +32,9 @@ public class RequestFragment extends Fragment {
 
     private List<Connection> connections;
     private ConnectionRequestsAdapter requestsAdapter;
-    private ProgressWheel progressWheel;
-    private ImageView retry;
-    private CountDownTimer countDownTimer;
     private User user;
+    private TextView noContacts;
+    RecyclerView recyclerView;
 
     public RequestFragment() {
         connections = new ArrayList<>();
@@ -58,41 +55,30 @@ public class RequestFragment extends Fragment {
     }
 
     private void initializeComponents(View view) {
-        retry = (ImageView) view.findViewById(R.id.retry);
-        retry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadConnections();
-            }
-        });
-
         requestsAdapter = new ConnectionRequestsAdapter(connections, getContext());
         requestsAdapter.setConnectionRequestListener(new ConnectionRequestListener() {
             @Override
             public void onConnectionUpdate(Connection connection) {
                 String currentUserId = CurrentUserManager.get(getContext()).getId();
                 updateConnection(connection, connectionUrl(currentUserId));
-
                 Connection connection1 = new Connection(connection.getConnectionStatus());
                 connection1.setId(currentUserId);
                 connection1.setMessage(connection.getMessage());
                 connection1.setReceiver(currentUserId);
                 connection1.setSender(connection.getSender());
-
                 updateConnection(connection1, connectionUrl(connection.getSender()));
-
                 if (isConnectionAccepted(connection)) {
                     createContact(connection);
                 }
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        noContacts = (TextView)view.findViewById(R.id.retry);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setAdapter(requestsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new ItemDivider(getContext()));
-
-        progressWheel = (ProgressWheel) view.findViewById(R.id.connection_progress_wheel);
 
         user = CurrentUserManager.get(getContext());
     }
@@ -103,35 +89,38 @@ public class RequestFragment extends Fragment {
     }
 
     private void loadConnections() {
-        progressWheel.spin();
-        countDown();
-
         new FirebaseCollection<>(connectionUrl(), Connection.class)
                 .query(getString(R.string.connectionStatus), 2, new DataCallback<List<Connection>>() {
                     @Override
                     public void onSuccess(List<Connection> data) {
-                        stopTimer();
-
-                        if (!data.isEmpty()) {
+                        int size = data.size();
+                        if (size > 0) {
                             for (Connection connection : data) {
-                                if (!connection.getSender().equals(user.getId()) &&
-                                        connection.getConnectionStatus() == ConnectionStatus.PENDING.getStatus()) {
+                                if (isConnectionPending(connection)) {
                                     addConnection(connection);
                                 }
                             }
-                            retry.setVisibility(View.GONE);
+                            if (connections.size() > 0) {
+                                noContacts.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
+                            }
                         } else {
                             displayMessage(getString(R.string.no_request_found));
-                            retry.setVisibility(View.VISIBLE);
+                            noContacts.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
                         }
                     }
 
                     @Override
                     public void onError(String errorMessage) {
                         displayMessage(errorMessage);
-                        stopTimer();
                     }
                 });
+    }
+
+    private boolean isConnectionPending(Connection connection) {
+        return !connection.getSender().equals(user.getId()) &&
+                connection.getConnectionStatus() == ConnectionStatus.PENDING.getStatus();
     }
 
     private void addConnection(Connection connection) {
@@ -191,31 +180,6 @@ public class RequestFragment extends Fragment {
 
     private void displayMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void countDown() {
-        retry.setVisibility(View.INVISIBLE);
-        progressWheel.spin();
-
-        countDownTimer = new CountDownTimer(15000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-            }
-
-            @Override
-            public void onFinish() {
-                if (progressWheel.isSpinning()) {
-                    progressWheel.stopSpinning();
-                    retry.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-        countDownTimer.start();
-    }
-
-    public void stopTimer() {
-        countDownTimer.cancel();
-        progressWheel.stopSpinning();
     }
 
     private void updateConnection(Connection connection, String connectionUrl) {
