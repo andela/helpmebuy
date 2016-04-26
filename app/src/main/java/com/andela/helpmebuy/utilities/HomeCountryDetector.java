@@ -130,6 +130,4 @@ public class HomeCountryDetector implements GoogleApiClient.ConnectionCallbacks,
         countryName = placeNames[placeNames.length - 1].trim();
         return countryName;
     }
-
-
 }

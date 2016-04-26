@@ -39,6 +39,5 @@ public class ItemDivider extends RecyclerView.ItemDecoration {
 
             c.drawLine(startX, startY, stopX, startY, paint);
         }
-
     }
 }

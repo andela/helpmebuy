@@ -34,6 +34,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
         this.contacts = contacts;
     }
 
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())

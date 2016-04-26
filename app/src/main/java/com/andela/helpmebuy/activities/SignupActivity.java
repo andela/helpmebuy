@@ -46,13 +46,9 @@ public class SignupActivity extends AppCompatActivity {
             Launcher.launchActivity(this, MainActivity.class);
             finish();
         }
-
         setContentView(R.layout.activity_signup);
-
         hideActionBar();
-
         loadComponents();
-
         initializeEmailPasswordAuth();
     }
 
@@ -61,7 +57,6 @@ public class SignupActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-
     }
 
     private void loadComponents() {

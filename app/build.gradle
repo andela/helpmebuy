@@ -13,6 +13,7 @@ android {
         versionName "1.0"
         multiDexEnabled true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -30,7 +31,6 @@ android {
         preDexLibraries = false
         javaMaxHeapSize "2048M"
     }
-
 }
 
 dependencies {
