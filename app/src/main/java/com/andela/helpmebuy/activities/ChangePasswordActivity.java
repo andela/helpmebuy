@@ -104,7 +104,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         Launcher.launchActivity(context, UserSettingsActivity.class);
                     }
                 } else {
-                    Launcher.launchActivity(context, HomeActivity.class);
+                    Launcher.launchActivity(context, MainActivity.class);
                 }
 
                 finish();
