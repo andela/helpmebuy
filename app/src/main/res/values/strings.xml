@@ -104,5 +104,6 @@
     <string name="connectionStatus">connectionStatus</string>
     <string name="action_profile">manage profile</string>
     <string name="action_create_travel">create travel</string>
+    <string name="title_activity_purchase_request">PurchaseRequest</string>
 </resources>
 
