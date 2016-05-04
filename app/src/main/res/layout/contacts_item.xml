@@ -32,5 +32,14 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"/>
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/purchase_request"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_add_shopping_cart" />
+
     </RelativeLayout>
 </FrameLayout>
