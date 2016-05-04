@@ -28,6 +28,7 @@
             android:padding="5dp"
             android:id="@+id/username"
             android:layout_toRightOf="@+id/profile_pic"
+            android:layout_toEndOf="@+id/profile_pic"
             android:layout_centerHorizontal="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"/>
