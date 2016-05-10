@@ -105,5 +105,10 @@
     <string name="action_profile">manage profile</string>
     <string name="action_create_travel">create travel</string>
     <string name="title_activity_purchase_request">PurchaseRequest</string>
+    <string name="item_name">Name: </string>
+    <string name="item_description">Description: </string>
+    <string name="item_price">Price: </string>
+    <string name="request_recipient">To: </string>
+    <string name="purchase_dialog">Create new Item </string>
 </resources>
 
