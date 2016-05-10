@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class PurchaseRequest extends Model{
     private String sender;
     private String receiver;
-    private ArrayList<String> purchaseList;
+    private ArrayList<PurchaseItem> purchaseList;
 
     public String getSender() {
         return sender;
@@ -23,11 +23,11 @@ public class PurchaseRequest extends Model{
         this.receiver = receiver;
     }
 
-    public ArrayList<String> getPurchaseList() {
+    public ArrayList<PurchaseItem> getPurchaseList() {
         return purchaseList;
     }
 
-    public void setPurchaseList(ArrayList<String> purchaseList) {
+    public void setPurchaseList(ArrayList<PurchaseItem> purchaseList) {
         this.purchaseList = purchaseList;
     }
 }
