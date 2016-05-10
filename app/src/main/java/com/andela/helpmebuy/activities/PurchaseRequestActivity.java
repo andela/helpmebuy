@@ -4,8 +4,12 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.PurchaseRequestAdapter;
@@ -17,17 +21,20 @@ import com.andela.helpmebuy.models.PurchaseRequest;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.ItemDeleteListener;
 import com.andela.helpmebuy.utilities.PurchaseCreateCallback;
-import com.andela.helpmebuy.views.CustomRecyclerView;
+import com.andela.helpmebuy.utilities.RequestsItemDivider;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class PurchaseRequestActivity extends AppCompatActivity implements ItemDeleteListener {
-    private CustomRecyclerView itemView;
-    private ArrayList<String> items;
+;
+
+public class PurchaseRequestActivity extends AppCompatActivity implements ItemDeleteListener, View.OnClickListener {
+    private RecyclerView itemView;
+    private ArrayList<PurchaseItem> items;
     private PurchaseRequestAdapter purchaseRequestAdapter;
     private Button sendButton;
     private String receiverId;
+    TextView requestReceiver;
 
 
     @Override
@@ -36,6 +43,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         setContentView(R.layout.activity_purchase_request);
         initializeComponents();
         String name = getIntent().getExtras().getString("name");
+        requestReceiver.setText(name);
         receiverId = getIntent().getExtras().getString("userId");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +54,12 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     private void launchAddDialog() {
         PurchaseRequestDialog dialog = new PurchaseRequestDialog();
         dialog.setCallback(purchaseCreateCallback);
@@ -55,24 +69,27 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
     private PurchaseCreateCallback purchaseCreateCallback = new PurchaseCreateCallback() {
         @Override
         public void onPurchaseCreated(PurchaseItem purchaseItem) {
-            items.add(purchaseItem.getItem());
+            items.add(purchaseItem);
             purchaseRequestAdapter.notifyDataSetChanged();
         }
     };
 
     private void initializeComponents() {
         items = new ArrayList<>();
-        itemView = (CustomRecyclerView) findViewById(R.id.purchase_requests_view);
+        itemView = (RecyclerView) findViewById(R.id.purchase_requests_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.purchase_toolbar);
+        requestReceiver = (TextView) findViewById(R.id.purchase_request_recipient);
+        itemView.setHasFixedSize(true);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         purchaseRequestAdapter = new PurchaseRequestAdapter(this, items, this);
-        itemView.setAdapter(purchaseRequestAdapter);
         itemView.setLayoutManager(new LinearLayoutManager(this));
+        itemView.addItemDecoration(new RequestsItemDivider(this));
+        itemView.setAdapter(purchaseRequestAdapter);
         sendButton = (Button) findViewById(R.id.send_request);
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createPurchaseRequest();
-            }
-        });
+        sendButton.setOnClickListener(this);
     }
 
     @Override
@@ -109,5 +126,11 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
             @Override
             public void onError(String errorMessage) {}
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        createPurchaseRequest();
+        finish();
     }
 }
