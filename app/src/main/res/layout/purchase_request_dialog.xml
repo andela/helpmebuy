@@ -9,18 +9,27 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:id="@+id/purchase_name"
+        android:layout_gravity="center_horizontal"
+        android:textColorHint="@color/hint_text_color"
+        android:theme="@style/DarkEditText"
         android:hint="Enter item name"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/purchase_desc"
+        android:layout_gravity="center_horizontal"
+        android:textColorHint="@color/hint_text_color"
+        android:theme="@style/DarkEditText"
         android:hint="Enter item description"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/purchase_cost"
+        android:layout_gravity="center_horizontal"
+        android:textColorHint="@color/hint_text_color"
+        android:theme="@style/DarkEditText"
         android:hint="Enter item cost"/>
 
     <LinearLayout

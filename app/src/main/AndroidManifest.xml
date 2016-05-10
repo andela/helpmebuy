@@ -92,10 +92,6 @@
                 android:value="com.andela.helpmebuy.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.PurchaseRequest"
-            android:label="@string/title_activity_purchase_request" >
-        </activity>
-        <activity
             android:name=".activities.PurchaseRequestActivity"
             android:label="@string/title_activity_purchase_request" >
         </activity>
