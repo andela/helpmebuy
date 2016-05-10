@@ -75,6 +75,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
         }
 
         holder.username.setText(user.getFullName());
+        holder.contactClickListener.setUserId(user.getId());
     }
 
     @Override
@@ -85,6 +86,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
     public static class CustomViewHolder extends RecyclerView.ViewHolder {
         ImageView profilePicture;
         TextView username;
+        String userId = "";
         ContactClickListener contactClickListener;
         public CustomViewHolder(View view, ContactClickListener contactClickListener) {
             super(view);
@@ -93,20 +95,26 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
             ImageButton connectButton = (ImageButton) view.findViewById(R.id.purchase_request);
             this.contactClickListener = contactClickListener;
             this.contactClickListener.setTextView(username);
+            this.contactClickListener.setUserId(userId);
             connectButton.setOnClickListener(contactClickListener);
         }
     }
     private class ContactClickListener implements View.OnClickListener{
         private TextView name;
+        private String userId;
 
         public void setTextView(TextView name) {
             this.name = name;
+        }
+        public void setUserId(String userId) {
+            this.userId = userId;
         }
 
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(context, PurchaseRequestActivity.class);
             intent.putExtra("name", name.getText().toString());
+            intent.putExtra("userId", userId);
             context.startActivity(intent);
         }
     }
