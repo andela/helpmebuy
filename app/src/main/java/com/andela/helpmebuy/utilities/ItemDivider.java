@@ -35,7 +35,7 @@ public class ItemDivider extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
 
             float startY = child.getBottom();
-            float stopX = child.getRight();
+            float stopX = child.getRight() - 20;
 
             c.drawLine(startX, startY, stopX, startY, paint);
         }
