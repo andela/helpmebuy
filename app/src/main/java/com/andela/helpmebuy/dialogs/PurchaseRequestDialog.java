@@ -72,10 +72,9 @@ public class PurchaseRequestDialog extends DialogFragment {
 
     private PurchaseItem getPurchaseFromViews() {
         PurchaseItem item = new PurchaseItem();
-        String description = purchaseName.getText() + "; "
-                + purchaseDescription.getText() + "; Price range : "
-                + purchaseCost.getText();
-        item.setItem(description);
+        item.setItemName(purchaseName.getText().toString());
+        item.setItemDescription(purchaseDescription.getText().toString());
+        item.setItemPrice(purchaseCost.getText().toString());
         return item;
     }
 }
