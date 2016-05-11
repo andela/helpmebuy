@@ -36,7 +36,6 @@ public class PurchaseRequestDialog extends DialogFragment {
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.purchase_request_dialog);
         initViews();
-        dialog.setTitle("Item Description");
         return dialog;
     }
 

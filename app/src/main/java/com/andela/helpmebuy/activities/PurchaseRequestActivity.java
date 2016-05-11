@@ -1,14 +1,16 @@
 package com.andela.helpmebuy.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
@@ -26,13 +28,10 @@ import com.andela.helpmebuy.utilities.RequestsItemDivider;
 import java.util.ArrayList;
 import java.util.UUID;
 
-;
-
-public class PurchaseRequestActivity extends AppCompatActivity implements ItemDeleteListener, View.OnClickListener {
+public class PurchaseRequestActivity extends AppCompatActivity implements ItemDeleteListener {
     private RecyclerView itemView;
     private ArrayList<PurchaseItem> items;
     private PurchaseRequestAdapter purchaseRequestAdapter;
-    private Button sendButton;
     private String receiverId;
     TextView requestReceiver;
 
@@ -42,8 +41,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_request);
         initializeComponents();
-        String name = getIntent().getExtras().getString("name");
-        requestReceiver.setText(name);
+        displayText();
         receiverId = getIntent().getExtras().getString("userId");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -52,13 +50,25 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
                 launchAddDialog();
             }
         });
+        showSnackBar();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_purchase_request, menu);
+        return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_send_purchase_request) {
+            createPurchaseRequest();
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void launchAddDialog() {
         PurchaseRequestDialog dialog = new PurchaseRequestDialog();
@@ -81,15 +91,13 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         requestReceiver = (TextView) findViewById(R.id.purchase_request_recipient);
         itemView.setHasFixedSize(true);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         purchaseRequestAdapter = new PurchaseRequestAdapter(this, items, this);
         itemView.setLayoutManager(new LinearLayoutManager(this));
         itemView.addItemDecoration(new RequestsItemDivider(this));
         itemView.setAdapter(purchaseRequestAdapter);
-        sendButton = (Button) findViewById(R.id.send_request);
-        sendButton.setOnClickListener(this);
     }
 
     @Override
@@ -107,7 +115,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         purchaseRequest.setPurchaseList(items);
         purchaseRequest.setReceiver(receiverId);
         purchaseRequest.setSender(senderId);
-        createQuery(purchaseRequest,senderId,receiverId);
+        createQuery(purchaseRequest, senderId, receiverId);
     }
 
     private void createQuery(PurchaseRequest purchaseRequest, String senderId, String receiverId) {
@@ -121,16 +129,27 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
                 = new FirebaseCollection<PurchaseRequest>("purchaseRequest/" + id, PurchaseRequest.class);
         firebaseCollection.save(purchaseRequest, new DataCallback<PurchaseRequest>() {
             @Override
-            public void onSuccess(PurchaseRequest data) {}
+            public void onSuccess(PurchaseRequest data) {
+            }
 
             @Override
-            public void onError(String errorMessage) {}
+            public void onError(String errorMessage) {
+            }
         });
     }
 
-    @Override
-    public void onClick(View v) {
-        createPurchaseRequest();
-        finish();
+    public void showSnackBar() {
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.purchase_request);
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Tap the button with the plus sign to add a new item", Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
+    public void displayText() {
+        String name = getIntent().getExtras().getString("name");
+        String[] firstName = name.split(" ");
+        if (firstName.length > 1) {
+            requestReceiver.setText("Hi " + firstName[1] + " I'd like you to help me buy this items");
+        }
+        requestReceiver.setText("Hi " + name + " I'd like you to help me buy this items");
     }
 }

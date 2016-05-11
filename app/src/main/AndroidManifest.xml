@@ -51,7 +51,8 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="Helpmebuy"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activities.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"

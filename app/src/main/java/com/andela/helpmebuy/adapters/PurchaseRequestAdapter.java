@@ -16,7 +16,6 @@ import java.util.List;
 
 public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequestAdapter.CustomViewHolder> {
 
-
     private Context context;
 
     private List<PurchaseItem> purchaseItems;

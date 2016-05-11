@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/purchase_request"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.TravelListFragment">
+    android:fitsSystemWindows="true"
+    tools:context="com.andela.helpmebuy.activities.PurchaseRequestActivity">
 
-    <include
-        layout="@layout/purchase_request_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".fragments.TravelListFragment">
+
+        <include
+            layout="@layout/purchase_request_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_height="wrap_content" />
 
-            <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/purchase_request_recipient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="2dp"
+                    android:text="Receiver of the request" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/purchase_requests_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:scrollbars="vertical" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/add_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/request_recipient"/>
-
-            <TextView
-                android:id="@+id/purchase_request_recipient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Receiver of the request"
-                android:layout_marginBottom="8dp"/>
+                android:layout_gravity="end"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/plus" />
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/purchase_requests_view"
-            android:padding="8dp"
-            android:scrollbars="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/add_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/plus"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Send Request"
-            android:id="@+id/send_request" />
     </LinearLayout>
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
