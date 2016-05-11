@@ -19,10 +19,10 @@ public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequest
 
     private Context context;
 
-    private List<String> purchaseItems;
+    private List<PurchaseItem> purchaseItems;
     private static ItemDeleteListener itemDeleteListener;
 
-    public PurchaseRequestAdapter(Context context, List<String> purchaseItems, ItemDeleteListener itemDeleteListener) {
+    public PurchaseRequestAdapter(Context context, List<PurchaseItem> purchaseItems, ItemDeleteListener itemDeleteListener) {
         this.purchaseItems = purchaseItems;
         this.context = context;
         this.itemDeleteListener = itemDeleteListener;
@@ -38,7 +38,9 @@ public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequest
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
         PurchaseItem purchaseItem = new PurchaseItem();
-        holder.item.setText(purchaseItems.get(position));
+        holder.itemName.setText(purchaseItems.get(position).getItemName());
+        holder.itemDescription.setText(purchaseItems.get(position).getItemDescription());
+        holder.itemPrice.setText(purchaseItems.get(position).getItemPrice());
     }
 
     @Override
@@ -47,12 +49,14 @@ public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequest
     }
 
     public static class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView item;
+        TextView itemName, itemPrice, itemDescription;
         ImageButton delete;
 
         public CustomViewHolder(View view) {
             super(view);
-            item = (TextView) view.findViewById(R.id.purchase_requests_item_text);
+            itemName = (TextView) view.findViewById(R.id.purchase_requests_item_name);
+            itemPrice = (TextView) view.findViewById(R.id.purchase_requests_item_price);
+            itemDescription = (TextView) view.findViewById(R.id.purchase_requests_item_description);
             delete = (ImageButton) view.findViewById(R.id.delete_item_button);
             delete.setOnClickListener(this);
         }
