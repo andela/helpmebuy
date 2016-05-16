@@ -40,7 +40,6 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_request);
         initializeComponents();
-        displayText();
         receiverId = getIntent().getExtras().getString("userId");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +153,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
             instruction.setVisibility(View.GONE);
         }
         else {
+            displayText();
             instruction.setVisibility(View.VISIBLE);
         }
     }
