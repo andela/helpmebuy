@@ -48,6 +48,13 @@
             android:textColorHint="@color/hint_text_color"
             android:theme="@style/DarkEditText"
             android:hint="Enter item cost"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NB: Cost should be in dollar equivalent"
+            android:layout_marginLeft="4dp"
+            android:textStyle="italic"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
         <LinearLayout
             android:layout_width="match_parent"

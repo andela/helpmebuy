@@ -1,9 +1,7 @@
 package com.andela.helpmebuy.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +32,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
     private PurchaseRequestAdapter purchaseRequestAdapter;
     private String receiverId;
     TextView requestReceiver;
+    TextView instruction;
 
 
     @Override
@@ -50,7 +49,6 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
                 launchAddDialog();
             }
         });
-        showSnackBar();
     }
 
     @Override
@@ -80,6 +78,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         @Override
         public void onPurchaseCreated(PurchaseItem purchaseItem) {
             items.add(purchaseItem);
+            showIndicator();
             purchaseRequestAdapter.notifyDataSetChanged();
         }
     };
@@ -87,6 +86,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
     private void initializeComponents() {
         items = new ArrayList<>();
         itemView = (RecyclerView) findViewById(R.id.purchase_requests_view);
+        instruction = (TextView) findViewById(R.id.item_indicator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.purchase_toolbar);
         requestReceiver = (TextView) findViewById(R.id.purchase_request_recipient);
         itemView.setHasFixedSize(true);
@@ -103,6 +103,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
     @Override
     public void deleteSelection(View v, int position) {
         items.remove(position);
+        showIndicator();
         purchaseRequestAdapter.notifyDataSetChanged();
     }
 
@@ -138,20 +139,22 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         });
     }
 
-    public void showSnackBar() {
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.purchase_request);
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Tap the button with the plus sign to add a new item", Snackbar.LENGTH_LONG);
-        snackbar.show();
-    }
-
     public void displayText() {
         String receiversName = getIntent().getExtras().getString("name");
         String[] receiversFullName = receiversName.split(" ");
         if (receiversFullName.length > 1) {
-            requestReceiver.setText("Hi " + receiversFullName[0] + " I'd like you to help me buy this items");
+            requestReceiver.setText("Hi " + receiversFullName[0] + " I'd like you to help me buy this item(s)");
+        } else {
+            requestReceiver.setText("Hi " + receiversName + " I'd like you to help me buy this item(s)");
+        }
+    }
+
+    public void showIndicator() {
+        if (items.size() > 0) {
+            instruction.setVisibility(View.GONE);
         }
         else {
-            requestReceiver.setText("Hi " + receiversName + " I'd like you to help me buy this items");
+            instruction.setVisibility(View.VISIBLE);
         }
     }
 }
