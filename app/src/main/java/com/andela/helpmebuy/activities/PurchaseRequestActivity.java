@@ -145,13 +145,13 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
     }
 
     public void displayText() {
-        String name = getIntent().getExtras().getString("name");
-        String[] fullName = name.split(" ");
-        if (fullName.length > 1) {
-            requestReceiver.setText("Hi " + fullName[0] + " I'd like you to help me buy this items");
+        String receiversName = getIntent().getExtras().getString("name");
+        String[] receiversFullName = receiversName.split(" ");
+        if (receiversFullName.length > 1) {
+            requestReceiver.setText("Hi " + receiversFullName[0] + " I'd like you to help me buy this items");
         }
         else {
-            requestReceiver.setText("Hi " + name + " I'd like you to help me buy this items");
+            requestReceiver.setText("Hi " + receiversName + " I'd like you to help me buy this items");
         }
     }
 }
