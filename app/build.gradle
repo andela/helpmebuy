@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'joda-time:joda-time:2.8.2'
@@ -49,5 +49,10 @@ dependencies {
     compile 'com.pnikosis:materialish-progress:1.7'
     compile 'com.koushikdutta.ion:ion:2.+'
     compile 'com.google.code.gson:gson:2.5'
-    compile files('build/junit-4.10.jar')
+    compile 'junit:junit:4.12'
 }
+repositories {
+    maven { url 'http://repo1.maven.org/maven2' }
+}
+
+

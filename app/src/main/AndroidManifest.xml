@@ -51,8 +51,8 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="Helpmebuy"
-            android:theme="@style/AppTheme"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
@@ -95,7 +95,7 @@
         <activity
             android:name=".activities.PurchaseRequestActivity"
             android:label="@string/title_activity_purchase_request"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.MainActivity" >
         </activity>
     </application>
 
