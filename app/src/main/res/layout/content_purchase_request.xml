@@ -29,7 +29,6 @@
         android:id="@+id/purchase_request_recipient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hi kuti"
         android:layout_gravity="center_horizontal" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/purchase_requests_view"

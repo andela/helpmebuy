@@ -139,6 +139,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
     }
 
     public void displayText() {
+        requestReceiver.setVisibility(View.VISIBLE);
         String receiversName = getIntent().getExtras().getString("name");
         String[] receiversFullName = receiversName.split(" ");
         if (receiversFullName.length > 1) {
@@ -150,11 +151,12 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
 
     public void showIndicator() {
         if (items.size() > 0) {
+            displayText();
             instruction.setVisibility(View.GONE);
         }
         else {
-            displayText();
             instruction.setVisibility(View.VISIBLE);
+            requestReceiver.setVisibility(View.GONE);
         }
     }
 }
