@@ -12,14 +12,21 @@
         android:gravity="center"
         android:textAlignment="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/label">
-
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/DarkEditText">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +35,12 @@
             android:textColorHint="@color/hint_text_color"
             android:theme="@style/DarkEditText"
             android:hint="Enter item name"/>
-
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/DarkEditText">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +49,12 @@
             android:textColorHint="@color/hint_text_color"
             android:theme="@style/DarkEditText"
             android:hint="Enter item description"/>
-
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/DarkEditText">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,6 +64,7 @@
             android:textColorHint="@color/hint_text_color"
             android:theme="@style/DarkEditText"
             android:hint="Enter item cost"/>
+        </android.support.design.widget.TextInputLayout>
 
 
 
@@ -56,12 +74,15 @@
             android:text="NB: Cost should be in dollar"
             android:layout_marginLeft="4dp"
             android:textStyle="italic"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:paddingBottom="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="30dp"
+            android:paddingTop="15dp">
 
             <Button
                 android:layout_width="0dp"

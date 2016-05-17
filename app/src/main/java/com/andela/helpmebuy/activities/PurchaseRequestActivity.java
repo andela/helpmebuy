@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.PurchaseRequestAdapter;
@@ -31,8 +32,10 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
     private ArrayList<PurchaseItem> items;
     private PurchaseRequestAdapter purchaseRequestAdapter;
     private String receiverId;
-    TextView requestReceiver;
-    TextView instruction;
+    private TextView requestReceiver;
+    private TextView instruction;
+    private Menu menu;
+    private MenuItem menuItem;
 
 
     @Override
@@ -67,6 +70,13 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        this.menu = menu;
+        menuItem = menu.findItem(R.id.action_send_purchase_request);
+        menuItem.setEnabled(false);
+        return true;
+    }
     private void launchAddDialog() {
         PurchaseRequestDialog dialog = new PurchaseRequestDialog();
         dialog.setCallback(purchaseCreateCallback);
@@ -77,8 +87,8 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         @Override
         public void onPurchaseCreated(PurchaseItem purchaseItem) {
             items.add(purchaseItem);
-            showIndicator();
             purchaseRequestAdapter.notifyDataSetChanged();
+            showIndicator();
         }
     };
 
@@ -130,6 +140,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         firebaseCollection.save(purchaseRequest, new DataCallback<PurchaseRequest>() {
             @Override
             public void onSuccess(PurchaseRequest data) {
+                Toast.makeText(getBaseContext(),"Purchase request sent",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -151,12 +162,14 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
 
     public void showIndicator() {
         if (items.size() > 0) {
+            menuItem.setEnabled(true);
             displayText();
             instruction.setVisibility(View.GONE);
         }
         else {
+            menuItem.setEnabled(false);
             instruction.setVisibility(View.VISIBLE);
-            requestReceiver.setVisibility(View.GONE);
+            requestReceiver.setVisibility(View.INVISIBLE);
         }
     }
 }
