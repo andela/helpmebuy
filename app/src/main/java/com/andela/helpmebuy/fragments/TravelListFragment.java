@@ -4,7 +4,6 @@ package com.andela.helpmebuy.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -82,7 +81,7 @@ public class TravelListFragment extends Fragment implements CurrentTravelListene
     }
 
     private void loadComponents(final View rootView) {
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.search_fab);
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.add_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

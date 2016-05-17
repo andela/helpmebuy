@@ -1,24 +1,23 @@
 package com.andela.helpmebuy.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.activities.PurchaseRequestActivity;
 import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
-import com.andela.helpmebuy.models.Connection;
-import com.andela.helpmebuy.models.ConnectionStatus;
 import com.andela.helpmebuy.models.Contact;
 import com.andela.helpmebuy.models.User;
 import com.andela.helpmebuy.transforms.CircleTransformation;
-import com.andela.helpmebuy.utilities.ConnectionRequestListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.contacts_item, parent, false);
-        return new CustomViewHolder(view);
+        return new CustomViewHolder(view, new ContactClickListener());
     }
 
     @Override
@@ -76,6 +75,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
         }
 
         holder.username.setText(user.getFullName());
+        holder.contactClickListener.setUserId(user.getId());
     }
 
     @Override
@@ -86,11 +86,36 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
     public static class CustomViewHolder extends RecyclerView.ViewHolder {
         ImageView profilePicture;
         TextView username;
-
-        public CustomViewHolder(View view) {
+        String userId = "";
+        ContactClickListener contactClickListener;
+        public CustomViewHolder(View view, ContactClickListener contactClickListener) {
             super(view);
             profilePicture = (ImageView) view.findViewById(R.id.profile_pic);
             username = (TextView) view.findViewById(R.id.username);
+            ImageButton connectButton = (ImageButton) view.findViewById(R.id.purchase_request);
+            this.contactClickListener = contactClickListener;
+            this.contactClickListener.setTextView(username);
+            this.contactClickListener.setUserId(userId);
+            connectButton.setOnClickListener(contactClickListener);
+        }
+    }
+    private class ContactClickListener implements View.OnClickListener{
+        private TextView name;
+        private String userId;
+
+        public void setTextView(TextView name) {
+            this.name = name;
+        }
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(context, PurchaseRequestActivity.class);
+            intent.putExtra("name", name.getText().toString());
+            intent.putExtra("userId", userId);
+            context.startActivity(intent);
         }
     }
 }
