@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -94,12 +93,10 @@ public class PurchaseRequestDialog extends DialogFragment {
     private boolean validateName() {
         if (purchaseName.getText().toString().trim().isEmpty()) {
             inputLayoutName.setError("Item name cannot be empty");
-            requestFocus(purchaseName);
             return false;
         } else {
             inputLayoutName.setErrorEnabled(false);
         }
-
         return true;
     }
 
@@ -107,48 +104,38 @@ public class PurchaseRequestDialog extends DialogFragment {
         String description = purchaseDescription.getText().toString().trim();
         if (description.isEmpty()) {
             inputLayoutDescription.setError("Item description cannot be empty");
-            requestFocus(purchaseDescription);
             return false;
         } else {
             inputLayoutDescription.setErrorEnabled(false);
         }
-
         return true;
     }
-
-    private void submitForm() {
-        if (!validateName()) {
-            return;
-        }
-
-        if (!validateDescription()) {
-            return;
-        }
-
-        if (!validateCost()) {
-            return;
-        }
-        PurchaseItem purchaseItem = getPurchaseFromViews();
-        callback.onPurchaseCreated(purchaseItem);
-        dialog.dismiss();
-    }
-
 
     private boolean validateCost() {
         if (purchaseCost.getText().toString().trim().isEmpty()) {
             inputLayoutCost.setError("Item cost cannot be empty");
-            requestFocus(purchaseCost);
             return false;
         } else {
             inputLayoutCost.setErrorEnabled(false);
         }
-
         return true;
     }
 
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
-            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    private void submitForm() {
+        int check = 0;
+        if (validateName()) {
+            check++;
+        }
+        if (validateDescription()) {
+            check++;
+        }
+        if (validateCost()) {
+            check++;
+        }
+        if (check == 3) {
+            PurchaseItem purchaseItem = getPurchaseFromViews();
+            callback.onPurchaseCreated(purchaseItem);
+            dialog.dismiss();
         }
     }
 
