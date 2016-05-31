@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +15,11 @@ import java.util.List;
 
 public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequestAdapter.CustomViewHolder> {
 
-    private Context context;
-
     private List<PurchaseItem> purchaseItems;
     private static ItemDeleteListener itemDeleteListener;
 
-    public PurchaseRequestAdapter(Context context, List<PurchaseItem> purchaseItems, ItemDeleteListener itemDeleteListener) {
+    public PurchaseRequestAdapter(List<PurchaseItem> purchaseItems, ItemDeleteListener itemDeleteListener) {
         this.purchaseItems = purchaseItems;
-        this.context = context;
         this.itemDeleteListener = itemDeleteListener;
     }
 
@@ -36,7 +32,6 @@ public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequest
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
-        PurchaseItem purchaseItem = new PurchaseItem();
         holder.itemName.setText(purchaseItems.get(position).getItemName());
         holder.itemDescription.setText(purchaseItems.get(position).getItemDescription());
         holder.itemPrice.setText(purchaseItems.get(position).getItemPrice());
