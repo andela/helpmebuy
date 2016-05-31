@@ -14,6 +14,10 @@ import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.PurchaseRequest;
 import com.andela.helpmebuy.utilities.ActionBar;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
+
+import java.util.ArrayList;
+
+import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.PurchaseRequestItemDivider;
 
 import java.util.ArrayList;
