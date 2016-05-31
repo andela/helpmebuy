@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_profile:
                 Launcher.launchActivity(this, UserSettingsActivity.class);
                 return true;
+            case R.id.action_history:
+                Launcher.launchActivity(this, HistoryActivity.class);
         }
         return super.onOptionsItemSelected(item);
     }
