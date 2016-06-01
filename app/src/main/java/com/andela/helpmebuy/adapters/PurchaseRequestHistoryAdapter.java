@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.models.PurchaseRequest;
+import com.andela.helpmebuy.models.PurchaseStatus;
 
 import java.util.ArrayList;
 
@@ -29,13 +30,26 @@ public class PurchaseRequestHistoryAdapter extends RecyclerView.Adapter<Purchase
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
         PurchaseRequest purchaseRequest = purchaseRequestList.get(position);
         holder.name.setText(purchaseRequest.getReceiverFullname());
-        holder.status.setText(String.valueOf(purchaseRequest.getPurchaseStatus()));
+        holder.status.setText((getStatus(purchaseRequest.getPurchaseStatus())));
         holder.date.setText(purchaseRequest.getDate());
     }
 
     @Override
     public int getItemCount() {
         return purchaseRequestList.size();
+    }
+
+    public String getStatus(int statusInt) {
+        if (statusInt == PurchaseStatus.ACCEPTED.getStatus()) {
+            return "ACCEPTED";
+        }
+        if (statusInt == PurchaseStatus.PENDING.getStatus()) {
+            return "PENDING";
+        }
+        if (statusInt == PurchaseStatus.REJECTED.getStatus()) {
+            return "REJECTED";
+        }
+        return null;
     }
 
     public static class CustomViewHolder extends RecyclerView.ViewHolder {
