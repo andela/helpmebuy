@@ -21,4 +21,6 @@ public class Constants {
             = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=";
 
     public static final String CONTACTS = "contacts";
+
+    public final static String REQUEST = "requests";
 }
