@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.utilities.ActionBar;
 
 public class HistoryActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -19,9 +20,7 @@ public class HistoryActivity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.history_toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        ActionBar.enableHomeButton(this);
         initializeView();
     }
 
