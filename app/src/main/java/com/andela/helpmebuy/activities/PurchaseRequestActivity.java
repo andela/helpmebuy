@@ -19,7 +19,9 @@ import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.dialogs.PurchaseRequestDialog;
 import com.andela.helpmebuy.models.PurchaseItem;
 import com.andela.helpmebuy.models.PurchaseRequest;
+import com.andela.helpmebuy.models.PurchaseStatus;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
+import com.andela.helpmebuy.utilities.Date;
 import com.andela.helpmebuy.utilities.ItemDeleteListener;
 import com.andela.helpmebuy.utilities.PurchaseCreateCallback;
 import com.andela.helpmebuy.utilities.RequestsItemDivider;
@@ -36,6 +38,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
     private TextView instruction;
     private Menu menu;
     private MenuItem menuItem;
+    private String receiversName;
 
 
     @Override
@@ -103,10 +106,11 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        purchaseRequestAdapter = new PurchaseRequestAdapter(this, items, this);
+        purchaseRequestAdapter = new PurchaseRequestAdapter(items, this);
         itemView.setLayoutManager(new LinearLayoutManager(this));
         itemView.addItemDecoration(new RequestsItemDivider(this));
         itemView.setAdapter(purchaseRequestAdapter);
+        receiversName = getIntent().getExtras().getString("name");
     }
 
     @Override
@@ -121,10 +125,13 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         String senderId = CurrentUserManager.get(this).getId();
         String receiverId = this.receiverId;
         PurchaseRequest purchaseRequest = new PurchaseRequest();
+        purchaseRequest.setPurchaseStatus(PurchaseStatus.PENDING.getStatus());
         purchaseRequest.setId(id);
         purchaseRequest.setPurchaseList(items);
         purchaseRequest.setReceiver(receiverId);
         purchaseRequest.setSender(senderId);
+        purchaseRequest.setDate(Date.getDate());
+        purchaseRequest.setReceiverFullname(receiversName);
         createQuery(purchaseRequest, senderId, receiverId);
     }
 
@@ -136,7 +143,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
 
     private void sendRequest(PurchaseRequest purchaseRequest, String id) {
         FirebaseCollection<PurchaseRequest> firebaseCollection
-                = new FirebaseCollection<PurchaseRequest>("purchaseRequest/" + id, PurchaseRequest.class);
+                = new FirebaseCollection<>("purchaseRequest/" + id, PurchaseRequest.class);
         firebaseCollection.save(purchaseRequest, new DataCallback<PurchaseRequest>() {
             @Override
             public void onSuccess(PurchaseRequest data) {
@@ -151,7 +158,6 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
 
     public void displayText() {
         requestReceiver.setVisibility(View.VISIBLE);
-        String receiversName = getIntent().getExtras().getString("name");
         String[] receiversFullName = receiversName.split(" ");
         if (receiversFullName.length > 1) {
             requestReceiver.setText("Hi " + receiversFullName[0] + " I'd like you to help me buy this item(s)");

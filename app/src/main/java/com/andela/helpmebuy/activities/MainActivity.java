@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Travels"));
-        tabLayout.addTab(tabLayout.newTab().setText("Requests"));
-        tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_airplane_landing));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_link_filled));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_group));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_profile:
                 Launcher.launchActivity(this, UserSettingsActivity.class);
                 return true;
+            case R.id.action_history:
+                Launcher.launchActivity(this, HistoryActivity.class);
         }
         return super.onOptionsItemSelected(item);
     }
