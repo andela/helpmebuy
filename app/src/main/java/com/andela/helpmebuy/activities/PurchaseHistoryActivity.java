@@ -12,6 +12,7 @@ import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.PurchaseRequest;
+import com.andela.helpmebuy.utilities.ActionBar;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.PurchaseRequestItemDivider;
 
@@ -29,7 +30,6 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_history);
         intializeView();
-
     }
 
     public void intializeView() {
@@ -41,9 +41,7 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new PurchaseRequestItemDivider(this));
         Toolbar toolbar = (Toolbar) findViewById(R.id.purchase_history_toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        ActionBar.enableHomeButton(this);
         fetchPurchaseRequest();
     }
 
@@ -59,7 +57,6 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
 
             @Override
             public void onError(String errorMessage) {
-
             }
         });
     }
