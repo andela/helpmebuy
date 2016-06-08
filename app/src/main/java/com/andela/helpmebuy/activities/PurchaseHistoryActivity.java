@@ -50,6 +50,7 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<PurchaseRequest> data) {
                 for (PurchaseRequest purchaseRequest : data) {
+                    if (!purchaseRequest.getReceiver().equals(userId))
                     purchaseList.add(purchaseRequest);
                 }
                 purchaseRequestHistoryAdapter.notifyDataSetChanged();

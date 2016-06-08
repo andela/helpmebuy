@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.models.PurchaseRequest;
 import com.andela.helpmebuy.models.PurchaseRequestStatus;
+import com.andela.helpmebuy.utilities.DateManager;
 
 import java.util.ArrayList;
 
@@ -28,10 +29,11 @@ public class PurchaseRequestHistoryAdapter extends RecyclerView.Adapter<Purchase
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
+        DateManager dateManager = new DateManager();
         PurchaseRequest purchaseRequest = purchaseRequestList.get(position);
         holder.name.setText(purchaseRequest.getReceiverFullname());
         holder.status.setText((getStatus(purchaseRequest.getPurchaseStatus())));
-        holder.date.setText(purchaseRequest.getDate());
+        holder.date.setText(dateManager.formatTime(purchaseRequest.getDateMillis()));
     }
 
     @Override

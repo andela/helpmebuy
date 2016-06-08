@@ -21,7 +21,6 @@ import com.andela.helpmebuy.models.PurchaseItem;
 import com.andela.helpmebuy.models.PurchaseRequest;
 import com.andela.helpmebuy.models.PurchaseRequestStatus;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
-import com.andela.helpmebuy.utilities.Date;
 import com.andela.helpmebuy.utilities.ItemDeleteListener;
 import com.andela.helpmebuy.utilities.PurchaseCreateCallback;
 import com.andela.helpmebuy.utilities.RequestsItemDivider;
@@ -130,7 +129,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         purchaseRequest.setPurchaseList(items);
         purchaseRequest.setReceiver(receiverId);
         purchaseRequest.setSender(senderId);
-        purchaseRequest.setDate(Date.getDate());
+        purchaseRequest.setDateMillis(System.currentTimeMillis());
         purchaseRequest.setReceiverFullname(receiversName);
         createQuery(purchaseRequest, senderId, receiverId);
     }

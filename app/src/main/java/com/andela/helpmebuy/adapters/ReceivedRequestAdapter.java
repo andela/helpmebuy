@@ -12,6 +12,7 @@ import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.activities.PurchaseReqResponse;
 import com.andela.helpmebuy.models.PurchaseItem;
 import com.andela.helpmebuy.models.PurchaseRequest;
+import com.andela.helpmebuy.utilities.DateManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +40,11 @@ public class ReceivedRequestAdapter extends RecyclerView.Adapter<ReceivedRequest
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
+        DateManager dateManager = new DateManager();
         PurchaseRequest request = purchaseRequests.get(position);
         holder.sender.setText(request.getReceiverFullname());
         holder.description.setText(request.getPurchaseList().get(0).getItemDescription());
-        holder.date.setText(request.getDate());
+        holder.date.setText(dateManager.formatTime(request.getDateMillis()));
     }
 
     @Override
