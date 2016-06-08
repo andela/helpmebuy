@@ -2,7 +2,6 @@ package com.andela.helpmebuy.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -18,6 +17,7 @@ import com.andela.helpmebuy.config.Constants;
 import com.andela.helpmebuy.dal.DataCallback;
 import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.User;
+import com.andela.helpmebuy.utilities.ActionBar;
 
 public class ChangeEmailActivity extends AppCompatActivity {
     private TextView oldEmailText;
@@ -33,20 +33,16 @@ public class ChangeEmailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_email);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setDisplayHomeAsUpEnabled(true);
-
+        ActionBar.enableHomeButton(this);
         initializeComponents();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }
