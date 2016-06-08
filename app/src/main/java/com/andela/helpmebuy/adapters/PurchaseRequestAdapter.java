@@ -1,11 +1,10 @@
 package com.andela.helpmebuy.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
@@ -16,14 +15,11 @@ import java.util.List;
 
 public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequestAdapter.CustomViewHolder> {
 
-    private Context context;
-
     private List<PurchaseItem> purchaseItems;
     private static ItemDeleteListener itemDeleteListener;
 
-    public PurchaseRequestAdapter(Context context, List<PurchaseItem> purchaseItems, ItemDeleteListener itemDeleteListener) {
+    public PurchaseRequestAdapter(List<PurchaseItem> purchaseItems, ItemDeleteListener itemDeleteListener) {
         this.purchaseItems = purchaseItems;
-        this.context = context;
         this.itemDeleteListener = itemDeleteListener;
     }
 
@@ -36,7 +32,6 @@ public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequest
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
-        PurchaseItem purchaseItem = new PurchaseItem();
         holder.itemName.setText(purchaseItems.get(position).getItemName());
         holder.itemDescription.setText(purchaseItems.get(position).getItemDescription());
         holder.itemPrice.setText(purchaseItems.get(position).getItemPrice());
@@ -49,26 +44,19 @@ public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequest
 
     public static class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView itemName, itemPrice, itemDescription;
-        Button accept, reject;
+        ImageButton delete;
 
         public CustomViewHolder(View view) {
             super(view);
             itemName = (TextView) view.findViewById(R.id.purchase_requests_item_name);
             itemPrice = (TextView) view.findViewById(R.id.purchase_requests_item_price);
             itemDescription = (TextView) view.findViewById(R.id.purchase_requests_item_description);
-            accept = (Button) view.findViewById(R.id.purch_req_accept);
-            reject = (Button) view.findViewById(R.id.purch_req_reject);
+            delete = (ImageButton) view.findViewById(R.id.delete_item_button);
+            delete.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            int id = view.getId();
-            switch(id) {
-                case (R.id.purch_req_accept):
-                    break;
-                case (R.id.purch_req_reject):
-                    break;
-            }
             itemDeleteListener.deleteSelection(view, this.getLayoutPosition());
         }
     }

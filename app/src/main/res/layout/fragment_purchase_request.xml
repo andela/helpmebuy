@@ -8,13 +8,13 @@
     tools:showIn="@layout/activity_connection_request">
 
     <com.andela.helpmebuy.views.CustomRecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/purch_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible"/>
 
     <TextView
-        android:id="@+id/retry"
+        android:id="@+id/purch_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

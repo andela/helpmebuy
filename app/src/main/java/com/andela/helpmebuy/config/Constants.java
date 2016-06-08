@@ -22,5 +22,5 @@ public class Constants {
 
     public static final String CONTACTS = "contacts";
 
-    public final static String REQUEST = "requests";
+    public final static String REQUEST = "purchaseRequest";
 }

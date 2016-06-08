@@ -59,7 +59,7 @@
 
         <TextView
             android:paddingLeft="5dp"
-            android:id="@+id/tv_request_item_price"
+            android:id="@+id/tv_purchase_item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Price" />

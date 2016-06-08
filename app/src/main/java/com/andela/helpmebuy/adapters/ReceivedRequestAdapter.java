@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.activities.PurchaseReqResponse;
+import com.andela.helpmebuy.models.PurchaseItem;
 import com.andela.helpmebuy.models.PurchaseRequest;
-import com.andela.helpmebuy.utilities.ItemDeleteListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,25 +24,23 @@ public class ReceivedRequestAdapter extends RecyclerView.Adapter<ReceivedRequest
     private Context context;
 
     private List<PurchaseRequest> purchaseRequests;
-    private static ItemDeleteListener itemDeleteListener;
 
-    public ReceivedRequestAdapter(Context context, List<PurchaseRequest> request, ItemDeleteListener itemDeleteListener) {
+    public ReceivedRequestAdapter(Context context, List<PurchaseRequest> request) {
         this.purchaseRequests = request;
         this.context = context;
-        this.itemDeleteListener = itemDeleteListener;
     }
 
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.purchase_request_item, parent, false);
+                .inflate(R.layout.purchase_request_list, parent, false);
         return new CustomViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
         PurchaseRequest request = purchaseRequests.get(position);
-        holder.sender.setText(request.getSender());
+        holder.sender.setText(request.getReceiverFullname());
         holder.description.setText(request.getPurchaseList().get(0).getItemDescription());
         holder.date.setText(request.getDate());
     }
@@ -59,13 +59,17 @@ public class ReceivedRequestAdapter extends RecyclerView.Adapter<ReceivedRequest
             sender = (TextView) view.findViewById(R.id.tv_purchase_req_sender);
             description = (TextView) view.findViewById(R.id.tv_purchase_request_desc);
             date = (TextView) view.findViewById(R.id.tv_purchase_request_date);
+            view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             int mPosition = getAdapterPosition();
             PurchaseRequest request = purchaseRequests.get(mPosition);
-            Intent intent = new Intent();
+            ArrayList<PurchaseItem> items = request.getPurchaseList();
+            Intent intent = new Intent(context, PurchaseReqResponse.class);
+            intent.putExtra("request", request);
+            context.startActivity(intent);
         }
     }
 }

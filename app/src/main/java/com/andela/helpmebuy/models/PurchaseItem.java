@@ -8,6 +8,10 @@ public class PurchaseItem implements Parcelable{
     private String itemPrice;
     private String itemDescription;
 
+    public PurchaseItem() {
+
+    }
+
     protected PurchaseItem(Parcel in) {
         itemName = in.readString();
         itemPrice = in.readString();

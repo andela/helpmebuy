@@ -111,5 +111,6 @@
     <string name="request_recipient">To: </string>
     <string name="purchase_dialog">Add new Item </string>
     <string name="send">send</string>
+    <string name="title_activity_purchase_req_response">PurchaseReqResponse</string>
 </resources>
 

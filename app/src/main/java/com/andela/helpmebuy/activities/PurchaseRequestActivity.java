@@ -103,7 +103,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        purchaseRequestAdapter = new PurchaseRequestAdapter(this, items, this);
+        purchaseRequestAdapter = new PurchaseRequestAdapter(items, this);
         itemView.setLayoutManager(new LinearLayoutManager(this));
         itemView.addItemDecoration(new RequestsItemDivider(this));
         itemView.setAdapter(purchaseRequestAdapter);
