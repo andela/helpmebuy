@@ -1,6 +1,5 @@
 package com.andela.helpmebuy.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,15 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.activities.ChangeEmailActivity;
-import com.andela.helpmebuy.activities.ChangePasswordActivity;
-import com.andela.helpmebuy.activities.ForgotPasswordActivity;
 import com.andela.helpmebuy.utilities.Launcher;
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,10 +19,10 @@ import java.util.List;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
+ * <p>
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
- * <p/>
+ * <p>
  * interface.
  */
 public class UserSettingsFragment extends Fragment {
