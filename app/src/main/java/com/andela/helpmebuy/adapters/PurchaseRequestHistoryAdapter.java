@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.models.PurchaseRequest;
-import com.andela.helpmebuy.models.PurchaseStatus;
+import com.andela.helpmebuy.models.PurchaseRequestStatus;
 
 import java.util.ArrayList;
 
@@ -40,13 +40,13 @@ public class PurchaseRequestHistoryAdapter extends RecyclerView.Adapter<Purchase
     }
 
     public String getStatus(int statusInt) {
-        if (statusInt == PurchaseStatus.ACCEPTED.getStatus()) {
+        if (statusInt == PurchaseRequestStatus.ACCEPTED.getStatus()) {
             return "ACCEPTED";
         }
-        if (statusInt == PurchaseStatus.PENDING.getStatus()) {
+        if (statusInt == PurchaseRequestStatus.PENDING.getStatus()) {
             return "PENDING";
         }
-        if (statusInt == PurchaseStatus.REJECTED.getStatus()) {
+        if (statusInt == PurchaseRequestStatus.REJECTED.getStatus()) {
             return "REJECTED";
         }
         return null;

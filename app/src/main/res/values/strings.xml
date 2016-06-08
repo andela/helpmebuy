@@ -112,5 +112,6 @@
     <string name="purchase_dialog">Add new Item </string>
     <string name="send">send</string>
     <string name="history">History</string>
+    <string name="title_activity_purchase_req_response">Request Items</string>
 </resources>
 

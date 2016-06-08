@@ -19,7 +19,7 @@ import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.dialogs.PurchaseRequestDialog;
 import com.andela.helpmebuy.models.PurchaseItem;
 import com.andela.helpmebuy.models.PurchaseRequest;
-import com.andela.helpmebuy.models.PurchaseStatus;
+import com.andela.helpmebuy.models.PurchaseRequestStatus;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.Date;
 import com.andela.helpmebuy.utilities.ItemDeleteListener;
@@ -125,7 +125,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         String senderId = CurrentUserManager.get(this).getId();
         String receiverId = this.receiverId;
         PurchaseRequest purchaseRequest = new PurchaseRequest();
-        purchaseRequest.setPurchaseStatus(PurchaseStatus.PENDING.getStatus());
+        purchaseRequest.setPurchaseStatus(PurchaseRequestStatus.PENDING.getStatus());
         purchaseRequest.setId(id);
         purchaseRequest.setPurchaseList(items);
         purchaseRequest.setReceiver(receiverId);

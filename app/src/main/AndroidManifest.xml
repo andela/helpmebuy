@@ -112,6 +112,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
+        <activity
+            android:name=".activities.PurchaseReqResponse"
+            android:label="@string/title_activity_purchase_req_response"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
