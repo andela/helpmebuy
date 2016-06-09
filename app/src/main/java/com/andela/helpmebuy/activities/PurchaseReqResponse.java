@@ -61,10 +61,8 @@ public class PurchaseReqResponse extends AppCompatActivity implements ItemClickL
         int id = item.getItemId();
         if (id == R.id.action_accept_pur_req) {
             if(send) {
-                purchaseRequest.getSenderId();
                 CurrentUserManager.get(this).getId();
-                purchaseRequest.setPurchaseStatus(PurchaseRequestStatus.ACCEPTED.getStatus());
-                purchaseRequest.setId(purchaseRequest.getSenderId());
+                updatePurchaseRequest();
                 performRequestUpdates();
             }
             finish();
@@ -75,6 +73,13 @@ public class PurchaseReqResponse extends AppCompatActivity implements ItemClickL
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updatePurchaseRequest() {
+        purchaseRequest.getSenderId();
+        purchaseRequest.setPurchaseList(acceptedItems);
+        purchaseRequest.setPurchaseStatus(PurchaseRequestStatus.ACCEPTED.getStatus());
+        purchaseRequest.setId(purchaseRequest.getSenderId());
     }
 
     public void performRequestUpdates() {
