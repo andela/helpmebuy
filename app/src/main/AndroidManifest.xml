@@ -115,6 +115,7 @@
         <activity
             android:name=".activities.PurchaseReqResponse"
             android:label="@string/title_activity_purchase_req_response"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme"/>
     </application>
 

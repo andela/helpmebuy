@@ -38,6 +38,8 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
     private Menu menu;
     private MenuItem menuItem;
     private String receiversName;
+    private String sendersName;
+    private String purchaseId;
 
 
     @Override
@@ -110,6 +112,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         itemView.addItemDecoration(new RequestsItemDivider(this));
         itemView.setAdapter(purchaseRequestAdapter);
         receiversName = getIntent().getExtras().getString("name");
+        sendersName = CurrentUserManager.get(this).getFullName();
     }
 
     @Override
@@ -126,11 +129,13 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         PurchaseRequest purchaseRequest = new PurchaseRequest();
         purchaseRequest.setPurchaseStatus(PurchaseRequestStatus.PENDING.getStatus());
         purchaseRequest.setId(id);
+        purchaseRequest.setSenderId(id);
         purchaseRequest.setPurchaseList(items);
         purchaseRequest.setReceiver(receiverId);
         purchaseRequest.setSender(senderId);
         purchaseRequest.setDateMillis(System.currentTimeMillis());
         purchaseRequest.setReceiverFullname(receiversName);
+        purchaseRequest.setSendersFullName(sendersName);
         createQuery(purchaseRequest, senderId, receiverId);
     }
 

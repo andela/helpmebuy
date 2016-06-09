@@ -71,13 +71,13 @@
         android:layout_height="50dp">
 
         <Button
-            android:id="@+id/purch_req_reject"
+            android:id="@+id/btn_purch_req_reject"
             android:text="@string/connection_reject_label"
             android:layout_width="100dp"
             android:layout_height="40dp" />
 
         <Button
-            android:id="@+id/purch_req_accept"
+            android:id="@+id/btn_purch_req_accept"
             android:text="@string/accept"
             android:layout_width="100dp"
             android:layout_height="40dp" />

@@ -11,6 +11,25 @@ public class PurchaseRequest extends Model implements Parcelable {
     private ArrayList<PurchaseItem> purchaseList;
     private int purchaseStatus;
     private String receiverFullname;
+    private String sendersFullName;
+    private String senderId;
+
+    public String getSendersFullName() {
+        return sendersFullName;
+    }
+
+    public void setSendersFullName(String sendersFullName) {
+        this.sendersFullName = sendersFullName;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
     private Long dateMillis;
 
 
@@ -23,7 +42,10 @@ public class PurchaseRequest extends Model implements Parcelable {
         purchaseList = in.createTypedArrayList(PurchaseItem.CREATOR);
         purchaseStatus = in.readInt();
         receiverFullname = in.readString();
+        sendersFullName = in.readString();
         dateMillis = in.readLong();
+        senderId = in.readString();
+
     }
 
     public static final Creator<PurchaseRequest> CREATOR = new Creator<PurchaseRequest>() {
@@ -95,7 +117,9 @@ public class PurchaseRequest extends Model implements Parcelable {
         dest.writeTypedList(purchaseList);
         dest.writeInt(purchaseStatus);
         dest.writeString(receiverFullname);
+        dest.writeString(sendersFullName);
         dest.writeLong(dateMillis);
+        dest.writeString(senderId);
     }
 
     public ArrayList<PurchaseItem> getPurchaseList() {

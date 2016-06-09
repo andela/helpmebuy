@@ -38,14 +38,13 @@ public class PurchaseRequestFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_purch_recycler, container,false);
+        return inflater.inflate(R.layout.fragment_purch_recycler, container, false);
     }
 
     @Override
-    public void onViewCreated(View view,Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initializeComponents(view);
-//        loadConections();
     }
 
     private void initializeComponents(View view) {
@@ -67,7 +66,7 @@ public class PurchaseRequestFragment extends Fragment {
                     public void onSuccess(List<PurchaseRequest> data) {
                         int size = data.size();
                         if (size > 0) {
-                            for (PurchaseRequest myRequest: data) {
+                            for (PurchaseRequest myRequest : data) {
                                 if (isRequestPending(myRequest)) {
                                     addRequest(myRequest);
                                     receivedRequestAdapter.notifyDataSetChanged();
@@ -91,34 +90,18 @@ public class PurchaseRequestFragment extends Fragment {
                 });
     }
 
-//    public void fetchPurchaseRequest() {
-//        new FirebaseCollection<>(Constants.PURCHASE_REQUEST + "/" + userId, PurchaseRequest.class).getAll(new DataCallback<List<PurchaseRequest>>() {
-//            @Override
-//            public void onSuccess(List<PurchaseRequest> data) {
-//                for (PurchaseRequest purchaseRequest : data) {
-//                    purchaseList.add(purchaseRequest);
-//                }
-//                purchaseRequestHistoryAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onError(String errorMessage) {
-//            }
-//        });
-//    }
-
-    private boolean isRequestPending(PurchaseRequest purchaseRequest){
+    private boolean isRequestPending(PurchaseRequest purchaseRequest) {
         return purchaseRequest.getReceiver().equals(user) &&
                 (purchaseRequest.getPurchaseStatus() == PurchaseRequestStatus.PENDING.getStatus());
     }
 
-    private void addRequest (PurchaseRequest newRequest) {
+    private void addRequest(PurchaseRequest newRequest) {
         int index = findIndex(newRequest);
+        newRequest.setSenderId(newRequest.getId());
         if (index < 0) {
             purchaseRequests.add(newRequest);
             receivedRequestAdapter.notifyItemInserted(purchaseRequests.size() - 1);
-        }
-        else {
+        } else {
             purchaseRequests.set(index, newRequest);
             receivedRequestAdapter.notifyItemChanged(index);
         }
@@ -137,7 +120,7 @@ public class PurchaseRequestFragment extends Fragment {
         return Constants.PURCHASE_REQUEST + "/" + CurrentUserManager.get(getContext()).getId();
     }
 
-    private void displayMessage(String message){
+    private void displayMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

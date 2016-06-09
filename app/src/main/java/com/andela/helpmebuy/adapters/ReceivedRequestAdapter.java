@@ -42,7 +42,7 @@ public class ReceivedRequestAdapter extends RecyclerView.Adapter<ReceivedRequest
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
         DateManager dateManager = new DateManager();
         PurchaseRequest request = purchaseRequests.get(position);
-        holder.sender.setText(request.getReceiverFullname());
+        holder.sender.setText(request.getSendersFullName());
         holder.description.setText(request.getPurchaseList().get(0).getItemDescription());
         holder.date.setText(dateManager.formatTime(request.getDateMillis()));
     }
