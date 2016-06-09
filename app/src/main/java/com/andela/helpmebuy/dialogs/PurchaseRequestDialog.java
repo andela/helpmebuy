@@ -64,7 +64,7 @@ public class PurchaseRequestDialog extends DialogFragment {
         purchaseName.addTextChangedListener(new MyTextWatcher(purchaseName));
         purchaseDescription.addTextChangedListener(new MyTextWatcher(purchaseDescription));
         purchaseCost.addTextChangedListener(new MyTextWatcher(purchaseCost));
-        purchaseQuantity = (TextView) dialog.findViewById(R.id.purchase_cost);
+        purchaseQuantity = (TextView) dialog.findViewById(R.id.purchase_quantity);
         addButton = (Button) dialog.findViewById(R.id.btn_add_purchase);
         assignClickHandlers();
     }
@@ -129,11 +129,11 @@ public class PurchaseRequestDialog extends DialogFragment {
     }
 
     private boolean validateQuantity() {
-        if (purchaseCost.getText().toString().trim().isEmpty()) {
-            inputLayoutCost.setError("Item quantity cannot be empty");
+        if (purchaseQuantity.getText().toString().trim().isEmpty()) {
+            inputLayoutQuantity.setError("Item quantity cannot be empty");
             return false;
         } else {
-            inputLayoutCost.setErrorEnabled(false);
+            inputLayoutQuantity.setErrorEnabled(false);
         }
         return true;
     }
@@ -181,11 +181,11 @@ public class PurchaseRequestDialog extends DialogFragment {
                 case R.id.purchase_desc:
                     validateDescription();
                     break;
-                case R.id.purchase_cost:
-                    validateCost();
-                    break;
                 case R.id.purchase_quantity:
                     validateQuantity();
+                    break;
+                case R.id.purchase_cost:
+                    validateCost();
                     break;
             }
         }

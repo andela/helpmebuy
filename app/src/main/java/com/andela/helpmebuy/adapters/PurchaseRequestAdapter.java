@@ -34,6 +34,7 @@ public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequest
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
         holder.itemName.setText(purchaseItems.get(position).getItemName());
         holder.itemDescription.setText(purchaseItems.get(position).getItemDescription());
+        holder.itemQuantity.setText(purchaseItems.get(position).getItemQuantity());
         holder.itemPrice.setText(purchaseItems.get(position).getItemPrice());
     }
 
@@ -43,7 +44,7 @@ public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequest
     }
 
     public static class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView itemName, itemPrice, itemDescription;
+        TextView itemName, itemPrice, itemDescription, itemQuantity;
         ImageButton delete;
 
         public CustomViewHolder(View view) {
@@ -51,6 +52,7 @@ public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequest
             itemName = (TextView) view.findViewById(R.id.purchase_requests_item_name);
             itemPrice = (TextView) view.findViewById(R.id.purchase_requests_item_price);
             itemDescription = (TextView) view.findViewById(R.id.purchase_requests_item_description);
+            itemQuantity = (TextView) view.findViewById(R.id.purchase_requests_item_quantity);
             delete = (ImageButton) view.findViewById(R.id.delete_item_button);
             delete.setOnClickListener(this);
         }

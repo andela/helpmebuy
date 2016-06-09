@@ -1,11 +1,8 @@
 package com.andela.helpmebuy.activities;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -14,14 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.authentication.AuthCallback;
 import com.andela.helpmebuy.authentication.FirebasePasswordReset;
 import com.andela.helpmebuy.authentication.PasswordReset;
 import com.andela.helpmebuy.fragments.ConfirmPasswordFragment;
 import com.andela.helpmebuy.models.User;
-
-
-import com.andela.helpmebuy.R;
+import com.andela.helpmebuy.utilities.ActionBar;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
 
@@ -38,6 +34,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private LinearLayout parentLayout;
 
     private PasswordReset firebasePasswordReset;
+
     private Context context = ChangePasswordActivity.this;
 
     @Override
@@ -46,10 +43,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_password);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setDisplayHomeAsUpEnabled(true);
-
+        ActionBar.enableHomeButton(this);
         firebasePasswordReset = new FirebasePasswordReset(this);
         parentLayout = (LinearLayout) findViewById(R.id.linear_layout);
         oldPassword = (EditText) findViewById(R.id.old_password);
@@ -61,21 +55,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     public void changePassword(View view) {
         SoftKeyboard.hide(this);
-
         String email = emailText.getText().toString().trim();
         String oldPassword = this.oldPassword.getText().toString();
         String newPassword = this.newPassword.getText().toString();
-
         if (email.isEmpty()) {
             emailText.setError(getResources().getString(R.string.email_missing));
-        }
-        else if (oldPassword.isEmpty()) {
+        } else if (oldPassword.isEmpty()) {
             this.oldPassword.setError(getResources().getString(R.string.password_missing));
-        }
-        else if (newPassword.isEmpty()) {
+        } else if (newPassword.isEmpty()) {
             this.newPassword.setError(getResources().getString(R.string.password_missing));
-        }
-        else {
+        } else {
             changePasswordButton.setEnabled(false);
             resetPassword(email, oldPassword, newPassword);
         }
@@ -83,7 +72,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 Launcher.launchActivity(context, UserSettingsActivity.class);
                 finish();
@@ -99,8 +88,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 Snackbar.make(parentLayout, "Password changed successfully", Snackbar.LENGTH_LONG).show();
 
                 Bundle bundle = getIntent().getBundleExtra(Launcher.TRANSPORT);
-                if (bundle != null){
-                    if (bundle.getBoolean(ConfirmPasswordFragment.CONFIRM_PASSWORD)){
+                if (bundle != null) {
+                    if (bundle.getBoolean(ConfirmPasswordFragment.CONFIRM_PASSWORD)) {
                         Launcher.launchActivity(context, UserSettingsActivity.class);
                     }
                 } else {

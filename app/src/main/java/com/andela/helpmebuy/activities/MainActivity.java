@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_group));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_purchase_request_tab));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
         viewPager = (ViewPager) findViewById(R.id.pager);
         adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);

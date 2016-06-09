@@ -34,6 +34,8 @@ public class PurchaseReqResponse extends AppCompatActivity implements ItemClickL
     private String receiverId;
     private String requestId;
     private boolean send;
+    private MenuItem acceptItems;
+    private MenuItem rejectAll;
     private PurchaseRequest purchaseRequest;
 
     @Override
@@ -89,6 +91,9 @@ public class PurchaseReqResponse extends AppCompatActivity implements ItemClickL
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        acceptItems = menu.findItem(R.id.action_accept_pur_req);
+        rejectAll = menu.findItem(R.id.action_reject_pur_req);
+        acceptItems.setEnabled(false);
         return true;
     }
 
@@ -117,11 +122,8 @@ public class PurchaseReqResponse extends AppCompatActivity implements ItemClickL
     public void acceptItem(View view, int position) {
         acceptedItems.add(items.get(position));
         send = true;
+        acceptItems.setEnabled(true);
         itemRequestAdapter.notifyDataSetChanged();
-    }
-
-    private String purchaseRequestUrl() {
-        return Constants.PURCHASE_REQUEST + "/" + CurrentUserManager.get(this).getId() ;
     }
 
     private void displayMessage(String message) {

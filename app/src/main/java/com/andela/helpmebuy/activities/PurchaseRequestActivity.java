@@ -20,6 +20,7 @@ import com.andela.helpmebuy.dialogs.PurchaseRequestDialog;
 import com.andela.helpmebuy.models.PurchaseItem;
 import com.andela.helpmebuy.models.PurchaseRequest;
 import com.andela.helpmebuy.models.PurchaseRequestStatus;
+import com.andela.helpmebuy.utilities.ActionBar;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.ItemDeleteListener;
 import com.andela.helpmebuy.utilities.PurchaseCreateCallback;
@@ -81,6 +82,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         menuItem.setEnabled(false);
         return true;
     }
+
     private void launchAddDialog() {
         PurchaseRequestDialog dialog = new PurchaseRequestDialog();
         dialog.setCallback(purchaseCreateCallback);
@@ -104,9 +106,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         requestReceiver = (TextView) findViewById(R.id.purchase_request_recipient);
         itemView.setHasFixedSize(true);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        ActionBar.enableHomeButton(this);
         purchaseRequestAdapter = new PurchaseRequestAdapter(items, this);
         itemView.setLayoutManager(new LinearLayoutManager(this));
         itemView.addItemDecoration(new RequestsItemDivider(this));
@@ -151,7 +151,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         firebaseCollection.save(purchaseRequest, new DataCallback<PurchaseRequest>() {
             @Override
             public void onSuccess(PurchaseRequest data) {
-                Toast.makeText(getBaseContext(),"Purchase request sent",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Purchase request sent", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -175,8 +175,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
             menuItem.setEnabled(true);
             displayText();
             instruction.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             menuItem.setEnabled(false);
             instruction.setVisibility(View.VISIBLE);
             requestReceiver.setVisibility(View.INVISIBLE);
