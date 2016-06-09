@@ -112,7 +112,7 @@ public class PurchaseReqResponse extends AppCompatActivity implements ItemClickL
     public void acceptItem(View view, int position) {
         acceptedItems.add(items.get(position));
         send = true;
-//        itemRequestAdapter.notifyDataSetChanged();
+        itemRequestAdapter.notifyDataSetChanged();
     }
 
     private String purchaseRequestUrl() {
