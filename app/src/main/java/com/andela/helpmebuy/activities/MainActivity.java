@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_airplane_landing));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_link_filled));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_group));
-        tabLayout.addTab(tabLayout.newTab().setText("Purchase Request"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_purchase_request_tab));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);

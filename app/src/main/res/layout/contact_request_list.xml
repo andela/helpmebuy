@@ -6,16 +6,11 @@
     android:paddingTop="@dimen/activity_horizontal_margin"
     android:orientation="vertical">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Item Name" />
-
     <TextView
         android:id="@+id/tv_purchase_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="Item Name" />
 
 
@@ -32,7 +27,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp">
+        android:layout_height="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,7 +44,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp">
+        android:layout_height="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,7 +63,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="50dp">
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/btn_purch_req_reject"

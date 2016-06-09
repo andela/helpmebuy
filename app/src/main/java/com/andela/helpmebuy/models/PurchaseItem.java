@@ -7,6 +7,7 @@ public class PurchaseItem implements Parcelable{
     private String itemName;
     private String itemPrice;
     private String itemDescription;
+    private String itemQuantity;
 
     public PurchaseItem() {
 
@@ -16,6 +17,7 @@ public class PurchaseItem implements Parcelable{
         itemName = in.readString();
         itemPrice = in.readString();
         itemDescription = in.readString();
+        itemQuantity = in.readString();
     }
 
     public static final Creator<PurchaseItem> CREATOR = new Creator<PurchaseItem>() {
@@ -64,5 +66,14 @@ public class PurchaseItem implements Parcelable{
         dest.writeString(itemName);
         dest.writeString(itemPrice);
         dest.writeString(itemDescription);
+        dest.writeString(itemQuantity);
+    }
+
+    public String getItemQuantity() {
+        return itemQuantity;
+    }
+
+    public void setItemQuantity(String itemQuantity) {
+        this.itemQuantity = itemQuantity;
     }
 }

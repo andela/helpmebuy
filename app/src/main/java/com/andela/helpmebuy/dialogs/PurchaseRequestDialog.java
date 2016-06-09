@@ -24,6 +24,8 @@ public class PurchaseRequestDialog extends DialogFragment {
 
     private TextView purchaseCost;
 
+    private  TextView purchaseQuantity;
+
     private Button cancelButton;
 
     private Button addButton;
@@ -33,6 +35,8 @@ public class PurchaseRequestDialog extends DialogFragment {
     private TextInputLayout inputLayoutName;
 
     private TextInputLayout inputLayoutDescription;
+
+    private TextInputLayout inputLayoutQuantity;
 
     private TextInputLayout inputLayoutCost;
 
@@ -52,6 +56,7 @@ public class PurchaseRequestDialog extends DialogFragment {
         inputLayoutName = (TextInputLayout) dialog.findViewById(R.id.input_layout_name);
         inputLayoutDescription = (TextInputLayout) dialog.findViewById(R.id.input_layout_description);
         inputLayoutCost = (TextInputLayout) dialog.findViewById(R.id.input_layout_cost);
+        inputLayoutQuantity = (TextInputLayout) dialog.findViewById(R.id.input_layout_quantity);
         purchaseName = (TextView) dialog.findViewById(R.id.purchase_name);
         purchaseDescription = (TextView) dialog.findViewById(R.id.purchase_desc);
         purchaseCost = (TextView) dialog.findViewById(R.id.purchase_cost);
@@ -59,6 +64,7 @@ public class PurchaseRequestDialog extends DialogFragment {
         purchaseName.addTextChangedListener(new MyTextWatcher(purchaseName));
         purchaseDescription.addTextChangedListener(new MyTextWatcher(purchaseDescription));
         purchaseCost.addTextChangedListener(new MyTextWatcher(purchaseCost));
+        purchaseQuantity = (TextView) dialog.findViewById(R.id.purchase_cost);
         addButton = (Button) dialog.findViewById(R.id.btn_add_purchase);
         assignClickHandlers();
     }
@@ -87,6 +93,7 @@ public class PurchaseRequestDialog extends DialogFragment {
         item.setItemName(purchaseName.getText().toString());
         item.setItemDescription(purchaseDescription.getText().toString());
         item.setItemPrice(purchaseCost.getText().toString());
+        item.setItemQuantity(purchaseQuantity.getText().toString());
         return item;
     }
 
@@ -121,6 +128,16 @@ public class PurchaseRequestDialog extends DialogFragment {
         return true;
     }
 
+    private boolean validateQuantity() {
+        if (purchaseCost.getText().toString().trim().isEmpty()) {
+            inputLayoutCost.setError("Item quantity cannot be empty");
+            return false;
+        } else {
+            inputLayoutCost.setErrorEnabled(false);
+        }
+        return true;
+    }
+
     private void submitForm() {
         int check = 0;
         if (validateName()) {
@@ -129,10 +146,13 @@ public class PurchaseRequestDialog extends DialogFragment {
         if (validateDescription()) {
             check++;
         }
+        if(validateQuantity()) {
+            check++;
+        }
         if (validateCost()) {
             check++;
         }
-        if (check == 3) {
+        if (check == 4) {
             PurchaseItem purchaseItem = getPurchaseFromViews();
             callback.onPurchaseCreated(purchaseItem);
             dialog.dismiss();
@@ -163,6 +183,9 @@ public class PurchaseRequestDialog extends DialogFragment {
                     break;
                 case R.id.purchase_cost:
                     validateCost();
+                    break;
+                case R.id.purchase_quantity:
+                    validateQuantity();
                     break;
             }
         }

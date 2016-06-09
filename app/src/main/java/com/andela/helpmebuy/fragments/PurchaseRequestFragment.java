@@ -76,7 +76,6 @@ public class PurchaseRequestFragment extends Fragment {
                                 noPurchaseRequests.setVisibility(View.GONE);
                                 recyclerView.setVisibility(View.VISIBLE);
                             } else {
-                                displayMessage(getString(R.string.no_request_found));
                                 noPurchaseRequests.setVisibility(View.VISIBLE);
                                 recyclerView.setVisibility(View.VISIBLE);
                             }
@@ -85,7 +84,6 @@ public class PurchaseRequestFragment extends Fragment {
 
                     @Override
                     public void onError(String errorMessage) {
-                        displayMessage(errorMessage);
                     }
                 });
     }

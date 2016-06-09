@@ -51,14 +51,21 @@
                 android:layout_weight="0.45" />
         </LinearLayout>
 
-        <TextView
-            android:paddingTop="10dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Small Text"
-            android:textSize="12sp"
-            android:id="@+id/tv_purchase_request_date" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:paddingTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Small Text"
+                android:textSize="12sp"
+                android:id="@+id/tv_purchase_request_date" />
+
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

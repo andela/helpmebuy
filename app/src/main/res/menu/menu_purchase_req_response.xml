@@ -6,7 +6,7 @@
         android:id="@+id/action_reject_pur_req"
         android:orderInCategory="100"
         android:title="Reject all"
-        android:icon="@drawable/reject_all"
+        android:icon="@drawable/icon_cancel_req"
         app:showAsAction="always" />
 
     <item

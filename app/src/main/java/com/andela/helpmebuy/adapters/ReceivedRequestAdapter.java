@@ -43,8 +43,29 @@ public class ReceivedRequestAdapter extends RecyclerView.Adapter<ReceivedRequest
         DateManager dateManager = new DateManager();
         PurchaseRequest request = purchaseRequests.get(position);
         holder.sender.setText(request.getSendersFullName());
-        holder.description.setText(request.getPurchaseList().get(0).getItemDescription());
+        String items = getItemsDescription(request);
+        holder.description.setText(items);
         holder.date.setText(dateManager.formatTime(request.getDateMillis()));
+    }
+
+    public String getItemsDescription(PurchaseRequest request){
+        String itemName = "";
+        ArrayList<PurchaseItem> items = request.getPurchaseList();
+        if(items.size() == 1) {
+            return itemName + items.get(0).getItemName();
+        }
+        else {
+            itemName = items.get(0).getItemName();
+            for (int i = 1; i <= 3;i++){
+                if(i < items.size()){
+                    itemName = itemName + ", " + items.get(i).getItemName();
+                }
+            }
+            if(items.size() > 3){
+                itemName += itemName + "...";
+            }
+            return itemName;
+        }
     }
 
     @Override

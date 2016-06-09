@@ -44,6 +44,7 @@ public class ItemRequestAdapter extends RecyclerView.Adapter<ItemRequestAdapter.
         holder.itemName.setText(purchaseItem.getItemName());
         holder.itemDescription.setText(purchaseItem.getItemDescription().toString());
         holder.itemPrice.setText(purchaseItem.getItemPrice().toString());
+        holder.itemQuantity.setText((purchaseItem.getItemQuantity()));
     }
 
     @Override
@@ -74,13 +75,18 @@ public class ItemRequestAdapter extends RecyclerView.Adapter<ItemRequestAdapter.
             switch(id) {
                 case (R.id.btn_purch_req_accept):
                     itemClickListener.acceptItem(view, mPosition);
-                    reject.setVisibility(View.GONE);
+                    hideButton();
                     break;
                 case (R.id.btn_purch_req_reject):
                     itemClickListener.rejectItem(view, mPosition);
-                    accept.setVisibility(View.GONE);
+                    hideButton();
                     break;
             }
+        }
+
+        public void hideButton() {
+            accept.setVisibility(View.GONE);
+            reject.setVisibility(View.GONE);
         }
     }
 }
