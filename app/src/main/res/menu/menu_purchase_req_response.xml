@@ -6,14 +6,14 @@
         android:id="@+id/action_reject_pur_req"
         android:orderInCategory="100"
         android:title="Reject all"
-        android:icon="@drawable/icon_cancel_req"
+        android:icon="@mipmap/ic_purchase_request_reject_all"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_accept_pur_req"
         android:orderInCategory="100"
         android:title="Accept"
-        android:icon="@drawable/accept_all"
+        android:icon="@mipmap/ic_purchase_req_accept_all"
         app:showAsAction="always" />
 
 </menu>

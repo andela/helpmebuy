@@ -79,7 +79,6 @@ public class ItemRequestAdapter extends RecyclerView.Adapter<ItemRequestAdapter.
                     break;
                 case (R.id.btn_purch_req_reject):
                     itemClickListener.rejectItem(view, mPosition);
-                    hideButton();
                     break;
             }
         }
