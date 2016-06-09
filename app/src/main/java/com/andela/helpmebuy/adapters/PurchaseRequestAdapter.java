@@ -34,8 +34,8 @@ public class PurchaseRequestAdapter extends RecyclerView.Adapter<PurchaseRequest
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
         holder.itemName.setText(purchaseItems.get(position).getItemName());
         holder.itemDescription.setText(purchaseItems.get(position).getItemDescription());
-        holder.itemQuantity.setText(purchaseItems.get(position).getItemQuantity());
         holder.itemPrice.setText(purchaseItems.get(position).getItemPrice());
+        holder.itemQuantity.setText(purchaseItems.get(position).getItemQuantity());
     }
 
     @Override
