@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
@@ -20,22 +19,15 @@ import com.andela.helpmebuy.models.PurchaseItem;
 import com.andela.helpmebuy.models.PurchaseRequest;
 import com.andela.helpmebuy.models.PurchaseRequestStatus;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
-import com.andela.helpmebuy.utilities.ItemClickListener;
 import com.andela.helpmebuy.utilities.RequestsItemDivider;
 
 import java.util.ArrayList;
 
-public class PurchaseReqResponse extends AppCompatActivity implements ItemClickListener{
+public class PurchaseReqResponse extends AppCompatActivity{
 
     private RecyclerView recyclerView;
     private ArrayList<PurchaseItem> items;
-    private ArrayList<PurchaseItem> acceptedItems;
     private ItemRequestAdapter itemRequestAdapter;
-    private String receiverId;
-    private String requestId;
-    private boolean send;
-    private MenuItem acceptItems;
-    private MenuItem rejectAll;
     private PurchaseRequest purchaseRequest;
 
     @Override
@@ -61,28 +53,24 @@ public class PurchaseReqResponse extends AppCompatActivity implements ItemClickL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_accept_pur_req) {
-            if(send) {
+        switch (id) {
+            case R.id.action_accept_pur_req:
                 CurrentUserManager.get(this).getId();
                 updatePurchaseRequest(PurchaseRequestStatus.ACCEPTED.getStatus());
                 performRequestUpdates();
-            }
-            finish();
-            return true;
-        }
-        if (id == R.id.action_reject_pur_req) {
-            acceptedItems = new ArrayList<>();
-            updatePurchaseRequest(PurchaseRequestStatus.REJECTED.getStatus());
-            performRequestUpdates();
-            finish();
-            return true;
+                finish();
+                return true;
+            case R.id.action_reject_pur_req:
+                updatePurchaseRequest(PurchaseRequestStatus.REJECTED.getStatus());
+                performRequestUpdates();
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void updatePurchaseRequest(int status) {
         purchaseRequest.getSenderId();
-        purchaseRequest.setPurchaseList(acceptedItems);
         purchaseRequest.setPurchaseStatus(status);
         purchaseRequest.setId(purchaseRequest.getSenderId());
     }
@@ -92,41 +80,16 @@ public class PurchaseReqResponse extends AppCompatActivity implements ItemClickL
         updateRequest(purchaseRequest, Constants.PURCHASE_REQUEST + "/" + purchaseRequest.getSender());
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        acceptItems = menu.findItem(R.id.action_accept_pur_req);
-        rejectAll = menu.findItem(R.id.action_reject_pur_req);
-        acceptItems.setEnabled(false);
-        return true;
-    }
 
     private void initializeComponents() {
         Intent i = getIntent();
-        send = false;
-        acceptedItems = new ArrayList<>();
         purchaseRequest = i.getExtras().getParcelable("request");
-        receiverId = purchaseRequest.getReceiver();
-        requestId = purchaseRequest.getSenderId();
         items = purchaseRequest.getPurchaseList();
-        itemRequestAdapter = new ItemRequestAdapter(this, items, this);
+        itemRequestAdapter = new ItemRequestAdapter(this, items);
         recyclerView = (RecyclerView) findViewById(R.id.purch_req_responce_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(itemRequestAdapter);
         recyclerView.addItemDecoration(new RequestsItemDivider(this));
-    }
-
-    @Override
-    public void rejectItem(View view, int position) {
-        items.remove(position);
-        itemRequestAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void acceptItem(View view, int position) {
-        acceptedItems.add(items.get(position));
-        send = true;
-        acceptItems.setEnabled(true);
-        itemRequestAdapter.notifyDataSetChanged();
     }
 
     private void displayMessage(String message) {

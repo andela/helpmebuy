@@ -59,12 +59,13 @@ public class PurchaseRequestDialog extends DialogFragment {
         inputLayoutQuantity = (TextInputLayout) dialog.findViewById(R.id.input_layout_quantity);
         purchaseName = (TextView) dialog.findViewById(R.id.purchase_name);
         purchaseDescription = (TextView) dialog.findViewById(R.id.purchase_desc);
+        purchaseQuantity = (TextView) dialog.findViewById(R.id.purchase_quantity);
         purchaseCost = (TextView) dialog.findViewById(R.id.purchase_cost);
         cancelButton = (Button) dialog.findViewById(R.id.btn_cancel_purchase);
         purchaseName.addTextChangedListener(new MyTextWatcher(purchaseName));
         purchaseDescription.addTextChangedListener(new MyTextWatcher(purchaseDescription));
         purchaseCost.addTextChangedListener(new MyTextWatcher(purchaseCost));
-        purchaseQuantity = (TextView) dialog.findViewById(R.id.purchase_quantity);
+        purchaseQuantity.addTextChangedListener(new MyTextWatcher(purchaseQuantity));
         addButton = (Button) dialog.findViewById(R.id.btn_add_purchase);
         assignClickHandlers();
     }

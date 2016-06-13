@@ -89,7 +89,6 @@ public class ReceivedRequestAdapter extends RecyclerView.Adapter<ReceivedRequest
         public void onClick(View view) {
             int mPosition = getAdapterPosition();
             PurchaseRequest request = purchaseRequests.get(mPosition);
-            ArrayList<PurchaseItem> items = request.getPurchaseList();
             Intent intent = new Intent(context, PurchaseReqResponse.class);
             intent.putExtra("request", request);
             context.startActivity(intent);

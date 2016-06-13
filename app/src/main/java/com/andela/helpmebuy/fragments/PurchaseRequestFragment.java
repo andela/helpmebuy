@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.adapters.ReceivedRequestAdapter;
@@ -24,7 +23,7 @@ import com.andela.helpmebuy.utilities.ItemDivider;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchaseRequestFragment extends Fragment {
+public class PurchaseRequestFragment extends Fragment{
     private List<PurchaseRequest> purchaseRequests;
     private ReceivedRequestAdapter receivedRequestAdapter;
     private String user;
@@ -47,6 +46,14 @@ public class PurchaseRequestFragment extends Fragment {
         initializeComponents(view);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        purchaseRequests.clear();
+        loadRequests();
+        receivedRequestAdapter.notifyDataSetChanged();
+    }
+
     private void initializeComponents(View view) {
         context = getContext();
         receivedRequestAdapter = new ReceivedRequestAdapter(context, purchaseRequests);
@@ -56,7 +63,6 @@ public class PurchaseRequestFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new ItemDivider(getContext()));
         user = CurrentUserManager.get(getContext()).getId();
-        loadRequests();
     }
 
     private void loadRequests() {
@@ -118,8 +124,5 @@ public class PurchaseRequestFragment extends Fragment {
         return Constants.PURCHASE_REQUEST + "/" + CurrentUserManager.get(getContext()).getId();
     }
 
-    private void displayMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
 }
 

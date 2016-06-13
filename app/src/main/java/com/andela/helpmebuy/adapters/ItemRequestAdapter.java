@@ -5,12 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.andela.helpmebuy.R;
 import com.andela.helpmebuy.models.PurchaseItem;
-import com.andela.helpmebuy.utilities.ItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +18,10 @@ import java.util.List;
  */
 public class ItemRequestAdapter extends RecyclerView.Adapter<ItemRequestAdapter.CustomViewHolder> {
     private Context context;
-    private List<PurchaseItem> acceptedItems;
     private List<PurchaseItem> purchaseItems;
-    private ItemClickListener itemClickListener;
 
-    public ItemRequestAdapter(Context context, ArrayList<PurchaseItem> purchaseItem, ItemClickListener listener) {
+    public ItemRequestAdapter(Context context, ArrayList<PurchaseItem> purchaseItem) {
         this.purchaseItems = purchaseItem;
-        acceptedItems = new ArrayList<>();
-        this.itemClickListener = listener;
         this.context = context;
     }
 
@@ -52,9 +46,8 @@ public class ItemRequestAdapter extends RecyclerView.Adapter<ItemRequestAdapter.
         return purchaseItems.size();
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class CustomViewHolder extends RecyclerView.ViewHolder {
         TextView itemName, itemPrice, itemDescription, itemQuantity;
-        Button accept, reject;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -62,30 +55,6 @@ public class ItemRequestAdapter extends RecyclerView.Adapter<ItemRequestAdapter.
             itemPrice = (TextView) view.findViewById(R.id.tv_purchase_item_price);
             itemDescription = (TextView) view.findViewById(R.id.tv_purchase_item_desc);
             itemQuantity = (TextView) view.findViewById(R.id.tv_purchase_item_quantity);
-            accept = (Button) view.findViewById(R.id.btn_purch_req_accept);
-            reject = (Button) view.findViewById(R.id.btn_purch_req_reject);
-            reject.setOnClickListener(this);
-            accept.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            int id = view.getId();
-            int mPosition = getAdapterPosition();
-            switch(id) {
-                case (R.id.btn_purch_req_accept):
-                    itemClickListener.acceptItem(view, mPosition);
-                    hideButton();
-                    break;
-                case (R.id.btn_purch_req_reject):
-                    itemClickListener.rejectItem(view, mPosition);
-                    break;
-            }
-        }
-
-        public void hideButton() {
-            accept.setVisibility(View.GONE);
-            reject.setVisibility(View.GONE);
         }
     }
 }
