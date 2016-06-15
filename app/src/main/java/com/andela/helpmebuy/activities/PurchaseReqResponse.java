@@ -18,6 +18,7 @@ import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.models.PurchaseItem;
 import com.andela.helpmebuy.models.PurchaseRequest;
 import com.andela.helpmebuy.models.PurchaseRequestStatus;
+import com.andela.helpmebuy.utilities.ActionBar;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.RequestsItemDivider;
 
@@ -29,6 +30,7 @@ public class PurchaseReqResponse extends AppCompatActivity{
     private ArrayList<PurchaseItem> items;
     private ItemRequestAdapter itemRequestAdapter;
     private PurchaseRequest purchaseRequest;
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +39,8 @@ public class PurchaseReqResponse extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_purchase_request);
         toolbar.setTitle("Purchase");
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        actionBar.enableHomeButton(this);
         initializeComponents();
-
     }
 
     @Override
