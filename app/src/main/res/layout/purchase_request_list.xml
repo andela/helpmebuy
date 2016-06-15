@@ -25,6 +25,7 @@
             android:scaleType="centerInside"/>
 
         <LinearLayout
+            android:paddingRight="10dp"
             android:orientation="vertical"
             android:layout_width="200dp"
             android:layout_height="match_parent"
@@ -53,12 +54,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:weightSum="1">
 
             <TextView
+                android:gravity="right"
                 android:paddingTop="30dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Small Text"
                 android:textSize="12sp"
