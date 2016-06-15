@@ -46,12 +46,13 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
     }
 
     public void fetchPurchaseRequest() {
-        new FirebaseCollection<>(Constants.PURCHASE_REQUEST + "/" + userId, PurchaseRequest.class).getAll(new DataCallback<List<PurchaseRequest>>() {
+        new FirebaseCollection<>(Constants.PURCHASE_REQUEST + "/" + userId, PurchaseRequest.class)
+                .getAll(new DataCallback<List<PurchaseRequest>>() {
             @Override
             public void onSuccess(List<PurchaseRequest> data) {
                 for (PurchaseRequest purchaseRequest : data) {
                     if (!purchaseRequest.getReceiver().equals(userId))
-                    purchaseList.add(purchaseRequest);
+                        addRequest(purchaseRequest);
                 }
                 purchaseRequestHistoryAdapter.notifyDataSetChanged();
             }
@@ -60,5 +61,26 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
             public void onError(String errorMessage) {
             }
         });
+    }
+
+    private void addRequest(PurchaseRequest newRequest) {
+        int index = findIndex(newRequest);
+        newRequest.setSenderId(newRequest.getId());
+        if (index < 0) {
+            purchaseList.add(newRequest);
+            purchaseRequestHistoryAdapter.notifyItemInserted(purchaseList.size() - 1);
+        } else {
+            purchaseList.set(index, newRequest);
+            purchaseRequestHistoryAdapter.notifyItemChanged(index);
+        }
+    }
+
+    private int findIndex(PurchaseRequest requests) {
+        for (int i = 0, size = purchaseList.size(); i < size; ++i) {
+            if (requests.getId().equals(purchaseList.get(i).getId())) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
