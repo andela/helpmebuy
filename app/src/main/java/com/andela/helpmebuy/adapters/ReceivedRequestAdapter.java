@@ -42,30 +42,29 @@ public class ReceivedRequestAdapter extends RecyclerView.Adapter<ReceivedRequest
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
         DateManager dateManager = new DateManager();
         PurchaseRequest request = purchaseRequests.get(position);
-        holder.sender.setText(request.getSendersFullName());
         String items = getItemsDescription(request);
+        String date = dateManager.formatTime(request.getDateMillis());
+        holder.sender.setText(request.getSendersFullName());
         holder.description.setText(items);
-        holder.date.setText(dateManager.formatTime(request.getDateMillis()));
+        holder.date.setText(date);
     }
 
     public String getItemsDescription(PurchaseRequest request){
         String itemName = "";
         ArrayList<PurchaseItem> items = request.getPurchaseList();
-        if(items.size() == 1) {
-            return itemName + items.get(0).getItemName();
+        if(items.size() > 0) {
+            itemName = itemName + items.get(0).getItemName();
         }
-        else {
-            itemName = items.get(0).getItemName();
-            for (int i = 1; i <= 3;i++){
-                if(i < items.size()){
-                    itemName = itemName + ", " + items.get(i).getItemName();
-                }
-            }
-            if(items.size() > 3){
-                itemName += itemName + "...";
-            }
-            return itemName;
+        if(items.size() >= 2) {
+            itemName += ", " + items.get(1).getItemName();
         }
+        if(items.size() >= 3) {
+            itemName += ", " + items.get(2).getItemName();
+        }
+        if(items.size() > 3) {
+            return itemName + "...";
+        }
+        return itemName;
     }
 
     @Override
