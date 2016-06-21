@@ -2,9 +2,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'helpmebuy'
+            keyPassword 'bDCE2ZNaI75S'
+            storeFile file('/Users/andela/helpmebuy/helpmebuy.jks')
+            storePassword 'bDCE2ZNaI75S'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "com.andela.helpmebuy"
         minSdkVersion 15
@@ -12,24 +19,28 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        signingConfig signingConfigs.config
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
-
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENCE-FIREBASE.txt'
         exclude 'META-INF/NOTICE'
     }
-
     dexOptions {
         preDexLibraries = false
         javaMaxHeapSize "2048M"
+    }
+    productFlavors {
     }
 }
 
@@ -39,7 +50,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'joda-time:joda-time:2.8.2'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.facebook.android:facebook-android-sdk:4.6.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
     compile 'com.google.android.gms:play-services-identity:8.1.0'
     compile 'com.google.android.gms:play-services-plus:8.1.0'
     compile 'com.google.android.gms:play-services-location:8.1.0'
@@ -49,9 +60,9 @@ dependencies {
     compile 'com.pnikosis:materialish-progress:1.7'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'com.google.code.gson:gson:2.5'
-    compile files('build/junit-4.10.jar')
 }
 repositories {
+    mavenCentral()
     maven { url 'http://repo1.maven.org/maven2' }
 }
 

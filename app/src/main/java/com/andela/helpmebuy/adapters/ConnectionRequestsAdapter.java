@@ -48,7 +48,8 @@ public class ConnectionRequestsAdapter extends RecyclerView.Adapter<ConnectionRe
                 .get(connection.getId(), new DataCallback<User>() {
                     @Override
                     public void onSuccess(User data) {
-                        bindUser(data, holder, connection);
+                        if (data != null)
+                            bindUser(data, holder, connection);
                     }
 
                     @Override
@@ -81,7 +82,6 @@ public class ConnectionRequestsAdapter extends RecyclerView.Adapter<ConnectionRe
 
     private void bindUser(User user, CustomViewHolder holder, Connection connection) {
         String profilePictureUrl = user.getProfilePictureUrl();
-
         if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
             holder.profilePicture.setAlpha(0.38f);
         } else {

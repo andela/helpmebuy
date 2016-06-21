@@ -1,7 +1,6 @@
 package com.andela.helpmebuy.authentication;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import com.andela.helpmebuy.models.User;
@@ -10,39 +9,26 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-
 public class FacebookAuth {
-
-    private Activity activity;
 
     private LoginButton loginButton;
 
     private AuthCallback callback;
 
-    public FacebookAuth(Activity activity, LoginButton button, AuthCallback callback) {
-        this.activity = activity;
+    public FacebookAuth(LoginButton button, CallbackManager manager, AuthCallback callback) {
         this.loginButton = button;
         this.callback = callback;
-
-        onLoginButtonClicked(this.callback);
+        onLoginButtonClicked(manager, this.callback);
     }
 
-    public void logIn() {
-        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "email"));
-    }
-
-
-    private void onLoginButtonClicked(final AuthCallback callback) {
-        CallbackManager manager = CallbackManager.Factory.create();
-
+    private void onLoginButtonClicked(CallbackManager manager, final AuthCallback callback) {
+        loginButton.setReadPermissions("public_profile");
         loginButton.registerCallback(manager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -53,20 +39,15 @@ public class FacebookAuth {
                         try {
                             User user = new User(object.getString("id"));
                             user.setFullName(object.getString("name"));
-                            user.setEmail(object.getString("email"));
-
                             if (!object.isNull("picture")) {
                                 JSONObject picture = (JSONObject) object.get("picture");
-
                                 if (picture != null) {
                                     JSONObject data = (JSONObject) picture.get("data");
-
                                     if (data.length() != 0) {
                                         user.setProfilePictureUrl(data.getString("url"));
                                     }
                                 }
                             }
-
                             callback.onSuccess(user);
 
                         } catch (JSONException e) {
@@ -74,19 +55,15 @@ public class FacebookAuth {
                         }
                     }
                 });
-
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "id, name, email, picture");
-
                 request.setParameters(parameters);
                 request.executeAsync();
             }
-
             @Override
             public void onCancel() {
                 callback.onCancel();
             }
-
             @Override
             public void onError(FacebookException e) {
                 callback.onError(e.getMessage());

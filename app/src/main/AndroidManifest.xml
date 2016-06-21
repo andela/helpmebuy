@@ -113,5 +113,4 @@
                 android:value=".activities.MainActivity" />
         </activity>
     </application>
-
 </manifest>

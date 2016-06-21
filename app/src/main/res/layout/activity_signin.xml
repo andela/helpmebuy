@@ -100,8 +100,7 @@
        android:id="@+id/facebook_login_button"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_marginTop="5dp"
-       android:onClick="logInWithFacebook"/>
+       android:layout_marginTop="5dp"/>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_signin_button"

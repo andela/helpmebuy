@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "826243844851",
+    "project_id": "helpmebuy-1345"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826243844851:android:46ab6a742ad1b9cb",
+        "android_client_info": {
+          "package_name": "com.andela.helpmebuy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826243844851-tvdreveq2eln35v250rok5o6clgiaol6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.andela.helpmebuy",
+            "certificate_hash": "56A0FB30F1C92FCB2D4E57E52744DDD308D907B8"
+          }
+        },
+        {
+          "client_id": "826243844851-s5u3jgpnr4q1ut0j4kfqf9m3jmsnel05.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZdKEv87nePSYNjAQ3IyJLY5QxtHW2msE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
