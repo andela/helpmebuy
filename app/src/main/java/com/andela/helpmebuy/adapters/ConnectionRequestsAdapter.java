@@ -48,8 +48,7 @@ public class ConnectionRequestsAdapter extends RecyclerView.Adapter<ConnectionRe
                 .get(connection.getId(), new DataCallback<User>() {
                     @Override
                     public void onSuccess(User data) {
-                        if (data != null)
-                            bindUser(data, holder, connection);
+                        bindUser(data, holder, connection);
                     }
 
                     @Override
