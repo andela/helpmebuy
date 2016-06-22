@@ -65,25 +65,21 @@
                 android:textCursorDrawable="@null"/>
         </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <android.support.design.widget.TextInputLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintTextAppearance="@style/TextInputStyle"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1">
+                app:hintTextAppearance="@style/TextInputStyle">
 
                 <EditText
                     android:id="@+id/password_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:ems="10"
                     android:hint="@string/password"
                     android:inputType="textPassword"
                     android:textColor="#ffffff"
@@ -99,9 +95,12 @@
                 android:background="@drawable/white_view_state_list"
                 app:passwordEditText="@id/password_text"
                 app:passwordInvisibleImageResource="@drawable/ic_visibility_white_18dp"
-                app:passwordVisibleImageResource="@drawable/ic_visibility_off_white_18dp" />
+                app:passwordVisibleImageResource="@drawable/ic_visibility_off_white_18dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <Button
