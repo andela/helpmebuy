@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.andela.helpmebuy.fragments.ContactFragment;
+import com.andela.helpmebuy.fragments.PurchaseRequestFragment;
 import com.andela.helpmebuy.fragments.TravelListFragment;
 import com.andela.helpmebuy.fragments.RequestFragment;
 
@@ -27,6 +28,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 return new RequestFragment();
             case 2:
                 return new ContactFragment();
+            case 3:
+                return new PurchaseRequestFragment();
             default:
                 return null;
         }

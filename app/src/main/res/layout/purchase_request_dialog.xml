@@ -53,6 +53,21 @@
             android:hint="Enter item description"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/DarkEditText">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/purchase_quantity"
+                android:inputType="number|textNoSuggestions"
+                android:layout_gravity="center_horizontal"
+                android:textColorHint="@color/hint_text_color"
+                android:theme="@style/DarkEditText"
+                android:hint="Enter item quantity"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

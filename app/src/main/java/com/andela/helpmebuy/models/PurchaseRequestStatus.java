@@ -1,12 +1,16 @@
 package com.andela.helpmebuy.models;
 
-public enum PurchaseStatus {
+/**
+ * Created by andeladev on 05/06/2016.
+ */
+public enum PurchaseRequestStatus {
     ACCEPTED(3),
     PENDING(2),
     REJECTED(1);
+
     private int status;
 
-    PurchaseStatus(int status){
+    PurchaseRequestStatus(int status){
         this.status = status;
     }
 

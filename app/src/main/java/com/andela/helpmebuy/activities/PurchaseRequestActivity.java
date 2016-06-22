@@ -19,10 +19,9 @@ import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.dialogs.PurchaseRequestDialog;
 import com.andela.helpmebuy.models.PurchaseItem;
 import com.andela.helpmebuy.models.PurchaseRequest;
-import com.andela.helpmebuy.models.PurchaseStatus;
+import com.andela.helpmebuy.models.PurchaseRequestStatus;
 import com.andela.helpmebuy.utilities.ActionBar;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
-import com.andela.helpmebuy.utilities.Date;
 import com.andela.helpmebuy.utilities.ItemDeleteListener;
 import com.andela.helpmebuy.utilities.PurchaseCreateCallback;
 import com.andela.helpmebuy.utilities.RequestsItemDivider;
@@ -40,6 +39,8 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
     private Menu menu;
     private MenuItem menuItem;
     private String receiversName;
+    private String sendersName;
+    private String purchaseId;
 
 
     @Override
@@ -111,6 +112,7 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         itemView.addItemDecoration(new RequestsItemDivider(this));
         itemView.setAdapter(purchaseRequestAdapter);
         receiversName = getIntent().getExtras().getString("name");
+        sendersName = CurrentUserManager.get(this).getFullName();
     }
 
     @Override
@@ -125,13 +127,15 @@ public class PurchaseRequestActivity extends AppCompatActivity implements ItemDe
         String senderId = CurrentUserManager.get(this).getId();
         String receiverId = this.receiverId;
         PurchaseRequest purchaseRequest = new PurchaseRequest();
-        purchaseRequest.setPurchaseStatus(PurchaseStatus.PENDING.getStatus());
+        purchaseRequest.setPurchaseStatus(PurchaseRequestStatus.PENDING.getStatus());
         purchaseRequest.setId(id);
+        purchaseRequest.setSenderId(id);
         purchaseRequest.setPurchaseList(items);
         purchaseRequest.setReceiver(receiverId);
         purchaseRequest.setSender(senderId);
-        purchaseRequest.setDate(Date.getDate());
+        purchaseRequest.setDateMillis(System.currentTimeMillis());
         purchaseRequest.setReceiverFullname(receiversName);
+        purchaseRequest.setSendersFullName(sendersName);
         createQuery(purchaseRequest, senderId, receiverId);
     }
 

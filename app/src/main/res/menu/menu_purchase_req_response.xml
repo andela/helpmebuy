@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/action_reject_pur_req"
+        android:orderInCategory="100"
+        android:title="Reject all"
+        android:icon="@drawable/ic_reject_all"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_accept_pur_req"
+        android:orderInCategory="100"
+        android:title="Accept"
+        android:icon="@drawable/ic_accept_all"
+        app:showAsAction="always" />
+
+</menu>
