@@ -50,19 +50,16 @@ public class ReceivedRequestAdapter extends RecyclerView.Adapter<ReceivedRequest
     }
 
     public String getItemsDescription(PurchaseRequest request){
-        String itemName = "";
+        int limit = 3;
         ArrayList<PurchaseItem> items = request.getPurchaseList();
-        if(items.size() > 0) {
-            itemName = itemName + items.get(0).getItemName();
+        String itemName = items.get(0).getItemName();
+        for (int i = 1; i <= limit ;i++){
+            if(i < items.size()){
+                itemName = itemName + ", " + items.get(i).getItemName();
+            }
         }
-        if(items.size() >= 2) {
-            itemName += ", " + items.get(1).getItemName();
-        }
-        if(items.size() >= 3) {
-            itemName += ", " + items.get(2).getItemName();
-        }
-        if(items.size() > 3) {
-            return itemName + "...";
+        if(items.size() > limit ){
+            itemName += "...";
         }
         return itemName;
     }
