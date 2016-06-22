@@ -63,10 +63,8 @@ public class FirebaseAuth implements EmailPasswordAuth {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 String id = result.get("uid").toString();
-
                 User user = new User(id);
                 user.setEmail(email);
-
                 callback.onSuccess(user);
             }
 

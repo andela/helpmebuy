@@ -1,12 +1,11 @@
 package com.andela.helpmebuy.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,23 +14,22 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.andela.helpmebuy.R;
-import com.andela.helpmebuy.authentication.EmailPasswordAuth;
-import com.andela.helpmebuy.authentication.FirebaseAuth;
-import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
 import com.andela.helpmebuy.authentication.AuthCallback;
+import com.andela.helpmebuy.authentication.EmailPasswordAuth;
 import com.andela.helpmebuy.authentication.FacebookAuth;
+import com.andela.helpmebuy.authentication.FirebaseAuth;
+import com.andela.helpmebuy.authentication.GoogleAuth;
+import com.andela.helpmebuy.config.Constants;
+import com.andela.helpmebuy.dal.firebase.FirebaseCollection;
+import com.andela.helpmebuy.models.User;
+import com.andela.helpmebuy.utilities.AlertDialogHelper;
 import com.andela.helpmebuy.utilities.CurrentUserManager;
 import com.andela.helpmebuy.utilities.Launcher;
 import com.andela.helpmebuy.utilities.SoftKeyboard;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
-import com.google.android.gms.common.SignInButton;
-import com.andela.helpmebuy.authentication.GoogleAuth;
-import com.andela.helpmebuy.models.User;
-import com.andela.helpmebuy.utilities.AlertDialogHelper;
-import com.andela.helpmebuy.config.Constants;
 import com.facebook.login.widget.LoginButton;
-
-import java.util.Arrays;
+import com.google.android.gms.common.SignInButton;
 
 public class SigninActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,6 +53,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private EmailPasswordAuth emailPasswordAuth;
 
+    private CallbackManager callbackManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,11 +67,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         hideActionBar();
         loadComponents();
         initializeUserscollection();
-
         initializeFacebookAuth();
-
         initializeGoogleAuth();
-
         initializeEmailPasswordAuth();
     }
 
@@ -89,20 +86,18 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         signInButton = (Button) findViewById(R.id.signin_button);
     }
 
-    private void initializeUserscollection()  {
+    private void initializeUserscollection() {
         users = new FirebaseCollection<>(Constants.USERS, User.class);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GoogleAuth.RC_SIGN_IN) {
-
-            if(resultCode != RESULT_OK) {
+            if (resultCode != RESULT_OK) {
                 googleAuth.setShouldResolve(false);
             }
-
             googleAuth.setResolving(false);
             googleAuth.connect();
         }
@@ -117,36 +112,25 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     public void signIn(View view) {
         SoftKeyboard.hide(SigninActivity.this);
-
         final String email = emailText.getText().toString().trim();
-
         String password = passwordText.getText().toString();
-
         if (email.isEmpty())
             emailText.setError(getResources().getString(R.string.email_missing));
-
         else if (password.isEmpty())
             passwordText.setError(getResources().getString(R.string.password_missing));
         else {
             signInButton.setText((R.string.signing_in));
             signInButton.setEnabled(false);
-
             signIn(email, password);
         }
-    }
-
-    public void logInWithFacebook(View view) {
-        facebookAuth.logIn();
     }
 
     private void signInWithGooglePlus() {
@@ -156,21 +140,16 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private void signOutWithGooglePlus() {
         googleAuth.signOut();
-
         googleSignOutButton.setVisibility(View.INVISIBLE);
-
         googleSignInButton.setEnabled(true);
         googleSignInButton.setVisibility((View.VISIBLE));
-
         Snackbar.make(parentLayout, R.string.google_sign_out_successful, Snackbar.LENGTH_LONG).show();
     }
 
     private void signIn(String email, String password) {
         emailPasswordAuth.signIn(email, password, new AuthCallback() {
-
             public void onSuccess(User user) {
                 CurrentUserManager.save(user, SigninActivity.this);
-
                 Launcher.launchActivity(SigninActivity.this, MainActivity.class);
                 finish();
             }
@@ -183,13 +162,11 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             public void onError(String errorMessage) {
                 if (errorMessage.equals(FirebaseAuth.TEMPORARY_PASSWORD)) {
                     AlertDialogHelper.displayWarning(SigninActivity.this).show();
-
                     signInButton.setEnabled(true);
                     signInButton.setText((R.string.signin));
 
                 } else {
                     Snackbar.make(parentLayout, errorMessage, Snackbar.LENGTH_LONG).show();
-
                     signInButton.setEnabled(true);
                     signInButton.setText((R.string.signin));
                 }
@@ -198,7 +175,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onFailure(Exception e) {
                 Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG).show();
-
                 signInButton.setEnabled(true);
                 signInButton.setText((R.string.signin));
             }
@@ -211,7 +187,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.google_signin_button:
                 signInWithGooglePlus();
                 break;
-
             case R.id.google_signout_button:
                 signOutWithGooglePlus();
                 break;
@@ -226,16 +201,13 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private void initializeFacebookAuth() {
         LoginButton facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
-
-        facebookLoginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
-
-        facebookAuth = new FacebookAuth(this, facebookLoginButton, new AuthCallback() {
+        facebookLoginButton.setReadPermissions("public_profile");
+        callbackManager = CallbackManager.Factory.create();
+        facebookAuth = new FacebookAuth(facebookLoginButton, callbackManager, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);
-
                 CurrentUserManager.save(user, SigninActivity.this);
-
                 Launcher.launchActivity(SigninActivity.this, MainActivity.class);
                 finish();
             }
@@ -259,17 +231,13 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     private void initializeGoogleAuth() {
         googleSignInButton = (SignInButton) findViewById(R.id.google_signin_button);
         googleSignInButton.setOnClickListener(this);
-
         googleSignOutButton = (Button) findViewById(R.id.google_signout_button);
         googleSignOutButton.setOnClickListener(this);
-
         googleAuth = new GoogleAuth(this, new AuthCallback() {
             @Override
             public void onSuccess(User user) {
                 users.save(user, null);
-
                 CurrentUserManager.save(user, SigninActivity.this);
-
                 Launcher.launchActivity(SigninActivity.this, MainActivity.class);
                 finish();
             }

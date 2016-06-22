@@ -118,5 +118,4 @@
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme"/>
     </application>
-
 </manifest>

@@ -81,7 +81,6 @@ public class ConnectionRequestsAdapter extends RecyclerView.Adapter<ConnectionRe
 
     private void bindUser(User user, CustomViewHolder holder, Connection connection) {
         String profilePictureUrl = user.getProfilePictureUrl();
-
         if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
             holder.profilePicture.setAlpha(0.38f);
         } else {
