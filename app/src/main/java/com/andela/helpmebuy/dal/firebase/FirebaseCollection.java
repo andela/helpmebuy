@@ -68,7 +68,8 @@ public class FirebaseCollection<T extends Model> implements DataCollection<T> {
                         List<T> data = new ArrayList<>();
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            data.add(snapshot.getValue(type));
+                            if (data != null)
+                                data.add(snapshot.getValue(type));
                         }
 
                         callback.onSuccess(data);
