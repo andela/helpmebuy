@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'helpmebuy'
             keyPassword 'bDCE2ZNaI75S'
-            storeFile file('/Users/andela/helpmebuy/helpmebuy.jks')
+            storeFile file('/Users/andeladev/help/helpmebuy.jks')
             storePassword 'bDCE2ZNaI75S'
         }
     }
@@ -45,7 +45,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'joda-time:joda-time:2.8.2'
@@ -53,6 +53,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.5.0'
     compile 'com.google.android.gms:play-services-identity:8.1.0'
     compile 'com.google.android.gms:play-services-plus:8.1.0'
+    compile 'com.android.support:cardview-v7:23.4.0'
     compile 'com.google.android.gms:play-services-location:8.1.0'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
