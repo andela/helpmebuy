@@ -59,7 +59,7 @@ public class ReceivedRequestAdapter extends RecyclerView.Adapter<ReceivedRequest
             }
         }
         if(items.size() > limit ){
-            itemName += "...";
+            itemName += itemName + "...";
         }
         return itemName;
     }
