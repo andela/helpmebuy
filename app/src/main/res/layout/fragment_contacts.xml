@@ -1,23 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".fragments.ContactFragment"
-    tools:showIn="@layout/activity_connection_request">
+    android:orientation="vertical"
+    tools:context=".fragments.ContactFragment">
 
-    <com.andela.helpmebuy.views.CustomRecyclerView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/contact_list"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="No Contacts Available"
-        />
-</RelativeLayout>
+        <RelativeLayout
+            android:paddingLeft="50dp"
+            android:gravity="center"
+            android:id="@+id/connection_req"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.andela.helpmebuy.views.CustomRecyclerView
+                android:layout_centerHorizontal="true"
+                android:id="@+id/recycler_view_conn_req"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp" />
+
+
+            <TextView
+                android:id="@+id/no_contact_request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="No Requests Available" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/connection_req"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <com.andela.helpmebuy.views.CustomRecyclerView
+                android:id="@+id/contact_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/no_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="No Contacts Available" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</LinearLayout>
