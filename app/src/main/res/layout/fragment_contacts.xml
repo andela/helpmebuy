@@ -3,40 +3,45 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_view"
+    android:background="#eeeeee"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragments.ContactFragment">
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:paddingLeft="50dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:gravity="center"
             android:id="@+id/connection_req"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="180dp">
 
             <com.andela.helpmebuy.views.CustomRecyclerView
-                android:layout_centerHorizontal="true"
+                android:background="#eeeeee"
                 android:id="@+id/recycler_view_conn_req"
                 android:layout_width="wrap_content"
-                android:layout_height="150dp" />
+                android:layout_height="wrap_content" />
 
 
             <TextView
                 android:id="@+id/no_contact_request"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
                 android:text="No Requests Available" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_below="@+id/connection_req"
+            android:id="@+id/contacts_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -55,5 +60,5 @@
                 android:text="No Contacts Available" />
         </RelativeLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

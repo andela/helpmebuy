@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -108,6 +109,7 @@ public class ContactFragment extends Fragment {
         requestRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_conn_req);
         requestRecyclerView.setAdapter(requestsAdapter);
         requestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        requestRecyclerView.setHasFixedSize(false);
     }
 
     private void getCurrentUser() {
@@ -155,13 +157,22 @@ public class ContactFragment extends Fragment {
                                 }
                             }
                             if (connections.size() > 0) {
+                                resizeLayout(150);
                                 noContactRequest.setVisibility(View.GONE);
                                 requestRecyclerView.setVisibility(View.VISIBLE);
                             }
                         } else {
                             displayMessage(getString(R.string.no_request_found));
+                            RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.connection_req);
+                            layout.setVisibility(View.INVISIBLE);
+                            ViewGroup.LayoutParams params = layout.getLayoutParams();
+                            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                            layout.setLayoutParams(params);
+                            layout.setVisibility(View.VISIBLE);
                             noContactRequest.setVisibility(View.VISIBLE);
-                            requestRecyclerView.setVisibility(View.VISIBLE);
+                            requestRecyclerView.setVisibility(View.GONE);
+                            requestRecyclerView.setHasFixedSize(false);
                         }
                     }
 
@@ -170,6 +181,29 @@ public class ContactFragment extends Fragment {
                         displayMessage(errorMessage);
                     }
                 });
+    }
+
+    public void resizeLayout(int size) {
+        RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.connection_req);
+        RelativeLayout contactsLayout = (RelativeLayout) rootView.findViewById(R.id.contacts_layout);
+        contactsLayout.setVisibility(View.INVISIBLE);
+        layout.setVisibility(View.INVISIBLE);
+        layout.getLayoutParams().height = size;
+        layout.setVisibility(View.VISIBLE);
+        contactsLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void wrapContent(int size) {
+        RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.connection_req);
+        RelativeLayout contactsLayout = (RelativeLayout) rootView.findViewById(R.id.contacts_layout);
+        contactsLayout.setVisibility(View.INVISIBLE);
+        layout.setVisibility(View.INVISIBLE);
+        ViewGroup.LayoutParams params = layout.getLayoutParams();
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layout.setLayoutParams(params);
+        layout.setVisibility(View.VISIBLE);
+        contactsLayout.setVisibility(View.VISIBLE);
     }
 
     private boolean isConnectionPending(Connection connection) {
