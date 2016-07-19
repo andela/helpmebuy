@@ -6,8 +6,7 @@
     android:background="#eeeeee"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.ContactFragment">
+    android:orientation="vertical">
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,28 +14,29 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:paddingTop="20dp"
+            android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:gravity="center"
             android:id="@+id/connection_req"
             android:layout_width="match_parent"
-            android:layout_height="180dp">
+            android:layout_height="wrap_content">
 
             <com.andela.helpmebuy.views.CustomRecyclerView
                 android:background="#eeeeee"
                 android:id="@+id/recycler_view_conn_req"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="200dp" />
 
 
             <TextView
                 android:id="@+id/no_contact_request"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="No Requests Available" />
+                android:layout_centerVertical="true"
+                android:text="You have no Pending Connection request" />
 
         </RelativeLayout>
 
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="No Contacts Available" />
+                android:text="You have no friend on your contact list" />
         </RelativeLayout>
 
     </LinearLayout>
