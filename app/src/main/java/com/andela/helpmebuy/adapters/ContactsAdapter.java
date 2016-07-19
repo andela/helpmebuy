@@ -71,6 +71,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Custom
                     .placeholder(R.drawable.ic_account_circle_black_48dp)
                     .error(R.drawable.ic_account_circle_black_48dp)
                     .transform(new CircleTransformation())
+                    .noFade()
                     .into(holder.profilePicture);
         }
 
