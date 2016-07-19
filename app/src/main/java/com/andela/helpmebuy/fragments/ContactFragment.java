@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,7 +82,7 @@ public class ContactFragment extends Fragment {
         adapter = new ContactsAdapter(context, contacts);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.contact_list);
 
-        requestsAdapter = new ConnectionRequestsAdapter(connections, context);
+        requestsAdapter = new ConnectionRequestsAdapter(connections, context, rootView);
         requestsAdapter.setConnectionRequestListener(new ConnectionRequestListener() {
             @Override
             public void onConnectionUpdate(Connection connection) {
@@ -107,6 +106,7 @@ public class ContactFragment extends Fragment {
         recyclerView.addItemDecoration(new ItemDivider(getContext()));
 
         requestRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_conn_req);
+
         requestRecyclerView.setAdapter(requestsAdapter);
         requestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         requestRecyclerView.setHasFixedSize(false);
@@ -150,29 +150,23 @@ public class ContactFragment extends Fragment {
                     @Override
                     public void onSuccess(List<Connection> data) {
                         int size = data.size();
+                        noContacts.setVisibility(View.INVISIBLE);
                         if (size > 0) {
+                            ArrayList<Connection> myRequest = new ArrayList<>();
                             for (Connection connection : data) {
                                 if (isConnectionPending(connection)) {
-                                    addConnection(connection);
+                                    myRequest.add(connection);
                                 }
+                                connections = myRequest;
+                                requestsAdapter.swapList(connections);
                             }
                             if (connections.size() > 0) {
-                                resizeLayout(150);
-                                noContactRequest.setVisibility(View.GONE);
-                                requestRecyclerView.setVisibility(View.VISIBLE);
+                                noContactRequest.setVisibility(View.INVISIBLE);
+                                recyclerView.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            displayMessage(getString(R.string.no_request_found));
-                            RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.connection_req);
-                            layout.setVisibility(View.INVISIBLE);
-                            ViewGroup.LayoutParams params = layout.getLayoutParams();
-                            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                            layout.setLayoutParams(params);
-                            layout.setVisibility(View.VISIBLE);
                             noContactRequest.setVisibility(View.VISIBLE);
-                            requestRecyclerView.setVisibility(View.GONE);
-                            requestRecyclerView.setHasFixedSize(false);
+                            recyclerView.setVisibility(View.INVISIBLE);
                         }
                     }
 
@@ -183,52 +177,9 @@ public class ContactFragment extends Fragment {
                 });
     }
 
-    public void resizeLayout(int size) {
-        RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.connection_req);
-        RelativeLayout contactsLayout = (RelativeLayout) rootView.findViewById(R.id.contacts_layout);
-        contactsLayout.setVisibility(View.INVISIBLE);
-        layout.setVisibility(View.INVISIBLE);
-        layout.getLayoutParams().height = size;
-        layout.setVisibility(View.VISIBLE);
-        contactsLayout.setVisibility(View.VISIBLE);
-    }
-
-    public void wrapContent(int size) {
-        RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.connection_req);
-        RelativeLayout contactsLayout = (RelativeLayout) rootView.findViewById(R.id.contacts_layout);
-        contactsLayout.setVisibility(View.INVISIBLE);
-        layout.setVisibility(View.INVISIBLE);
-        ViewGroup.LayoutParams params = layout.getLayoutParams();
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        layout.setLayoutParams(params);
-        layout.setVisibility(View.VISIBLE);
-        contactsLayout.setVisibility(View.VISIBLE);
-    }
-
     private boolean isConnectionPending(Connection connection) {
         return !connection.getSender().equals(user.getId()) &&
                 connection.getConnectionStatus() == ConnectionStatus.PENDING.getStatus();
-    }
-
-    private void addConnection(Connection connection) {
-        int index = findIndex(connection);
-        if (index < 0) {
-            connections.add(connection);
-            requestsAdapter.notifyItemInserted(connections.size() - 1);
-        } else {
-            connections.set(index, connection);
-            requestsAdapter.notifyItemChanged(index);
-        }
-    }
-
-    private int findIndex(Connection connection) {
-        for (int i = 0, size = connections.size(); i < size; ++i) {
-            if (connection.getId().equals(connections.get(i).getId())) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     private void createContact(Connection connection1) {
@@ -250,8 +201,6 @@ public class ContactFragment extends Fragment {
         return new ContactsListener() {
             @Override
             public void onContactCreated(Contact contact) {
-                Toast.makeText(getActivity(), "Contact created successfully", Toast.LENGTH_LONG)
-                        .show();
             }
 
             @Override
@@ -275,12 +224,10 @@ public class ContactFragment extends Fragment {
                 .save(connection, new DataCallback<Connection>() {
                     @Override
                     public void onSuccess(Connection data) {
-                        displayMessage(R.string.operation_successful);
                     }
 
                     @Override
                     public void onError(String errorMessage) {
-                        displayMessage(R.string.operation_failed);
                     }
                 });
     }
@@ -289,7 +236,4 @@ public class ContactFragment extends Fragment {
         return Constants.CONNECTIONS + "/" + userId;
     }
 
-    private void displayMessage(int message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
 }

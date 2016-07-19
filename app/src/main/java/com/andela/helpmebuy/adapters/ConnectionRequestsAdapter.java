@@ -27,10 +27,12 @@ public class ConnectionRequestsAdapter extends RecyclerView.Adapter<ConnectionRe
     private List<Connection> connections;
     private ConnectionRequestListener callback;
     private Context context;
+    private View view;
 
-    public ConnectionRequestsAdapter(List<Connection> connections, Context context) {
+    public ConnectionRequestsAdapter(List<Connection> connections, Context context, View view) {
         this.connections = connections;
         this.context = context;
+        this.view = view;
     }
 
     @Override
@@ -42,6 +44,7 @@ public class ConnectionRequestsAdapter extends RecyclerView.Adapter<ConnectionRe
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, final int position) {
+        getItemCount();
         final Connection connection = this.connections.get(position);
 
         new FirebaseCollection<>(Constants.USERS, User.class)
@@ -103,7 +106,32 @@ public class ConnectionRequestsAdapter extends RecyclerView.Adapter<ConnectionRe
 
     public void onItemDismiss(int position) {
         connections.remove(position);
+        swapList(connections);
+        resizeLayout();
         notifyDataSetChanged();
+    }
+
+    public void resizeLayout() {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_conn_req);
+        TextView noContactRequest = (TextView) view.findViewById(R.id.no_contact_request);
+        noContactRequest.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+        int itemCount = connections.size();
+
+        if(itemCount > 0){
+            recyclerView.getLayoutParams().height = 300;
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+        if(itemCount == 0){
+            recyclerView.getLayoutParams().height = 100;
+            noContactRequest.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void swapList(List<Connection> newList){
+        connections = newList;
+        notifyDataSetChanged();
+        resizeLayout();
     }
 
     public void setConnectionRequestListener(ConnectionRequestListener callback) {
